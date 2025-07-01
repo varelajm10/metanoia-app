@@ -4,7 +4,8 @@ import { generateBusinessIntelligence, BusinessIntelligenceOutput } from "@/ai/f
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Loader2, Lightbulb, BarChartBig } from "lucide-react";
+import { Loader2, Lightbulb, BarChartBig, ArrowRight, BookOpen, TrendingUp, Users } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function BusinessIntelligenceClient() {
   const [formData, setFormData] = useState({
@@ -41,24 +42,39 @@ export default function BusinessIntelligenceClient() {
   const isFormValid = formData.financialData.trim() && formData.marketTrends.trim() && formData.customerData.trim();
 
   return (
-    <div className="container mx-auto px-4 py-12 md:px-6">
-      <div className="mx-auto max-w-3xl text-center">
-        <h1 className="text-4xl font-bold tracking-tight text-primary font-headline">Business Intelligence con IA</h1>
+    <div className="container mx-auto px-4">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="mx-auto max-w-3xl text-center"
+      >
+        <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-400 !leading-tight text-glow">
+          Business Intelligence con IA
+        </h1>
         <p className="mt-4 text-lg text-muted-foreground">
           Combina datos financieros, de mercado y de clientes para obtener un resumen ejecutivo y recomendaciones accionables generadas por IA.
         </p>
-      </div>
+      </motion.div>
 
-      <div className="mx-auto mt-10 max-w-4xl">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+        className="mx-auto mt-12 max-w-4xl"
+      >
         <form onSubmit={handleSubmit}>
-          <Card>
+          <Card className="bg-white/5 border-white/10 backdrop-blur-lg">
             <CardHeader>
-              <CardTitle>Fuentes de Datos</CardTitle>
-              <CardDescription>Proporciona la información para cada categoría.</CardDescription>
+              <CardTitle className="text-2xl font-semibold">Fuentes de Datos</CardTitle>
+              <CardDescription>Proporciona la información para cada categoría. La IA analizará las interconexiones.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <label htmlFor="financialData" className="font-medium">Datos Financieros</label>
+                <label htmlFor="financialData" className="font-medium flex items-center gap-2 text-muted-foreground">
+                  <TrendingUp className="h-5 w-5 text-accent"/>
+                  Datos Financieros
+                </label>
                 <Textarea
                   id="financialData"
                   name="financialData"
@@ -67,10 +83,14 @@ export default function BusinessIntelligenceClient() {
                   onChange={handleInputChange}
                   rows={6}
                   disabled={isLoading}
+                  className="bg-black/20 border-white/10 focus:ring-primary"
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="marketTrends" className="font-medium">Tendencias de Mercado</label>
+                <label htmlFor="marketTrends" className="font-medium flex items-center gap-2 text-muted-foreground">
+                  <BookOpen className="h-5 w-5 text-accent"/>
+                  Tendencias de Mercado
+                </label>
                 <Textarea
                   id="marketTrends"
                   name="marketTrends"
@@ -79,10 +99,14 @@ export default function BusinessIntelligenceClient() {
                   onChange={handleInputChange}
                   rows={6}
                   disabled={isLoading}
+                   className="bg-black/20 border-white/10 focus:ring-primary"
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="customerData" className="font-medium">Datos de Clientes</label>
+                <label htmlFor="customerData" className="font-medium flex items-center gap-2 text-muted-foreground">
+                  <Users className="h-5 w-5 text-accent"/>
+                  Datos de Clientes
+                </label>
                 <Textarea
                   id="customerData"
                   name="customerData"
@@ -91,45 +115,71 @@ export default function BusinessIntelligenceClient() {
                   onChange={handleInputChange}
                   rows={6}
                   disabled={isLoading}
+                  className="bg-black/20 border-white/10 focus:ring-primary"
                 />
               </div>
-              <Button type="submit" disabled={isLoading || !isFormValid} className="w-full">
+              <Button type="submit" disabled={isLoading || !isFormValid} size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-base font-semibold shadow-lg shadow-primary/20 transition-all duration-300 hover:scale-105">
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Generando Insights...
                   </>
                 ) : (
-                  "Generar Dashboard"
+                  <>
+                    Generar Dashboard <ArrowRight className="ml-2 h-5 w-5" />
+                  </>
                 )}
               </Button>
             </CardContent>
           </Card>
         </form>
 
-        {error && <p className="mt-4 text-center text-red-500">{error}</p>}
+        {error && <p className="mt-6 text-center text-red-400 bg-red-500/10 p-3 rounded-lg">{error}</p>}
+
+        {isLoading && !result && (
+             <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className="mt-10 text-center"
+            >
+                <div className="flex justify-center items-center gap-2">
+                    <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                    <p className="text-muted-foreground">Analizando datos y generando visualizaciones...</p>
+                </div>
+            </motion.div>
+        )}
 
         {result && (
-          <div className="mt-10 grid gap-8">
-            <Card>
-              <CardHeader className="flex flex-row items-center gap-2">
-                <BarChartBig className="h-6 w-6 text-accent" />
-                <CardTitle>Dashboard Summary</CardTitle>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+            className="mt-12 grid gap-8"
+          >
+            <Card className="bg-white/5 border-white/10 backdrop-blur-lg">
+              <CardHeader className="flex flex-row items-center gap-3">
+                <div className="p-2 bg-primary/10 rounded-lg border border-primary/20">
+                  <BarChartBig className="h-6 w-6 text-primary" />
+                </div>
+                <CardTitle className="text-2xl font-semibold">Dashboard Summary</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="whitespace-pre-wrap text-sm">{result.dashboardSummary}</p>
+                <p className="whitespace-pre-wrap text-base text-muted-foreground leading-relaxed">{result.dashboardSummary}</p>
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center gap-2">
-                <Lightbulb className="h-6 w-6 text-accent" />
-                <CardTitle>Recomendaciones Accionables</CardTitle>
+            <Card className="bg-white/5 border-white/10 backdrop-blur-lg">
+              <CardHeader className="flex flex-row items-center gap-3">
+                <div className="p-2 bg-accent/10 rounded-lg border border-accent/20">
+                    <Lightbulb className="h-6 w-6 text-accent" />
+                </div>
+                <CardTitle className="text-2xl font-semibold">Recomendaciones Accionables</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="whitespace-pre-wrap text-sm">{result.recommendations}</p>
+                <p className="whitespace-pre-wrap text-base text-muted-foreground leading-relaxed">{result.recommendations}</p>
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
         )}
       </div>
     </div>

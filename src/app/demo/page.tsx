@@ -5,10 +5,10 @@ import { Suspense } from "react";
 
 export default function DemoPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-screen flex-col bg-background bg-page-gradient">
       <Header />
-      <main className="flex-1 flex items-center justify-center py-12 px-4">
-        <Suspense fallback={<div>Loading...</div>}>
+      <main className="flex-1 flex items-center justify-center py-20 px-4">
+        <Suspense fallback={<div className="text-white">Loading...</div>}>
           <DemoForm />
         </Suspense>
       </main>
