@@ -2,12 +2,13 @@ import type {Metadata} from 'next';
 import './globals.css';
 import { Inter } from 'next/font/google'
 import { Toaster } from "@/components/ui/toaster"
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 export const metadata: Metadata = {
   title: 'Metanoia Click: AI Automation',
-  description: 'Plataforma de módulos de automatización empresarial con IA para PyMEs y medianas empresas.',
+  description: 'Plataforma de automatización empresarial con IA para PyMEs y medianas empresas.',
 };
 
 export default function RootLayout({
@@ -16,10 +17,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable}`}>
+    <html lang="en" className={`${inter.variable}`} suppressHydrationWarning>
       <body className="font-body antialiased">
-        {children}
-        <Toaster />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          disableTransitionOnChange
+        >
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

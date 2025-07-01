@@ -1,8 +1,8 @@
 "use client"
 import Link from 'next/link';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import Tilt from 'react-parallax-tilt';
+import { motion } from 'framer-motion';
 
 export interface Module {
   icon: React.ReactNode;
@@ -10,46 +10,89 @@ export interface Module {
   description: string;
   status: 'Disponible' | 'En Desarrollo' | 'Próximamente';
   href: string;
+  className?: string;
+  glowColor?: string;
 }
 
-export function ModuleCard({ icon, title, description, status, href }: Module) {
+export function ModuleCard({ icon, title, description, status, href, className, glowColor }: Module) {
   const isAvailable = status === 'Disponible';
 
-  const cardContent = (
-    <Card className="flex flex-col h-full overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 group">
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <div className="text-accent">{icon}</div>
-        <Badge
-          className={cn({
-            'bg-green-100 text-green-800 border-green-200': status === 'Disponible',
-            'bg-yellow-100 text-yellow-800 border-yellow-200': status === 'En Desarrollo',
-            'bg-gray-100 text-gray-800 border-gray-200': status === 'Próximamente',
-          })}
-        >
-          {status}
-        </Badge>
-      </CardHeader>
-      <CardContent className="flex-1 flex flex-col justify-between">
-        <div>
-          <CardTitle className="text-lg font-bold font-headline">{title}</CardTitle>
-          <CardDescription className="mt-2 text-sm h-12">{description}</CardDescription>
-        </div>
-        <div
-          className={cn(
-            'text-sm font-semibold mt-4 flex items-center',
-            isAvailable ? 'text-accent group-hover:text-accent/90' : 'text-muted-foreground'
-          )}
-        >
-          {isAvailable ? 'Probar ahora' : 'Solicitar Demo'}
-          <span className="transition-transform duration-300 group-hover:translate-x-1 ml-1">&rarr;</span>
-        </div>
-      </CardContent>
-    </Card>
-  );
+  const statusConfig = {
+    'Disponible': { text: 'Disponible', color: 'bg-green-500/10 text-green-400 border-green-500/20', dot: 'bg-green-500' },
+    'En Desarrollo': { text: 'En Desarrollo', color: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20', dot: 'bg-yellow-500' },
+    'Próximamente': { text: 'Próximamente', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20', dot: 'bg-blue-500' },
+  };
+
+  const currentStatus = statusConfig[status];
 
   return (
-    <Link href={href} className="focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-lg">
-        {cardContent}
-    </Link>
+    <Tilt
+      className="tilt-card"
+      perspective={1000}
+      glareEnable={true}
+      glareMaxOpacity={0.1}
+      glarePosition="all"
+      scale={1.02}
+      tiltMaxAngleX={10}
+      tiltMaxAngleY={10}
+      transitionSpeed={1500}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        viewport={{ once: true }}
+        className={cn("h-full w-full", className)}
+      >
+        <Link href={href} className="block h-full w-full focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-2xl">
+          <div
+            className="relative h-full w-full overflow-hidden rounded-2xl bg-zinc-900/80 p-6 border border-white/10 transition-all duration-300 group hover:border-white/20"
+            style={{
+              '--glow-color': glowColor || 'hsl(var(--primary))',
+              boxShadow: `0 0 0 1px hsl(var(--border)), 0 25px 50px -12px rgba(0,0,0,0.25)`
+            } as React.CSSProperties}
+          >
+            {/* Glow effect */}
+            <div className="absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100"
+              style={{
+                background: `radial-gradient(circle at center, var(--glow-color) 0%, transparent 60%)`,
+                filter: 'blur(40px)',
+                top: '-50%',
+                left: '-50%',
+                width: '200%',
+                height: '200%',
+              }}
+            />
+            
+            <div className="relative z-10 flex flex-col h-full">
+              <div className="flex justify-between items-start">
+                <div className="p-2 bg-white/5 rounded-lg border border-white/10 text-primary">
+                  {icon}
+                </div>
+                <div className={cn("flex items-center text-xs font-medium px-2 py-1 rounded-full border", currentStatus.color)}>
+                  <span className={cn("h-2 w-2 rounded-full mr-2", currentStatus.dot)} />
+                  {currentStatus.text}
+                </div>
+              </div>
+
+              <div className="mt-6 flex-grow">
+                <h3 className="text-xl font-bold text-foreground">{title}</h3>
+                <p className="mt-2 text-muted-foreground text-sm">{description}</p>
+              </div>
+
+              <div className="mt-6 flex justify-end">
+                <p className={cn(
+                  'text-sm font-semibold flex items-center transition-colors',
+                  isAvailable ? 'text-primary' : 'text-muted-foreground'
+                )}>
+                  {isAvailable ? 'Probar ahora' : 'Saber más'}
+                  <span className="transition-transform duration-300 group-hover:translate-x-1 ml-1">&rarr;</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </Link>
+      </motion.div>
+    </Tilt>
   );
 }
