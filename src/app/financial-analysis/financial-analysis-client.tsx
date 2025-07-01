@@ -139,7 +139,7 @@ Gastos Operativos Enero: $15,000
             </Card>
           </motion.div>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 }
