@@ -181,7 +181,7 @@ export default function BusinessIntelligenceClient() {
             </Card>
           </motion.div>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 }
