@@ -21,13 +21,6 @@ export function Header() {
           <span className="sr-only">Metanoia.Click</span>
         </Link>
         <nav className="hidden lg:flex gap-6 items-center">
-          <Link
-            href="/#modules"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            prefetch={false}
-          >
-            Módulos
-          </Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground">
@@ -36,7 +29,7 @@ export function Header() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="bg-zinc-900 border-white/10">
-              <DropdownMenuItem asChild><Link href="/dashboard">Dashboard General</Link></DropdownMenuItem>
+              <DropdownMenuItem asChild><Link href="/">Dashboard General</Link></DropdownMenuItem>
               <DropdownMenuItem asChild><Link href="/business-intelligence">Business Intelligence</Link></DropdownMenuItem>
               <DropdownMenuItem asChild><Link href="/financial-analysis">Análisis Financiero</Link></DropdownMenuItem>
               <DropdownMenuItem asChild><Link href="/credit-management">Gestión de Créditos</Link></DropdownMenuItem>
