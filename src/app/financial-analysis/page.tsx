@@ -2,7 +2,8 @@
 
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import DashboardLayout from "../dashboard/dashboard-client";
+import DashboardLayout from "../dashboard/dashboard-layout";
+import FinancialAnalysisClient from "./financial-analysis-client";
 
 export default function FinancialAnalysisPage() {
   return (
@@ -11,7 +12,9 @@ export default function FinancialAnalysisPage() {
        <DashboardLayout 
         title="Análisis Financiero"
         description="Gestión financiera integral, proyecciones y análisis de rentabilidad."
-      />
+      >
+        <FinancialAnalysisClient />
+      </DashboardLayout>
       <Footer />
     </div>
   );

@@ -2,7 +2,8 @@
 
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import DashboardLayout from "../dashboard/dashboard-client";
+import DashboardLayout from "../dashboard/dashboard-layout";
+import CreditManagementDashboardClient from "./dashboard-client";
 
 export default function CreditManagementPage() {
   return (
@@ -11,7 +12,9 @@ export default function CreditManagementPage() {
       <DashboardLayout 
         title="Gestión de Créditos"
         description="Automatización del ciclo de cobranzas, análisis de riesgo y pipeline de pagos."
-      />
+      >
+        <CreditManagementDashboardClient />
+      </DashboardLayout>
       <Footer />
     </div>
   );

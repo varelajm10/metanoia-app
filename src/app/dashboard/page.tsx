@@ -2,7 +2,8 @@
 
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import DashboardLayout from "./dashboard-client";
+import DashboardLayout from "./dashboard-layout";
+import GeneralDashboardClient from "./general-dashboard-client";
 
 export default function DashboardPage() {
   return (
@@ -11,7 +12,9 @@ export default function DashboardPage() {
       <DashboardLayout 
         title="Dashboard General"
         description="Una vista general de todas las métricas de su empresa."
-      />
+      >
+        <GeneralDashboardClient />
+      </DashboardLayout>
       <Footer />
     </div>
   );
