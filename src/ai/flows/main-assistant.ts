@@ -37,23 +37,21 @@ const mainAssistantFlow = ai.defineFlow(
     outputSchema: MainAssistantOutputSchema,
   },
   async ({ history, query }) => {
-    const messages: any[] = [
-      {
-        role: 'user', content: [{ text: "SYSTEM INSTRUCTION: You are Metanoia.Click's AI Assistant, an expert in business data analysis. You are helpful, friendly, and concise. Your goal is to answer user questions about their business data. If you don't have enough context from the conversation, ask clarifying questions. The user is currently viewing a dashboard in the Metanoia.click platform." }]
-      },
-      {
-        role: 'model', content: [{ text: "Understood. I am ready to assist." }]
-      },
+    const systemInstruction = "You are Metanoia.Click's AI Assistant, an expert in business data analysis. You are helpful, friendly, and concise. Your goal is to answer user questions about their business data. If you don't have enough context from the conversation, ask clarifying questions. The user is currently viewing a dashboard in the Metanoia.click platform.";
+    
+    const messages = [
       ...history.map(msg => ({
         role: msg.role === 'user' ? 'user' : 'model',
         content: [{ text: msg.content }],
       })),
       {
-        role: 'user', content: [{ text: query }]
-      }
+        role: 'user' as const,
+        content: [{ text: query }],
+      },
     ];
 
     const llmResponse = await ai.generate({
+      system: systemInstruction,
       prompt: messages,
     });
 
