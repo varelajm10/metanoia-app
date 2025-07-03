@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { ModuleCard } from '@/components/module-card';
-import { TrendingUp, CreditCard, Users, PackageSearch, Bot, LayoutDashboard, FileText, Zap, ArrowRight, ShieldCheck, BarChart, Settings2 } from 'lucide-react';
+import { TrendingUp, CreditCard, Users, Bot, LayoutDashboard, Zap, ShieldCheck, Handshake, Briefcase } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const modules = [
@@ -31,8 +31,8 @@ const modules = [
     icon: <CreditCard />,
     title: 'Gestión de Créditos',
     description: 'Evaluación automática y seguimiento de clientes.',
-    status: 'En Desarrollo',
-    href: '/demo?module=Gestión de Créditos',
+    status: 'Disponible',
+    href: '/credit-management',
     className: "md:col-span-1",
     glowColor: 'hsl(var(--secondary))',
   },
@@ -40,17 +40,17 @@ const modules = [
     icon: <Bot />,
     title: 'Atención al Cliente',
     description: 'Chatbots y automatización de consultas frecuentes.',
-    status: 'En Desarrollo',
-    href: '/demo?module=Atención al Cliente',
+    status: 'Disponible',
+    href: '/customer-service',
     className: "md:col-span-2",
     glowColor: 'hsl(var(--primary))',
   },
   {
-    icon: <Users />,
+    icon: <Briefcase />,
     title: 'Recursos Humanos',
     description: 'Gestión de empleados, nóminas y ciclo de vida laboral.',
-    status: 'Próximamente',
-    href: '/demo?module=Recursos Humanos',
+    status: 'Disponible',
+    href: '/hr',
     className: "md:col-span-1",
     glowColor: 'hsl(var(--accent))',
   },
@@ -58,8 +58,8 @@ const modules = [
     icon: <Zap />,
     title: 'Automatización de Procesos',
     description: 'Diseño e implementación de workflows personalizados.',
-    status: 'En Desarrollo',
-    href: '/demo?module=Automatización de Procesos',
+    status: 'Disponible',
+    href: '/process-automation',
     className: "md:col-span-2",
     glowColor: 'hsl(var(--secondary))',
   },
@@ -101,7 +101,6 @@ export default function Home() {
                 <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-base font-semibold shadow-lg shadow-primary/20 transition-all duration-300 hover:scale-105">
                   <Link href="/demo">
                     Solicitar Demo
-                    <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="ghost" className="text-base font-semibold transition-all duration-300 hover:scale-105 hover:bg-transparent">

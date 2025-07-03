@@ -30,7 +30,12 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-export default function DashboardClient() {
+interface DashboardLayoutProps {
+    title: string;
+    description: string;
+}
+
+export default function DashboardLayout({ title, description }: DashboardLayoutProps) {
     const [date, setDate] = React.useState<Date | undefined>(new Date())
     const [chartData, setChartData] = React.useState<any[]>([]);
 
@@ -54,6 +59,12 @@ export default function DashboardClient() {
 
     return (
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+          <div className="flex items-center justify-between space-y-2">
+            <div>
+                <h2 className="text-3xl font-bold tracking-tight">{title}</h2>
+                <p className="text-muted-foreground">{description}</p>
+            </div>
+          </div>
           <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
             <Card className="bg-white/5 border-white/10 backdrop-blur-lg">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

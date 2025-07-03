@@ -4,6 +4,13 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/logo';
 import { ThemeToggle } from './theme-toggle';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { ChevronDown } from 'lucide-react';
 
 export function Header() {
   return (
@@ -21,13 +28,23 @@ export function Header() {
           >
             Módulos
           </Link>
-          <Link
-            href="/dashboard"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            prefetch={false}
-          >
-            Dashboard
-          </Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground">
+                Dashboards
+                <ChevronDown className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="bg-zinc-900 border-white/10">
+              <DropdownMenuItem asChild><Link href="/dashboard">Dashboard General</Link></DropdownMenuItem>
+              <DropdownMenuItem asChild><Link href="/business-intelligence">Business Intelligence</Link></DropdownMenuItem>
+              <DropdownMenuItem asChild><Link href="/financial-analysis">Análisis Financiero</Link></DropdownMenuItem>
+              <DropdownMenuItem asChild><Link href="/credit-management">Gestión de Créditos</Link></DropdownMenuItem>
+              <DropdownMenuItem asChild><Link href="/customer-service">Atención al Cliente</Link></DropdownMenuItem>
+              <DropdownMenuItem asChild><Link href="/hr">Recursos Humanos</Link></DropdownMenuItem>
+              <DropdownMenuItem asChild><Link href="/process-automation">Automatización</Link></DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </nav>
         <div className="flex items-center gap-2">
           <ThemeToggle />
