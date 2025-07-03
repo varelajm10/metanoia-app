@@ -22,18 +22,11 @@ export function Header() {
             Módulos
           </Link>
           <Link
-            href="/financial-analysis"
+            href="/dashboard"
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             prefetch={false}
           >
-            Herramientas IA
-          </Link>
-           <Link
-            href="/business-intelligence"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            prefetch={false}
-          >
-            Business Intelligence
+            Dashboard
           </Link>
         </nav>
         <div className="flex items-center gap-2">
