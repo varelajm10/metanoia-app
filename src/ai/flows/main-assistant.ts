@@ -15,16 +15,16 @@ const MessageSchema = z.object({
   content: z.string(),
 });
 
+type MainAssistantInput = z.infer<typeof MainAssistantInputSchema>;
 const MainAssistantInputSchema = z.object({
   history: z.array(MessageSchema).describe('The conversation history.'),
   query: z.string().describe('The latest user query.'),
 });
-export type MainAssistantInput = z.infer<typeof MainAssistantInputSchema>;
 
+type MainAssistantOutput = z.infer<typeof MainAssistantOutputSchema>;
 const MainAssistantOutputSchema = z.object({
-  response: z.string().describe('The AI assistant\'s response.'),
+  response: z.string().describe("The AI assistant's response."),
 });
-export type MainAssistantOutput = z.infer<typeof MainAssistantOutputSchema>;
 
 export async function mainAssistant(input: MainAssistantInput): Promise<MainAssistantOutput> {
   return mainAssistantFlow(input);
@@ -41,7 +41,7 @@ const mainAssistantFlow = ai.defineFlow(
     
     const messages = [
       ...history.map(msg => ({
-        role: msg.role === 'user' ? 'user' : 'model',
+        role: msg.role === 'user' ? 'user' : ('model' as const),
         content: [{ text: msg.content }],
       })),
       {
@@ -52,7 +52,7 @@ const mainAssistantFlow = ai.defineFlow(
 
     const llmResponse = await ai.generate({
       system: systemInstruction,
-      prompt: messages,
+      messages: messages,
     });
 
     return { response: llmResponse.text };
