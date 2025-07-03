@@ -33,6 +33,7 @@ export function Header() {
               <DropdownMenuItem asChild><Link href="/business-intelligence">Business Intelligence</Link></DropdownMenuItem>
               <DropdownMenuItem asChild><Link href="/financial-analysis">Análisis Financiero</Link></DropdownMenuItem>
               <DropdownMenuItem asChild><Link href="/credit-management">Gestión de Créditos</Link></DropdownMenuItem>
+              <DropdownMenuItem asChild><Link href="/customer-management">Gestión de Clientes</Link></DropdownMenuItem>
               <DropdownMenuItem asChild><Link href="/customer-service">Atención al Cliente</Link></DropdownMenuItem>
               <DropdownMenuItem asChild><Link href="/hr">Recursos Humanos</Link></DropdownMenuItem>
               <DropdownMenuItem asChild><Link href="/process-automation">Automatización</Link></DropdownMenuItem>

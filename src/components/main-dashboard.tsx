@@ -132,7 +132,7 @@ export default function MainDashboard() {
                 <span className="text-text-primary">Créditos</span>
               </Button>
             </Link>
-             <Link href="/customer-service" passHref>
+             <Link href="/customer-management" passHref>
               <Button variant="outline" className="w-full h-24 flex flex-col gap-2 shadow-sm hover:shadow-medium transition-shadow">
                 <Handshake className="h-6 w-6 text-primary"/>
                 <span className="text-text-primary">Clientes</span>
