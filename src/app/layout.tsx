@@ -9,6 +9,13 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 export const metadata: Metadata = {
   title: 'Metanoia Click: AI Automation',
   description: 'Plataforma de automatización empresarial con IA para PyMEs y medianas empresas.',
+  manifest: '/manifest.json',
+  themeColor: '#0a0a0b',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Metanoia',
+  },
 };
 
 export default function RootLayout({
