@@ -15,13 +15,13 @@ const MessageSchema = z.object({
   content: z.string(),
 });
 
-export const MainAssistantInputSchema = z.object({
+const MainAssistantInputSchema = z.object({
   history: z.array(MessageSchema).describe('The conversation history.'),
   query: z.string().describe('The latest user query.'),
 });
 export type MainAssistantInput = z.infer<typeof MainAssistantInputSchema>;
 
-export const MainAssistantOutputSchema = z.object({
+const MainAssistantOutputSchema = z.object({
   response: z.string().describe('The AI assistant\'s response.'),
 });
 export type MainAssistantOutput = z.infer<typeof MainAssistantOutputSchema>;
