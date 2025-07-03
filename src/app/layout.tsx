@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: 'Metanoia Click: AI Automation',
   description: 'Plataforma de automatización empresarial con IA para PyMEs y medianas empresas.',
   manifest: '/manifest.json',
-  themeColor: '#0a0a0b',
+  themeColor: '#ffffff',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -25,10 +25,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable}`} suppressHydrationWarning>
-      <body className="font-body antialiased">
+      <body className="font-sans antialiased">
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           disableTransitionOnChange
         >
           {children}

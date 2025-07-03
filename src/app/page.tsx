@@ -2,19 +2,15 @@
 
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import DashboardLayout from "./dashboard/dashboard-layout";
-import GeneralDashboardClient from "./dashboard/general-dashboard-client";
+import MainDashboard from "@/components/main-dashboard";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col bg-background bg-page-gradient">
+    <div className="flex min-h-screen flex-col bg-background">
       <Header />
-      <DashboardLayout 
-        title="Dashboard General"
-        description="Una vista general de todas las métricas de su empresa."
-      >
-        <GeneralDashboardClient />
-      </DashboardLayout>
+      <main className="flex-1 p-4 sm:p-6 md:p-8">
+        <MainDashboard />
+      </main>
       <Footer />
     </div>
   );
