@@ -1,8 +1,7 @@
-
 "use client";
 
 import { useFormState, useFormStatus } from "react-dom";
-import { login } from "./login/actions";
+import { login } from "./actions";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
