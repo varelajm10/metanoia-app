@@ -7,7 +7,7 @@ const USERNAME = 'Metanoia.click';
 const PASSWORD = 'Metanoia1234';
 const COOKIE_NAME = 'metanoia-session';
 
-export async function login(formData: FormData) {
+export async function login(prevState: any, formData: FormData) {
   const username = formData.get('username');
   const password = formData.get('password');
 
