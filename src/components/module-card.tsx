@@ -1,3 +1,4 @@
+
 "use client"
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -85,7 +86,7 @@ export function ModuleCard({ icon, title, description, status, href, className, 
                   'text-sm font-semibold flex items-center transition-colors',
                   isAvailable ? 'text-primary' : 'text-muted-foreground'
                 )}>
-                  {isAvailable ? 'Probar ahora' : 'Saber más'}
+                  {isAvailable ? 'Acceder' : 'Saber más'}
                   <span className="transition-transform duration-300 group-hover:translate-x-1 ml-1">&rarr;</span>
                 </p>
               </div>
