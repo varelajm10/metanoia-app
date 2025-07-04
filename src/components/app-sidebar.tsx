@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -13,7 +14,9 @@ import {
   Headset,
   Workflow,
   HeartHandshake,
-  DollarSign
+  DollarSign,
+  BarChart2,
+  SlidersHorizontal,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -27,12 +30,12 @@ import {
 
 const menuItems = [
   {
-    title: 'Dashboard Principal',
+    title: 'Command Center',
     href: '/dashboard',
     icon: LayoutDashboard,
   },
   {
-    title: 'Gestión de Clientes',
+    title: 'Customer Intelligence',
     icon: HeartHandshake,
     subItems: [
       { title: 'CRM', href: '/customer-management', icon: Users },
@@ -41,19 +44,19 @@ const menuItems = [
     ],
   },
   {
-    title: 'Análisis e IA',
+    title: 'AI & Analytics',
     icon: BrainCircuit,
     subItems: [
-      { title: 'Business Intelligence', href: '/business-intelligence', icon: LayoutDashboard },
+      { title: 'Business Intelligence', href: '/business-intelligence', icon: BarChart2 },
       { title: 'Análisis Financiero', href: '/financial-analysis', icon: DollarSign },
-      { title: 'Automatización', href: '/process-automation', icon: Workflow },
+      { title: 'Process Automation', href: '/process-automation', icon: Workflow },
     ],
   },
   {
-    title: 'Compañía',
+    title: 'Company',
     icon: Building,
     subItems: [
-        { title: 'Recursos Humanos', href: '/hr', icon: Users },
+        { title: 'Human Resources', href: '/hr', icon: Users },
     ]
   },
   {
@@ -62,9 +65,9 @@ const menuItems = [
     icon: FileText,
   },
   {
-    title: 'Configuración',
+    title: 'Mission Control',
     href: '/settings',
-    icon: Settings,
+    icon: SlidersHorizontal,
   },
 ];
 
@@ -77,7 +80,7 @@ export function AppSidebar() {
         <Logo />
       </div>
       <nav className="flex-1">
-        <Accordion type="multiple" defaultValue={['Gestión de Clientes', 'Análisis e IA', 'Compañía']} className="w-full">
+        <Accordion type="multiple" defaultValue={['Customer Intelligence', 'AI & Analytics', 'Company']} className="w-full">
           <ul className="space-y-2">
             {menuItems.map((item) =>
               item.subItems ? (
