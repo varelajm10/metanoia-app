@@ -1,14 +1,13 @@
-
 "use client";
 
 import { useFormStatus } from "react-dom";
+import { useActionState, useEffect } from "react";
 import { login } from "./actions";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { useActionState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import { Fingerprint, Loader2 } from "lucide-react";
@@ -78,6 +77,7 @@ export default function LoginPage() {
                     placeholder="Metanoia.click"
                     required
                     className="bg-black/20 border-white/10 h-12 text-base"
+                    defaultValue="Metanoia.Click"
                   />
                 </div>
                 <div className="space-y-2">
@@ -89,6 +89,7 @@ export default function LoginPage() {
                     placeholder="••••••••••••"
                     required
                      className="bg-black/20 border-white/10 h-12 text-base"
+                     defaultValue="Metanoia1234"
                   />
                 </div>
                 <SubmitButton />
