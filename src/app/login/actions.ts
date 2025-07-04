@@ -11,7 +11,7 @@ export async function login(prevState: any, formData: FormData) {
   const username = formData.get('username')?.toString().trim();
   const password = formData.get('password')?.toString().trim();
 
-  if (username !== USERNAME || password !== PASSWORD) {
+  if (username?.toLowerCase() !== USERNAME.toLowerCase() || password !== PASSWORD) {
     return { success: false, message: 'Credenciales inválidas. Por favor, inténtalo de nuevo.' };
   }
 
