@@ -16,12 +16,12 @@ export async function login(prevState: any, formData: FormData) {
   }
 
   const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
-  cookies().set(COOKIE_NAME, 'authenticated', { expires, httpOnly: true });
+  cookies().set(COOKIE_NAME, 'authenticated', { expires, httpOnly: true, path: '/' });
 
   redirect('/dashboard');
 }
 
 export async function logout() {
-  cookies().set(COOKIE_NAME, '', { expires: new Date(0) });
+  cookies().set(COOKIE_NAME, '', { expires: new Date(0), path: '/' });
   redirect('/login');
 }
