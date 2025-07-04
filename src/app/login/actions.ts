@@ -18,7 +18,9 @@ export async function login(prevState: any, formData: FormData) {
   const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
   cookies().set(COOKIE_NAME, 'authenticated', { expires, httpOnly: true });
 
-  redirect('/dashboard');
+  // The redirect will be handled on the client via a page refresh
+  // which will trigger the middleware.
+  return { success: true, message: 'Inicio de sesión exitoso. Redirigiendo...' };
 }
 
 export async function logout() {
