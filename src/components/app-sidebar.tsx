@@ -7,7 +7,6 @@ import {
   LayoutDashboard,
   Users,
   BrainCircuit,
-  Settings,
   FileText,
   Building,
   CreditCard,
@@ -17,6 +16,8 @@ import {
   DollarSign,
   BarChart2,
   SlidersHorizontal,
+  Warehouse,
+  FolderKanban,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -50,6 +51,7 @@ const menuItems = [
       { title: 'Business Intelligence', href: '/business-intelligence', icon: BarChart2 },
       { title: 'Análisis Financiero', href: '/financial-analysis', icon: DollarSign },
       { title: 'Process Automation', href: '/process-automation', icon: Workflow },
+      { title: 'Inventario Inteligente', href: '/intelligent-inventory', icon: Warehouse },
     ],
   },
   {
@@ -57,6 +59,7 @@ const menuItems = [
     icon: Building,
     subItems: [
         { title: 'Human Resources', href: '/hr', icon: Users },
+        { title: 'Gestión Documental', href: '/document-management', icon: FolderKanban },
     ]
   },
   {

@@ -11,6 +11,8 @@ import {
     Workflow,
     FileText,
     Settings,
+    Warehouse,
+    FolderKanban,
 } from 'lucide-react';
 
 const modules: Module[] = [
@@ -69,6 +71,22 @@ const modules: Module[] = [
         icon: <Users size={24} />,
         status: 'Disponible',
         glowColor: 'hsl(180, 100%, 45%)',
+    },
+    {
+        title: 'Inventario Inteligente',
+        description: 'Optimización de stock, predicción de demanda y gestión automatizada de inventario.',
+        href: '/intelligent-inventory',
+        icon: <Warehouse size={24} />,
+        status: 'Disponible',
+        glowColor: 'hsl(200, 100%, 60%)',
+    },
+    {
+        title: 'Gestión Documental',
+        description: 'Repositorio centralizado, versionado y flujos de aprobación para todos sus documentos.',
+        href: '/document-management',
+        icon: <FolderKanban size={24} />,
+        status: 'Disponible',
+        glowColor: 'hsl(35, 100%, 65%)',
     },
     {
         title: 'Reporting',
