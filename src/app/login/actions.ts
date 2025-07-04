@@ -2,6 +2,7 @@
 
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 
 const USERNAME = 'Metanoia.click';
 const PASSWORD = 'Metanoia1234';
@@ -18,10 +19,17 @@ export async function login(prevState: any, formData: FormData) {
   const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
   cookies().set(COOKIE_NAME, 'authenticated', { expires, httpOnly: true, path: '/' });
 
+  // Invalidate the cache for the entire application to ensure middleware re-runs
+  revalidatePath('/', 'layout');
+
   redirect('/dashboard');
 }
 
 export async function logout() {
   cookies().set(COOKIE_NAME, '', { expires: new Date(0), path: '/' });
+  
+  // Invalidate the cache for the entire application to ensure middleware re-runs
+  revalidatePath('/', 'layout');
+
   redirect('/login');
 }
