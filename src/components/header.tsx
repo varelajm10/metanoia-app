@@ -2,49 +2,44 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Logo } from '@/components/logo';
 import { ThemeToggle } from './theme-toggle';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
-import { ChevronDown } from 'lucide-react';
+import { User, LogOut } from 'lucide-react';
+import { logout } from '@/app/login/actions';
 
 export function Header() {
   return (
-    <header className="px-4 lg:px-6 h-20 flex items-center bg-background/60 backdrop-blur-xl sticky top-0 z-50 border-b border-white/10">
-      <div className="container mx-auto flex items-center justify-between">
-        <Link href="/" className="flex items-center justify-center" prefetch={false}>
-          <Logo />
-          <span className="sr-only">Metanoia.Click</span>
-        </Link>
-        <nav className="hidden lg:flex gap-6 items-center">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground">
-                Dashboards
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="bg-zinc-900 border-white/10">
-              <DropdownMenuItem asChild><Link href="/">Dashboard General</Link></DropdownMenuItem>
-              <DropdownMenuItem asChild><Link href="/business-intelligence">Business Intelligence</Link></DropdownMenuItem>
-              <DropdownMenuItem asChild><Link href="/financial-analysis">Análisis Financiero</Link></DropdownMenuItem>
-              <DropdownMenuItem asChild><Link href="/credit-management">Gestión de Créditos</Link></DropdownMenuItem>
-              <DropdownMenuItem asChild><Link href="/customer-management">Gestión de Clientes</Link></DropdownMenuItem>
-              <DropdownMenuItem asChild><Link href="/customer-service">Atención al Cliente</Link></DropdownMenuItem>
-              <DropdownMenuItem asChild><Link href="/hr">Recursos Humanos</Link></DropdownMenuItem>
-              <DropdownMenuItem asChild><Link href="/process-automation">Automatización</Link></DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </nav>
+    <header className="px-4 lg:px-6 h-20 flex items-center bg-transparent sticky top-0 z-50">
+      <div className="container mx-auto flex items-center justify-end">
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Button asChild className="hidden lg:flex bg-white/5 hover:bg-white/10 border border-white/10 text-foreground">
-            <Link href="/demo">Solicitar Demo</Link>
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon" className="rounded-full">
+                    <User className="h-5 w-5" />
+                    <span className="sr-only">Toggle user menu</span>
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="bg-zinc-900 border-white/10">
+              <DropdownMenuItem>Mi Perfil</DropdownMenuItem>
+              <DropdownMenuItem>Facturación</DropdownMenuItem>
+              <DropdownMenuSeparator />
+               <DropdownMenuItem asChild>
+                <form action={logout} className="w-full">
+                    <button type="submit" className="w-full text-left flex items-center">
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Cerrar Sesión
+                    </button>
+                </form>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <div className="lg:hidden">
               <Button asChild size="sm">
                   <Link href="/demo">Demo</Link>

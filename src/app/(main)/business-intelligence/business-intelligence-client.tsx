@@ -1,3 +1,4 @@
+
 "use client";
 import { useState } from "react";
 import { generateBusinessIntelligence, BusinessIntelligenceOutput } from "@/ai/flows/business-intelligence";
@@ -6,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Loader2, Lightbulb, BarChartBig, ArrowRight, BookOpen, TrendingUp, Users } from "lucide-react";
 import { motion } from "framer-motion";
+import { AIChatBox } from "@/components/ai-chat-box";
 
 export default function BusinessIntelligenceClient() {
   const [formData, setFormData] = useState({
@@ -166,6 +168,8 @@ export default function BusinessIntelligenceClient() {
           </Card>
         </motion.div>
       )}
+
+      <AIChatBox />
     </motion.div>
   );
 }

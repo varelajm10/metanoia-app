@@ -1,3 +1,4 @@
+
 "use client";
 import { useState } from "react";
 import { financialAnalysis, FinancialAnalysisOutput } from "@/ai/flows/financial-analysis";
@@ -6,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Loader2, FileText, Scale, ArrowRight, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
+import { AIChatBox } from "@/components/ai-chat-box";
 
 export default function FinancialAnalysisClient() {
   const [financialData, setFinancialData] = useState("");
@@ -124,6 +126,8 @@ Gastos Operativos Enero: $15,000
           </Card>
         </motion.div>
       )}
+
+      <AIChatBox />
     </motion.div>
   );
 }
