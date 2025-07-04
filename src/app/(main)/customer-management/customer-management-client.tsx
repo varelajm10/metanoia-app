@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Users, TrendingUp, Heart } from 'lucide-react';
+import { AIChatBox } from "@/components/ai-chat-box";
 
 const recentCustomers = [
     { name: 'Tech Solutions Inc.', status: 'Activo', lastContact: '2024-05-20', value: '$50,000' },
@@ -85,6 +86,7 @@ export default function CustomerManagementClient() {
                 </Table>
             </CardContent>
         </Card>
+        <AIChatBox />
     </div>
   );
 }
