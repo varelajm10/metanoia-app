@@ -1,5 +1,5 @@
 
-import GeneralDashboardClient from "./general-dashboard-client";
+import MainDashboard from "@/components/main-dashboard";
 
 export default function DashboardPage() {
   return (
@@ -10,7 +10,7 @@ export default function DashboardPage() {
                 <p className="text-muted-foreground">Vista consolidada de las métricas clave de tu negocio.</p>
             </div>
           </div>
-        <GeneralDashboardClient />
+        <MainDashboard />
     </div>
   );
 }
