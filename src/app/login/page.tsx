@@ -9,7 +9,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { useActionState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -23,7 +22,6 @@ function SubmitButton() {
 export default function LoginPage() {
   const [state, formAction] = useActionState(login, null);
   const { toast } = useToast();
-  const router = useRouter();
 
   useEffect(() => {
     if (state?.success === false) {
@@ -33,11 +31,7 @@ export default function LoginPage() {
         description: state.message,
       });
     }
-    if (state?.success === true) {
-      // On success, refresh the page. The middleware will handle the redirect.
-      router.refresh();
-    }
-  }, [state, toast, router]);
+  }, [state, toast]);
 
 
   return (
