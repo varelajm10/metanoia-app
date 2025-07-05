@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -92,9 +91,11 @@ export function AppSidebar() {
               item.subItems ? (
                 <li key={item.title}>
                   <AccordionItem value={item.title} className="border-b-0">
-                    <AccordionTrigger className="text-muted-foreground hover:text-foreground hover:no-underline rounded-md px-3 py-2 w-full justify-start text-base font-medium">
-                      <item.icon className="mr-3 h-5 w-5" />
-                      {item.title}
+                    <AccordionTrigger className="text-muted-foreground hover:text-foreground hover:no-underline rounded-md px-3 py-2 w-full text-base font-medium">
+                       <span className="flex items-center">
+                        <item.icon className="mr-3 h-5 w-5" />
+                        {item.title}
+                       </span>
                     </AccordionTrigger>
                     <AccordionContent className="pl-6 pt-2 pb-0">
                       <ul className="space-y-2">
