@@ -1,16 +1,18 @@
-
 "use client";
 import { useState } from "react";
 import { financialAnalysis, FinancialAnalysisOutput } from "@/ai/flows/financial-analysis";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Loader2, FileText, Scale, ArrowRight, Sparkles } from "lucide-react";
+import { Loader2, FileText, Scale, ArrowRight, Sparkles, Database, TrendingUp, BrainCircuit } from "lucide-react";
 import { motion } from "framer-motion";
 import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CollectionsForm } from "./collections-form";
+import { ProjectionsForm } from "./projections-form";
 
-export default function FinancialAnalysisClient() {
+function AIAnalysisTab() {
   const t = useTranslations("FinancialAnalysis");
   const [financialData, setFinancialData] = useState("");
   const [result, setResult] = useState<FinancialAnalysisOutput | null>(null);
@@ -35,12 +37,7 @@ export default function FinancialAnalysisClient() {
   };
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-      className="mx-auto max-w-4xl"
-    >
+    <div className="mx-auto max-w-4xl">
       <form onSubmit={handleSubmit}>
         <Card className="bg-white/5 border-white/10 backdrop-blur-lg">
           <CardHeader>
@@ -124,7 +121,49 @@ export default function FinancialAnalysisClient() {
           </Card>
         </motion.div>
       )}
+    </div>
+  )
+}
 
+
+export default function FinancialAnalysisClient() {
+  const t = useTranslations("FinancialAnalysis");
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+    >
+      <Tabs defaultValue="collections" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="collections">
+            <Database className="mr-2 h-4 w-4" />
+            {t('tabCollections')}
+          </TabsTrigger>
+          <TabsTrigger value="projections">
+            <TrendingUp className="mr-2 h-4 w-4" />
+            {t('tabProjections')}
+          </TabsTrigger>
+          <TabsTrigger value="ai-analysis">
+            <BrainCircuit className="mr-2 h-4 w-4" />
+            {t('tabAI')}
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="collections">
+          <div className="mx-auto max-w-2xl">
+            <CollectionsForm />
+          </div>
+        </TabsContent>
+        <TabsContent value="projections">
+          <div className="mx-auto max-w-2xl">
+            <ProjectionsForm />
+          </div>
+        </TabsContent>
+        <TabsContent value="ai-analysis">
+          <AIAnalysisTab />
+        </TabsContent>
+      </Tabs>
       <AIChatBox />
     </motion.div>
   );
