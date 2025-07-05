@@ -38,7 +38,9 @@ export function CollectionsForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      amount: undefined,
+      country: undefined,
+      amount: '' as any,
+      date: undefined,
     }
   });
 
@@ -53,7 +55,6 @@ export function CollectionsForm() {
         description: t('collectionSuccessToastDescription'),
       });
       form.reset();
-      form.setValue('date', undefined);
     } else {
       toast({
         title: t('collectionErrorToastTitle'),

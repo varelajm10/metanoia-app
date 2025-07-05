@@ -36,7 +36,8 @@ export function ProjectionsForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       analystName: "",
-      projectedAmount: undefined,
+      projectedAmount: '' as any,
+      weekOf: undefined,
     }
   });
 
@@ -51,7 +52,6 @@ export function ProjectionsForm() {
         description: t('projectionSuccessToastDescription'),
       });
       form.reset();
-      form.setValue('weekOf', undefined);
     } else {
       toast({
         title: t('projectionErrorToastTitle'),
