@@ -36,14 +36,17 @@ export function ProjectionsForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       analystName: "",
-      projectedAmount: '' as any,
+      projectedAmount: "" as any,
       weekOf: undefined,
     }
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    const result = await addProjectionEntry(values);
+    const result = await addProjectionEntry({
+      ...values,
+      weekOf: values.weekOf.toISOString(),
+    });
     setIsSubmitting(false);
 
     if (result.success) {

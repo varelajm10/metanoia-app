@@ -4,28 +4,33 @@ import { z } from 'zod';
 import { db } from '@/lib/firebase';
 import { collection, addDoc, Timestamp } from 'firebase/firestore';
 
-const collectionSchema = z.object({
+// Schema for data received from the client (date as string)
+const clientCollectionSchema = z.object({
   country: z.string().min(1),
   amount: z.number().positive(),
-  date: z.date(),
+  date: z.string(), // Date is passed as an ISO string
 });
 
-const projectionSchema = z.object({
+// Schema for data received from the client (date as string)
+const clientProjectionSchema = z.object({
   analystName: z.string().min(2),
   projectedAmount: z.number().positive(),
-  weekOf: z.date(),
+  weekOf: z.string(), // Date is passed as an ISO string
 });
 
-export async function addCollectionEntry(data: z.infer<typeof collectionSchema>) {
-  const parsedData = collectionSchema.safeParse(data);
+export async function addCollectionEntry(data: z.infer<typeof clientCollectionSchema>) {
+  const parsedData = clientCollectionSchema.safeParse(data);
   if (!parsedData.success) {
     return { success: false, error: 'Invalid data' };
   }
 
+  const dateObject = new Date(parsedData.data.date);
+
   try {
     await addDoc(collection(db, 'collections'), {
-      ...parsedData.data,
-      date: Timestamp.fromDate(parsedData.data.date),
+      country: parsedData.data.country,
+      amount: parsedData.data.amount,
+      date: Timestamp.fromDate(dateObject),
       createdAt: Timestamp.now(),
     });
     return { success: true };
@@ -35,16 +40,19 @@ export async function addCollectionEntry(data: z.infer<typeof collectionSchema>)
   }
 }
 
-export async function addProjectionEntry(data: z.infer<typeof projectionSchema>) {
-    const parsedData = projectionSchema.safeParse(data);
+export async function addProjectionEntry(data: z.infer<typeof clientProjectionSchema>) {
+    const parsedData = clientProjectionSchema.safeParse(data);
     if (!parsedData.success) {
       return { success: false, error: 'Invalid data' };
     }
   
+    const dateObject = new Date(parsedData.data.weekOf);
+
     try {
       await addDoc(collection(db, 'projections'), {
-        ...parsedData.data,
-        weekOf: Timestamp.fromDate(parsedData.data.weekOf),
+        analystName: parsedData.data.analystName,
+        projectedAmount: parsedData.data.projectedAmount,
+        weekOf: Timestamp.fromDate(dateObject),
         createdAt: Timestamp.now(),
       });
       return { success: true };

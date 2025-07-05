@@ -39,14 +39,17 @@ export function CollectionsForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       country: undefined,
-      amount: '' as any,
+      amount: "" as any,
       date: undefined,
     }
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    const result = await addCollectionEntry(values);
+    const result = await addCollectionEntry({
+      ...values,
+      date: values.date.toISOString(),
+    });
     setIsSubmitting(false);
 
     if (result.success) {
