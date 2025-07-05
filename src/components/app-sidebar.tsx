@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -17,23 +18,147 @@ import {
   SlidersHorizontal,
   Warehouse,
   FolderKanban,
+  ChevronDown,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import * as React from 'react';
 
-import { cn } from '@/lib/utils';
 import { Logo } from './logo';
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
+  SidebarTrigger,
+  useSidebar,
+} from '@/components/ui/sidebar';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible';
+
+
+type MenuItemProps = {
+  title: string;
+  href?: string;
+  icon: React.ElementType;
+  subItems?: Omit<MenuItemProps, 'subItems'>[];
+};
+
+
+function MenuItem({ item }: { item: MenuItemProps }) {
+  const pathname = usePathname();
+  const { state: sidebarState } = useSidebar();
+  const isExpanded = sidebarState === 'expanded';
+
+  // --- Single Menu Item ---
+  if (!item.subItems || item.subItems.length === 0) {
+    return (
+      <SidebarMenuItem>
+        <Link href={item.href!} passHref>
+          <SidebarMenuButton
+            asChild
+            isActive={pathname.endsWith(item.href!)}
+            tooltip={item.title}
+          >
+            <a>
+              <item.icon />
+              <span className="truncate">{item.title}</span>
+            </a>
+          </SidebarMenuButton>
+        </Link>
+      </SidebarMenuItem>
+    );
+  }
+
+  // --- Collapsed Menu Group ---
+  if (!isExpanded) {
+    return (
+      <SidebarMenuItem>
+        <SidebarMenuSub>
+          <SidebarMenuButton asChild tooltip={item.title}>
+            <button>
+              <item.icon />
+              <span className="sr-only">{item.title}</span>
+            </button>
+          </SidebarMenuButton>
+          <SidebarMenuSubItem className="p-1">
+            <div className="px-2 py-1.5 text-sm font-semibold text-foreground">
+              {item.title}
+            </div>
+            {item.subItems.map((subItem) => (
+              <Link href={subItem.href!} passHref key={subItem.href}>
+                <SidebarMenuSubButton
+                  asChild
+                  isActive={pathname.endsWith(subItem.href!)}
+                >
+                  <a>
+                    <subItem.icon />
+                    <span className="truncate">{subItem.title}</span>
+                  </a>
+                </SidebarMenuSubButton>
+              </Link>
+            ))}
+          </SidebarMenuSubItem>
+        </SidebarMenuSub>
+      </SidebarMenuItem>
+    );
+  }
+
+  // --- Expanded Menu Group ---
+  return (
+    <Collapsible asChild defaultOpen={item.subItems.some(si => si.href && pathname.endsWith(si.href))} className="group">
+      <SidebarMenuItem>
+        <CollapsibleTrigger asChild>
+          <SidebarMenuButton className="w-full justify-between">
+            <div className="flex w-full items-center justify-between">
+              <span className="flex items-center gap-2">
+                  <item.icon />
+                  <span className="truncate">{item.title}</span>
+              </span>
+              <ChevronDown className="size-4 shrink-0 transition-transform duration-200 group-data-[state=open]:-rotate-180" />
+            </div>
+          </SidebarMenuButton>
+        </CollapsibleTrigger>
+        <CollapsibleContent asChild>
+          <SidebarMenuSub>
+            {item.subItems.map((subItem) => (
+              <SidebarMenuSubItem key={subItem.href}>
+                <Link href={subItem.href!} passHref>
+                  <SidebarMenuSubButton
+                    asChild
+                    isActive={pathname.endsWith(subItem.href!)}
+                  >
+                    <a>
+                      <subItem.icon />
+                      <span>{subItem.title}</span>
+                    </a>
+                  </SidebarMenuSubButton>
+                </Link>
+              </SidebarMenuSubItem>
+            ))}
+          </SidebarMenuSub>
+        </CollapsibleContent>
+      </SidebarMenuItem>
+    </Collapsible>
+  );
+}
+
 
 export function AppSidebar() {
-  const pathname = usePathname();
   const t = useTranslations('Sidebar');
+  const { state: sidebarState } = useSidebar();
 
-  const menuItems = [
+  const menuItems: MenuItemProps[] = [
     {
       title: t('commandCenter'),
       href: '/dashboard',
@@ -78,67 +203,25 @@ export function AppSidebar() {
     },
   ];
 
-
   return (
-    <div className="hidden lg:flex flex-col w-64 border-r border-white/10 p-4 space-y-8 bg-background sticky top-0 h-screen">
-      <div className="px-2">
+    <Sidebar collapsible="icon">
+      <SidebarHeader className="h-20 justify-center group-data-[collapsible=icon]:justify-center">
         <Logo />
-      </div>
-      <nav className="flex-1">
-        <Accordion type="multiple" defaultValue={['Customer Intelligence', 'AI & Analytics', 'Company']} className="w-full">
-          <ul className="space-y-2">
-            {menuItems.map((item) =>
-              item.subItems ? (
-                <li key={item.title}>
-                  <AccordionItem value={item.title} className="border-b-0">
-                    <AccordionTrigger className="text-muted-foreground hover:text-foreground hover:no-underline rounded-md px-3 py-2 w-full text-base font-medium">
-                       <span className="flex items-center">
-                        <item.icon className="mr-3 h-5 w-5" />
-                        {item.title}
-                       </span>
-                    </AccordionTrigger>
-                    <AccordionContent className="pl-6 pt-2 pb-0">
-                      <ul className="space-y-2">
-                        {item.subItems.map((subItem) => (
-                          <li key={subItem.title}>
-                            <Link
-                              href={subItem.href}
-                              className={cn(
-                                'flex items-center rounded-md px-3 py-2 text-sm font-medium',
-                                pathname.endsWith(subItem.href)
-                                  ? 'bg-primary text-primary-foreground'
-                                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                              )}
-                            >
-                              <subItem.icon className="mr-3 h-4 w-4" />
-                              {subItem.title}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </AccordionContent>
-                  </AccordionItem>
-                </li>
-              ) : (
-                <li key={item.title}>
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      'flex items-center rounded-md px-3 py-2 text-base font-medium',
-                      pathname.endsWith(item.href)
-                        ? 'bg-primary text-primary-foreground'
-                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                    )}
-                  >
-                    <item.icon className="mr-3 h-5 w-5" />
-                    {item.title}
-                  </Link>
-                </li>
-              )
-            )}
-          </ul>
-        </Accordion>
-      </nav>
-    </div>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarMenu>
+          {menuItems.map((item) => (
+            <MenuItem key={item.title} item={item} />
+          ))}
+        </SidebarMenu>
+      </SidebarContent>
+      <SidebarFooter className="hidden md:flex justify-center p-4">
+        <SidebarTrigger asChild>
+            <button className="h-10 w-10 flex items-center justify-center rounded-lg hover:bg-muted transition-colors">
+                {sidebarState === 'expanded' ? <PanelLeftClose /> : <PanelLeftOpen />}
+            </button>
+        </SidebarTrigger>
+      </SidebarFooter>
+    </Sidebar>
   );
 }
