@@ -1,5 +1,6 @@
+
 import type {Metadata} from 'next';
-import './globals.css';
+import '../globals.css';
 import { Inter } from 'next/font/google'
 import { Toaster } from "@/components/ui/toaster"
 import { ThemeProvider } from "@/components/theme-provider";
@@ -9,7 +10,7 @@ import {getLocale, getMessages, getTranslations} from 'next-intl/server';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 export async function generateMetadata({params: {locale}}: {params: {locale: string}}): Promise<Metadata> {
-  const t = await getTranslations('Metadata');
+  const t = await getTranslations({locale, namespace: 'Metadata'});
  
   return {
     title: t('title'),
