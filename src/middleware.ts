@@ -15,16 +15,5 @@ export const config = {
   // - _next/static (static files)
   // - _next/image (image optimization files)
   // - favicon.ico (favicon file)
-  matcher: [
-    // Enable a redirect to a matching locale at the root
-    '/',
-
-    // Set a cookie to remember the previous locale for
-    // all requests that have a locale prefix
-    '/(es|en)/:path*',
-
-    // Enable redirects that add a locale prefix
-    // (e.g. `/pathnames` -> `/en/pathnames`)
-    '/((?!_next|.*\\..*|api).*)'
-  ]
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)']
 };
