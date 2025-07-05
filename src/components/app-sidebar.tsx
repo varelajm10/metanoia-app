@@ -19,6 +19,7 @@ import {
   Warehouse,
   FolderKanban,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
 import { Logo } from './logo';
@@ -29,53 +30,55 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 
-const menuItems = [
-  {
-    title: 'Command Center',
-    href: '/dashboard',
-    icon: LayoutDashboard,
-  },
-  {
-    title: 'Customer Intelligence',
-    icon: HeartHandshake,
-    subItems: [
-      { title: 'CRM', href: '/customer-management', icon: Users },
-      { title: 'Créditos', href: '/credit-management', icon: CreditCard },
-      { title: 'Atención al Cliente', href: '/customer-service', icon: Headset },
-    ],
-  },
-  {
-    title: 'AI & Analytics',
-    icon: BrainCircuit,
-    subItems: [
-      { title: 'Business Intelligence', href: '/business-intelligence', icon: BarChart2 },
-      { title: 'Análisis Financiero', href: '/financial-analysis', icon: DollarSign },
-      { title: 'Process Automation', href: '/process-automation', icon: Workflow },
-      { title: 'Inventario Inteligente', href: '/intelligent-inventory', icon: Warehouse },
-    ],
-  },
-  {
-    title: 'Company',
-    icon: Building,
-    subItems: [
-        { title: 'Human Resources', href: '/hr', icon: Users },
-        { title: 'Gestión Documental', href: '/document-management', icon: FolderKanban },
-    ]
-  },
-  {
-    title: 'Reporting',
-    href: '/reports',
-    icon: FileText,
-  },
-  {
-    title: 'Mission Control',
-    href: '/settings',
-    icon: SlidersHorizontal,
-  },
-];
-
 export function AppSidebar() {
   const pathname = usePathname();
+  const t = useTranslations('Sidebar');
+
+  const menuItems = [
+    {
+      title: t('commandCenter'),
+      href: '/dashboard',
+      icon: LayoutDashboard,
+    },
+    {
+      title: t('customerIntelligence'),
+      icon: HeartHandshake,
+      subItems: [
+        { title: t('crm'), href: '/customer-management', icon: Users },
+        { title: t('credits'), href: '/credit-management', icon: CreditCard },
+        { title: t('customerService'), href: '/customer-service', icon: Headset },
+      ],
+    },
+    {
+      title: t('aiAndAnalytics'),
+      icon: BrainCircuit,
+      subItems: [
+        { title: t('businessIntelligence'), href: '/business-intelligence', icon: BarChart2 },
+        { title: t('financialAnalysis'), href: '/financial-analysis', icon: DollarSign },
+        { title: t('processAutomation'), href: '/process-automation', icon: Workflow },
+        { title: t('intelligentInventory'), href: '/intelligent-inventory', icon: Warehouse },
+      ],
+    },
+    {
+      title: t('company'),
+      icon: Building,
+      subItems: [
+          { title: t('humanResources'), href: '/hr', icon: Users },
+          { title: t('documentManagement'), href: '/document-management', icon: FolderKanban },
+      ]
+    },
+    {
+      title: t('reporting'),
+      href: '/reports',
+      icon: FileText,
+    },
+    {
+      title: t('missionControl'),
+      href: '/settings',
+      icon: SlidersHorizontal,
+    },
+  ];
+
 
   return (
     <div className="hidden lg:flex flex-col w-64 border-r border-white/10 p-4 space-y-8 bg-background sticky top-0 h-screen">
@@ -101,7 +104,7 @@ export function AppSidebar() {
                               href={subItem.href}
                               className={cn(
                                 'flex items-center rounded-md px-3 py-2 text-sm font-medium',
-                                pathname === subItem.href
+                                pathname.endsWith(subItem.href)
                                   ? 'bg-primary text-primary-foreground'
                                   : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                               )}
@@ -121,7 +124,7 @@ export function AppSidebar() {
                     href={item.href}
                     className={cn(
                       'flex items-center rounded-md px-3 py-2 text-base font-medium',
-                      pathname === item.href
+                      pathname.endsWith(item.href)
                         ? 'bg-primary text-primary-foreground'
                         : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                     )}

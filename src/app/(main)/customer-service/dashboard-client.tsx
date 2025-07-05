@@ -6,70 +6,76 @@ import { Badge } from "@/components/ui/badge";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { Ticket, Clock, Smile, Phone, Mail, MessageSquare } from "lucide-react";
 import { AIChatBox } from "@/components/ai-chat-box";
+import { useTranslations } from "next-intl";
 
 const recentTickets = [
-    { id: 'TKT-721', subject: 'Problema de facturación', client: 'Tech Solutions Inc.', priority: 'Alta', status: 'Abierto' },
-    { id: 'TKT-720', subject: 'Consulta sobre producto X', client: 'Innovate Corp.', priority: 'Media', status: 'En Progreso' },
-    { id: 'TKT-719', subject: 'No puedo acceder a mi cuenta', client: 'Global Enterprises', priority: 'Alta', status: 'Abierto' },
-    { id: 'TKT-718', subject: 'Feedback sobre nueva feature', client: 'Future Systems Ltd.', priority: 'Baja', status: 'Resuelto' },
-];
-
-const channelData = [
-    { name: 'Email', value: 45, icon: Mail },
-    { name: 'Teléfono', value: 25, icon: Phone },
-    { name: 'Chat', value: 30, icon: MessageSquare },
+    { id: 'TKT-721', subject: 'Problema de facturación', client: 'Tech Solutions Inc.', priority: 'High', status: 'Open' },
+    { id: 'TKT-720', subject: 'Consulta sobre producto X', client: 'Innovate Corp.', priority: 'Medium', status: 'In Progress' },
+    { id: 'TKT-719', subject: 'No puedo acceder a mi cuenta', client: 'Global Enterprises', priority: 'High', status: 'Open' },
+    { id: 'TKT-718', subject: 'Feedback sobre nueva feature', client: 'Future Systems Ltd.', priority: 'Low', status: 'Resolved' },
 ];
 
 const COLORS = ['hsl(var(--primary))', 'hsl(var(--accent))', 'hsl(var(--secondary))'];
 
-const priorityVariant = {
-    'Alta': 'destructive',
-    'Media': 'secondary',
-    'Baja': 'outline',
-} as const;
-
 export default function CustomerServiceDashboardClient() {
+  const t = useTranslations("CustomerService");
+
+  const channelData = [
+      { name: t('channelEmail'), value: 45, icon: Mail },
+      { name: t('channelPhone'), value: 25, icon: Phone },
+      { name: t('channelChat'), value: 30, icon: MessageSquare },
+  ];
+
+  const priorityVariant = {
+      'High': 'destructive',
+      'Medium': 'secondary',
+      'Low': 'outline',
+  } as const;
+  
+  const getPriorityTranslation = (p: 'High' | 'Medium' | 'Low') => t(`priority${p}`);
+  const getStatusTranslation = (s: 'Open' | 'In Progress' | 'Resolved') => t(`status${s.replace(' ','')}`);
+
   return (
     <div className="space-y-8">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Tickets Abiertos</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('openTickets')}</CardTitle>
                     <Ticket className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">128</div>
-                    <p className="text-xs text-muted-foreground">+10 en las últimas 24h</p>
+                    <p className="text-xs text-muted-foreground">+10 {t('last24h')}</p>
                 </CardContent>
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">T. de Respuesta Promedio</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('avgResponseTime')}</CardTitle>
                     <Clock className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">1h 15m</div>
-                    <p className="text-xs text-muted-foreground">Dentro del SLA de 2h</p>
+                    <p className="text-xs text-muted-foreground">{t('withinSLA')}</p>
                 </CardContent>
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Satisfacción (CSAT)</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('satisfactionCSAT')}</CardTitle>
                     <Smile className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">92%</div>
-                    <p className="text-xs text-muted-foreground">+1.2% vs. la semana pasada</p>
+                    <p className="text-xs text-muted-foreground">+1.2% {t('vsLastWeek')}</p>
                 </CardContent>
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Tasa de Resolución</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('resolutionRate')}</CardTitle>
                     <Ticket className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">85%</div>
-                    <p className="text-xs text-muted-foreground">Resolución en primer contacto</p>
+                    <p className="text-xs text-muted-foreground">{t('firstContactResolution')}</p>
                 </CardContent>
             </Card>
         </div>
@@ -77,18 +83,18 @@ export default function CustomerServiceDashboardClient() {
         <div className="grid gap-6 lg:grid-cols-5">
             <Card className="lg:col-span-3">
                 <CardHeader>
-                    <CardTitle>Tickets Recientes</CardTitle>
-                    <CardDescription>Vista de la actividad del centro de ayuda.</CardDescription>
+                    <CardTitle>{t('recentTickets')}</CardTitle>
+                    <CardDescription>{t('recentTicketsSubtitle')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>ID</TableHead>
-                                <TableHead>Asunto</TableHead>
-                                <TableHead>Cliente</TableHead>
-                                <TableHead>Prioridad</TableHead>
-                                <TableHead>Estado</TableHead>
+                                <TableHead>{t('tableId')}</TableHead>
+                                <TableHead>{t('tableSubject')}</TableHead>
+                                <TableHead>{t('tableClient')}</TableHead>
+                                <TableHead>{t('tablePriority')}</TableHead>
+                                <TableHead>{t('tableStatus')}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -99,10 +105,10 @@ export default function CustomerServiceDashboardClient() {
                                     <TableCell>{ticket.client}</TableCell>
                                     <TableCell>
                                         <Badge variant={priorityVariant[ticket.priority as keyof typeof priorityVariant] || 'default'}>
-                                            {ticket.priority}
+                                            {getPriorityTranslation(ticket.priority as keyof typeof priorityVariant)}
                                         </Badge>
                                     </TableCell>
-                                    <TableCell>{ticket.status}</TableCell>
+                                    <TableCell>{getStatusTranslation(ticket.status as 'Open' | 'In Progress' | 'Resolved')}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -111,8 +117,8 @@ export default function CustomerServiceDashboardClient() {
             </Card>
             <Card className="lg:col-span-2">
                 <CardHeader>
-                    <CardTitle>Distribución por Canal</CardTitle>
-                    <CardDescription>Origen de los tickets de soporte.</CardDescription>
+                    <CardTitle>{t('channelDistribution')}</CardTitle>
+                    <CardDescription>{t('channelDistributionSubtitle')}</CardDescription>
                 </CardHeader>
                 <CardContent className="h-[250px] w-full flex flex-col items-center justify-center">
                     <ResponsiveContainer width="100%" height="100%">

@@ -3,37 +3,50 @@ import './globals.css';
 import { Inter } from 'next/font/google'
 import { Toaster } from "@/components/ui/toaster"
 import { ThemeProvider } from "@/components/theme-provider";
+import {NextIntlClientProvider} from 'next-intl';
+import {getLocale, getMessages, getTranslator} from 'next-intl/server';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
-export const metadata: Metadata = {
-  title: 'Metanoia Click: AI Automation',
-  description: 'Plataforma de automatización empresarial con IA para PyMEs y medianas empresas.',
-  manifest: '/manifest.json',
-  themeColor: '#ffffff',
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: 'default',
-    title: 'Metanoia',
-  },
-};
+export async function generateMetadata({params: {locale}}: {params: {locale: string}}): Promise<Metadata> {
+  const t = await getTranslator(locale, 'Metadata');
+ 
+  return {
+    title: t('title'),
+    description: t('description'),
+    manifest: '/manifest.json',
+    themeColor: '#ffffff',
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: 'default',
+      title: 'Metanoia',
+    },
+  };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params
 }: Readonly<{
   children: React.ReactNode;
+  params: {locale: string};
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="es" className={`${inter.variable}`} suppressHydrationWarning>
+    <html lang={locale} className={`${inter.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          disableTransitionOnChange
-        >
-          {children}
-          <Toaster />
-        </ThemeProvider>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            disableTransitionOnChange
+          >
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

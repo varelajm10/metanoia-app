@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid } from 'recharts';
 import { Users, RefreshCw, UserPlus, Cake } from "lucide-react";
 import { AIChatBox } from "@/components/ai-chat-box";
+import { useTranslations } from "next-intl";
 
 const newHires = [
     { name: 'Laura García', position: 'AI Engineer', department: 'Tecnología', date: '2024-07-01' },
@@ -22,47 +23,48 @@ const departmentData = [
 ];
 
 export default function HRDashboardClient() {
+  const t = useTranslations("HR");
   return (
     <div className="space-y-8">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Headcount Total</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('totalHeadcount')}</CardTitle>
                     <Users className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">152</div>
-                    <p className="text-xs text-muted-foreground">+2 vs. mes anterior</p>
+                    <p className="text-xs text-muted-foreground">+2 {t('vsPreviousMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Tasa de Rotación (YTD)</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('turnoverRateYTD')}</CardTitle>
                     <RefreshCw className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">5.8%</div>
-                    <p className="text-xs text-muted-foreground">Objetivo anual: &lt;10%</p>
+                    <p className="text-xs text-muted-foreground">{t('annualTarget')}</p>
                 </CardContent>
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Contrataciones (Mes)</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('hiresMonth')}</CardTitle>
                     <UserPlus className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">+3</div>
-                    <p className="text-xs text-muted-foreground">2 en Tecnología, 1 en Ventas</p>
+                    <p className="text-xs text-muted-foreground">{t('hiresDetail')}</p>
                 </CardContent>
             </Card>
              <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Próximos Aniversarios</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('upcomingAnniversaries')}</CardTitle>
                     <Cake className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">5</div>
-                    <p className="text-xs text-muted-foreground">Esta semana</p>
+                    <p className="text-xs text-muted-foreground">{t('thisWeek')}</p>
                 </CardContent>
             </Card>
         </div>
@@ -70,17 +72,17 @@ export default function HRDashboardClient() {
         <div className="grid gap-6 lg:grid-cols-5">
             <Card className="lg:col-span-3">
                 <CardHeader>
-                    <CardTitle>Nuevos Ingresos</CardTitle>
-                    <CardDescription>¡Demos la bienvenida a los nuevos miembros del equipo!</CardDescription>
+                    <CardTitle>{t('newHires')}</CardTitle>
+                    <CardDescription>{t('newHiresSubtitle')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Nombre</TableHead>
-                                <TableHead>Cargo</TableHead>
-                                <TableHead>Departamento</TableHead>
-                                <TableHead>Fecha de Ingreso</TableHead>
+                                <TableHead>{t('tableName')}</TableHead>
+                                <TableHead>{t('tablePosition')}</TableHead>
+                                <TableHead>{t('tableDepartment')}</TableHead>
+                                <TableHead>{t('tableHireDate')}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -104,8 +106,8 @@ export default function HRDashboardClient() {
             </Card>
             <Card className="lg:col-span-2">
                 <CardHeader>
-                    <CardTitle>Distribución por Departamento</CardTitle>
-                    <CardDescription>Headcount por área funcional.</CardDescription>
+                    <CardTitle>{t('distributionByDepartment')}</CardTitle>
+                    <CardDescription>{t('distributionByDepartmentSubtitle')}</CardDescription>
                 </CardHeader>
                 <CardContent className="h-[250px] w-full">
                     <ResponsiveContainer width="100%" height="100%">

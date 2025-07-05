@@ -1,29 +1,30 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
-  // If the user is at the root or /login, redirect to /dashboard
-  if (pathname === '/' || pathname.startsWith('/login')) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/dashboard';
-    return NextResponse.redirect(url);
-  }
-
-  return NextResponse.next();
-}
-
+import createMiddleware from 'next-intl/middleware';
+ 
+export default createMiddleware({
+  // A list of all locales that are supported
+  locales: ['en', 'es'],
+ 
+  // Used when no locale matches
+  defaultLocale: 'es',
+  localePrefix: 'as-needed'
+});
+ 
 export const config = {
+  // Match all request paths except for the ones starting with:
+  // - api (API routes)
+  // - _next/static (static files)
+  // - _next/image (image optimization files)
+  // - favicon.ico (favicon file)
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - icons (PWA icons)
-     */
-    '/((?!api|_next/static|_next/image|favicon.ico|icons|manifest.json).*)',
-  ],
+    // Enable a redirect to a matching locale at the root
+    '/',
+
+    // Set a cookie to remember the previous locale for
+    // all requests that have a locale prefix
+    '/(es|en)/:path*',
+
+    // Enable redirects that add a locale prefix
+    // (e.g. `/pathnames` -> `/en/pathnames`)
+    '/((?!_next|.*\\..*|api).*)'
+  ]
 };

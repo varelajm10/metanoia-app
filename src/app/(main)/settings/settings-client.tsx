@@ -1,6 +1,9 @@
 
 "use client";
 
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,6 +13,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Users, ShieldCheck, Settings, KeyRound, PlusCircle, FileDown } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 
 // Mock Data
 const users = [
@@ -31,24 +36,37 @@ const statusVariant = {
 } as const;
 
 export default function SettingsClient() {
+  const t = useTranslations('Settings');
+  const locale = useLocale();
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
+  const getStatusTranslation = (status: 'active' | 'inactive') => t(`status${status.charAt(0).toUpperCase() + status.slice(1)}` as 'statusActive' | 'statusInactive');
+
+  function onSelectChange(nextLocale: string) {
+    startTransition(() => {
+      router.replace(`/${nextLocale}`);
+    });
+  }
+
   return (
     <Tabs defaultValue="users" className="space-y-4">
       <TabsList className="grid w-full grid-cols-4">
         <TabsTrigger value="users">
           <Users className="mr-2 h-4 w-4" />
-          Gestión de Usuarios
+          {t('userManagement')}
         </TabsTrigger>
         <TabsTrigger value="roles">
           <KeyRound className="mr-2 h-4 w-4" />
-          Gestión de Roles
+          {t('roleManagement')}
         </TabsTrigger>
         <TabsTrigger value="system">
           <Settings className="mr-2 h-4 w-4" />
-          Configuración del Sistema
+          {t('systemConfiguration')}
         </TabsTrigger>
         <TabsTrigger value="security">
           <ShieldCheck className="mr-2 h-4 w-4" />
-          Seguridad
+          {t('security')}
         </TabsTrigger>
       </TabsList>
 
@@ -57,23 +75,23 @@ export default function SettingsClient() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle>Usuarios</CardTitle>
-              <CardDescription>Gestiona los usuarios de la plataforma, sus roles y estados.</CardDescription>
+              <CardTitle>{t('usersTitle')}</CardTitle>
+              <CardDescription>{t('usersSubtitle')}</CardDescription>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline"><FileDown className="mr-2 h-4 w-4"/> Exportar</Button>
-              <Button><PlusCircle className="mr-2 h-4 w-4"/> Añadir Usuario</Button>
+              <Button variant="outline"><FileDown className="mr-2 h-4 w-4"/> {t('export')}</Button>
+              <Button><PlusCircle className="mr-2 h-4 w-4"/> {t('addUser')}</Button>
             </div>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Nombre</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Rol</TableHead>
-                  <TableHead>Estado</TableHead>
-                  <TableHead><span className="sr-only">Actions</span></TableHead>
+                  <TableHead>{t('tableName')}</TableHead>
+                  <TableHead>{t('tableEmail')}</TableHead>
+                  <TableHead>{t('tableRole')}</TableHead>
+                  <TableHead>{t('tableStatus')}</TableHead>
+                  <TableHead><span className="sr-only">{t('actionManage')}</span></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -83,10 +101,10 @@ export default function SettingsClient() {
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.role}</TableCell>
                     <TableCell>
-                      <Badge variant={statusVariant[user.status as keyof typeof statusVariant]}>{user.status}</Badge>
+                      <Badge variant={statusVariant[user.status as keyof typeof statusVariant]}>{getStatusTranslation(user.status as keyof typeof statusVariant)}</Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button variant="ghost" size="sm">Gestionar</Button>
+                      <Button variant="ghost" size="sm">{t('actionManage')}</Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -101,19 +119,19 @@ export default function SettingsClient() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
              <div>
-              <CardTitle>Roles y Permisos</CardTitle>
-              <CardDescription>Crea y gestiona roles para controlar el acceso a los módulos.</CardDescription>
+              <CardTitle>{t('rolesTitle')}</CardTitle>
+              <CardDescription>{t('rolesSubtitle')}</CardDescription>
             </div>
-            <Button><PlusCircle className="mr-2 h-4 w-4"/> Crear Rol</Button>
+            <Button><PlusCircle className="mr-2 h-4 w-4"/> {t('createRole')}</Button>
           </CardHeader>
           <CardContent>
              <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Nombre del Rol</TableHead>
-                  <TableHead>Descripción</TableHead>
-                  <TableHead>Permisos</TableHead>
-                  <TableHead><span className="sr-only">Actions</span></TableHead>
+                  <TableHead>{t('tableRoleName')}</TableHead>
+                  <TableHead>{t('tableDescription')}</TableHead>
+                  <TableHead>{t('tablePermissions')}</TableHead>
+                  <TableHead><span className="sr-only">{t('actionEdit')}</span></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -123,7 +141,7 @@ export default function SettingsClient() {
                     <TableCell>{role.description}</TableCell>
                     <TableCell><Badge variant="outline">{role.permissions}</Badge></TableCell>
                     <TableCell className="text-right">
-                      <Button variant="ghost" size="sm">Editar</Button>
+                      <Button variant="ghost" size="sm">{t('actionEdit')}</Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -137,24 +155,37 @@ export default function SettingsClient() {
       <TabsContent value="system" className="space-y-4">
         <Card>
           <CardHeader>
-            <CardTitle>Configuración General</CardTitle>
-            <CardDescription>Ajusta los parámetros globales de la plataforma.</CardDescription>
+            <CardTitle>{t('generalConfigTitle')}</CardTitle>
+            <CardDescription>{t('generalConfigSubtitle')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6 pt-6">
             <div className="space-y-2">
-              <Label htmlFor="appName">Nombre de la Aplicación</Label>
+              <Label htmlFor="appName">{t('appName')}</Label>
               <Input id="appName" defaultValue="Metanoia.Click Platform" />
             </div>
              <div className="space-y-2">
-              <Label htmlFor="supportEmail">Email de Soporte</Label>
+              <Label htmlFor="supportEmail">{t('supportEmail')}</Label>
               <Input id="supportEmail" type="email" defaultValue="soporte@metanoia.click" />
+            </div>
+            <div className="space-y-2">
+              <Label>{t('language')}</Label>
+              <Select defaultValue={locale} onValueChange={onSelectChange} disabled={isPending}>
+                <SelectTrigger className="w-full md:w-1/2">
+                  <SelectValue placeholder="Language" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="en">English</SelectItem>
+                  <SelectItem value="es">Español</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-sm text-muted-foreground">{t('languageSubtitle')}</p>
             </div>
             <div className="flex items-center space-x-2 pt-2">
               <Switch id="maintenance-mode" />
-              <Label htmlFor="maintenance-mode" className="text-sm font-normal">Activar Modo Mantenimiento</Label>
+              <Label htmlFor="maintenance-mode" className="text-sm font-normal">{t('maintenanceMode')}</Label>
             </div>
             <div className="pt-4">
-                <Button>Guardar Cambios</Button>
+                <Button>{t('saveChanges')}</Button>
             </div>
           </CardContent>
         </Card>
@@ -164,41 +195,41 @@ export default function SettingsClient() {
       <TabsContent value="security" className="space-y-4">
         <Card>
           <CardHeader>
-            <CardTitle>Políticas de Contraseñas</CardTitle>
-            <CardDescription>Define los requisitos de seguridad para las contraseñas de los usuarios.</CardDescription>
+            <CardTitle>{t('passwordPoliciesTitle')}</CardTitle>
+            <CardDescription>{t('passwordPoliciesSubtitle')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 max-w-md">
             <div className="flex items-center justify-between">
-                <Label htmlFor="minLength">Mínima Longitud</Label>
+                <Label htmlFor="minLength">{t('minLength')}</Label>
                 <Input id="minLength" type="number" defaultValue={12} className="w-24" />
             </div>
              <div className="flex items-center justify-between">
-                <Label htmlFor="requireUppercase">Requerir Mayúsculas (A-Z)</Label>
+                <Label htmlFor="requireUppercase">{t('requireUppercase')}</Label>
                 <Switch id="requireUppercase" defaultChecked />
             </div>
              <div className="flex items-center justify-between">
-                <Label htmlFor="requireNumbers">Requerir Números (0-9)</Label>
+                <Label htmlFor="requireNumbers">{t('requireNumbers')}</Label>
                 <Switch id="requireNumbers" defaultChecked />
             </div>
              <div className="flex items-center justify-between">
-                <Label htmlFor="requireSpecialChars">Requerir Caracteres Especiales (!@#$...)</Label>
+                <Label htmlFor="requireSpecialChars">{t('requireSpecialChars')}</Label>
                 <Switch id="requireSpecialChars" defaultChecked/>
             </div>
           </CardContent>
         </Card>
          <Card>
           <CardHeader>
-            <CardTitle>Autenticación de Dos Factores (2FA)</CardTitle>
-            <CardDescription>Habilita una capa extra de seguridad para el inicio de sesión.</CardDescription>
+            <CardTitle>{t('twoFactorAuthTitle')}</CardTitle>
+            <CardDescription>{t('twoFactorAuthSubtitle')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 pt-6">
              <div className="flex items-center justify-between">
-                <Label htmlFor="enable2fa" className="font-medium">Habilitar 2FA para todos los usuarios</Label>
+                <Label htmlFor="enable2fa" className="font-medium">{t('enable2FA')}</Label>
                 <Switch id="enable2fa" />
             </div>
-             <p className="text-sm text-muted-foreground pt-2">Métodos permitidos: Email, SMS, App de Autenticación.</p>
+             <p className="text-sm text-muted-foreground pt-2">{t('allowedMethods')}</p>
              <div className="pt-4">
-                <Button>Guardar Configuración de Seguridad</Button>
+                <Button>{t('saveSecurityConfig')}</Button>
             </div>
           </CardContent>
         </Card>

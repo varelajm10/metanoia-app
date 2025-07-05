@@ -8,8 +8,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Loader2, FileText, Scale, ArrowRight, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { AIChatBox } from "@/components/ai-chat-box";
+import { useTranslations } from "next-intl";
 
 export default function FinancialAnalysisClient() {
+  const t = useTranslations("FinancialAnalysis");
   const [financialData, setFinancialData] = useState("");
   const [result, setResult] = useState<FinancialAnalysisOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +27,7 @@ export default function FinancialAnalysisClient() {
       const output = await financialAnalysis({ financialData });
       setResult(output);
     } catch (err) {
-      setError("Ocurrió un error al analizar los datos. Por favor, inténtalo de nuevo.");
+      setError(t('error'));
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -44,19 +46,15 @@ export default function FinancialAnalysisClient() {
           <CardHeader>
             <CardTitle className="text-2xl font-semibold flex items-center gap-2">
               <Sparkles className="h-6 w-6 text-primary"/>
-              Ingresar Datos Financieros
+              {t('enterFinancialData')}
             </CardTitle>
             <CardDescription>
-              Pega aquí tus datos financieros en texto plano: ingresos, egresos, activos, pasivos, etc.
+              {t('enterFinancialDataSubtitle')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <Textarea
-              placeholder="Ejemplo:
-Ingresos Enero: $50,000
-Costos de Ventas Enero: $20,000
-Gastos Operativos Enero: $15,000
-..."
+              placeholder={t('placeholder')}
               value={financialData}
               onChange={(e) => setFinancialData(e.target.value)}
               rows={10}
@@ -67,11 +65,11 @@ Gastos Operativos Enero: $15,000
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Analizando...
+                  {t('analyzing')}
                 </>
               ) : (
                 <>
-                  Generar Análisis <ArrowRight className="ml-2 h-5 w-5" />
+                  {t('generateAnalysis')} <ArrowRight className="ml-2 h-5 w-5" />
                 </>
               )}
             </Button>
@@ -90,7 +88,7 @@ Gastos Operativos Enero: $15,000
           >
               <div className="flex justify-center items-center gap-2">
                   <Loader2 className="h-6 w-6 animate-spin text-primary" />
-                  <p className="text-muted-foreground">Procesando números y generando reportes...</p>
+                  <p className="text-muted-foreground">{t('processing')}</p>
               </div>
           </motion.div>
       )}
@@ -107,7 +105,7 @@ Gastos Operativos Enero: $15,000
                <div className="p-2 bg-primary/10 rounded-lg border border-primary/20">
                   <Scale className="h-6 w-6 text-primary" />
                </div>
-              <CardTitle className="text-2xl font-semibold">Balances Generados</CardTitle>
+              <CardTitle className="text-2xl font-semibold">{t('generatedBalances')}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="whitespace-pre-wrap text-base text-muted-foreground leading-relaxed">{result.balances}</p>
@@ -118,7 +116,7 @@ Gastos Operativos Enero: $15,000
                <div className="p-2 bg-accent/10 rounded-lg border border-accent/20">
                   <FileText className="h-6 w-6 text-accent" />
                </div>
-              <CardTitle className="text-2xl font-semibold">Reportes Generados</CardTitle>
+              <CardTitle className="text-2xl font-semibold">{t('generatedReports')}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="whitespace-pre-wrap text-base text-muted-foreground leading-relaxed">{result.reports}</p>

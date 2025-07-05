@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { Warehouse, PackageSearch, Clock, AlertTriangle } from "lucide-react";
 import { AIChatBox } from "@/components/ai-chat-box";
+import { useTranslations } from "next-intl";
 
 const lowStockItems = [
     { id: 'PROD-012', name: 'Componente A-X1', category: 'Electrónica', stock: 15, reorderPoint: 20 },
@@ -24,47 +25,48 @@ const inventoryByCategory = [
 const COLORS = ['hsl(var(--primary))', 'hsl(var(--accent))', 'hsl(var(--secondary))', 'hsl(220, 13%, 63%)'];
 
 export default function IntelligentInventoryClient() {
+  const t = useTranslations("IntelligentInventory");
   return (
     <div className="space-y-8">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Valor del Inventario</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('inventoryValue')}</CardTitle>
                     <Warehouse className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">$900,000</div>
-                    <p className="text-xs text-muted-foreground">+2.1% vs. el mes pasado</p>
+                    <p className="text-xs text-muted-foreground">+2.1% {t('vsLastMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Tasa de Rotación</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('turnoverRate')}</CardTitle>
                     <PackageSearch className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">6.2</div>
-                    <p className="text-xs text-muted-foreground">Ratio anual</p>
+                    <p className="text-xs text-muted-foreground">{t('annualRatio')}</p>
                 </CardContent>
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Días de Inventario</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('daysOfInventory')}</CardTitle>
                     <Clock className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">58</div>
-                    <p className="text-xs text-muted-foreground">Promedio para agotar stock</p>
+                    <p className="text-xs text-muted-foreground">{t('avgToDeplete')}</p>
                 </CardContent>
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Alertas de Stock Bajo</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('lowStockAlerts')}</CardTitle>
                     <AlertTriangle className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold text-destructive">4</div>
-                    <p className="text-xs text-muted-foreground">Productos bajo punto de reorden</p>
+                    <p className="text-xs text-muted-foreground">{t('belowReorderPoint')}</p>
                 </CardContent>
             </Card>
         </div>
@@ -72,18 +74,18 @@ export default function IntelligentInventoryClient() {
         <div className="grid gap-6 lg:grid-cols-5">
             <Card className="lg:col-span-3">
                 <CardHeader>
-                    <CardTitle>Productos con Stock Bajo</CardTitle>
-                    <CardDescription>Estos productos necesitan atención para evitar quiebres de stock.</CardDescription>
+                    <CardTitle>{t('lowStockProducts')}</CardTitle>
+                    <CardDescription>{t('lowStockProductsSubtitle')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>ID Producto</TableHead>
-                                <TableHead>Nombre</TableHead>
-                                <TableHead>Categoría</TableHead>
-                                <TableHead>Stock Actual</TableHead>
-                                <TableHead>Punto de Reorden</TableHead>
+                                <TableHead>{t('tableProductId')}</TableHead>
+                                <TableHead>{t('tableName')}</TableHead>
+                                <TableHead>{t('tableCategory')}</TableHead>
+                                <TableHead>{t('tableCurrentStock')}</TableHead>
+                                <TableHead>{t('tableReorderPoint')}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -102,8 +104,8 @@ export default function IntelligentInventoryClient() {
             </Card>
             <Card className="lg:col-span-2">
                 <CardHeader>
-                    <CardTitle>Valor por Categoría</CardTitle>
-                    <CardDescription>Distribución del valor del inventario.</CardDescription>
+                    <CardTitle>{t('valueByCategory')}</CardTitle>
+                    <CardDescription>{t('valueByCategorySubtitle')}</CardDescription>
                 </CardHeader>
                 <CardContent className="h-[250px] w-full flex flex-col items-center justify-center">
                     <ResponsiveContainer width="100%" height="100%">

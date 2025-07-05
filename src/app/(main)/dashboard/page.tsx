@@ -3,6 +3,7 @@
 
 import dynamic from 'next/dynamic';
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslations } from 'next-intl';
 
 const MainDashboard = dynamic(() => import('@/components/main-dashboard'), { 
     ssr: false,
@@ -27,12 +28,13 @@ const DashboardSkeleton = () => (
 
 
 export default function DashboardPage() {
+  const t = useTranslations('Dashboard');
   return (
     <div>
         <div className="flex items-center justify-between space-y-2 mb-8">
             <div>
-                <h2 className="text-3xl font-bold tracking-tight">Command Center</h2>
-                <p className="text-muted-foreground">Bienvenido, Super Usuario. Vista de alto nivel del sistema Metanoia.</p>
+                <h2 className="text-3xl font-bold tracking-tight">{t('title')}</h2>
+                <p className="text-muted-foreground">{t('subtitle')}</p>
             </div>
           </div>
         <MainDashboard />

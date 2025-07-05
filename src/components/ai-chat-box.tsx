@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,7 @@ import { useState, useRef, useEffect } from "react";
 import { mainAssistant } from "@/ai/flows/main-assistant";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { useLocale, useTranslations } from "next-intl";
 
 interface Message {
     role: 'user' | 'assistant';
@@ -15,6 +17,8 @@ interface Message {
 }
 
 export function AIChatBox() {
+    const t = useTranslations('AIChatBox');
+    const locale = useLocale();
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -41,12 +45,12 @@ export function AIChatBox() {
 
         try {
             const history = messages.map(msg => ({ role: msg.role, content: msg.content }));
-            const result = await mainAssistant({ history, query: currentInput });
+            const result = await mainAssistant({ history, query: currentInput, locale });
             const assistantMessage: Message = { role: 'assistant', content: result.response };
             setMessages(prev => [...prev, assistantMessage]);
         } catch (error) {
             console.error("Error calling AI assistant:", error);
-            const errorMessage: Message = { role: 'assistant', content: "Lo siento, encontré un error. Por favor, inténtalo de nuevo." };
+            const errorMessage: Message = { role: 'assistant', content: t('error') };
             setMessages(prev => [...prev, errorMessage]);
         } finally {
             setIsLoading(false);
@@ -65,10 +69,10 @@ export function AIChatBox() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Bot className="h-6 w-6 text-primary" />
-          <span>Asistente de IA</span>
+          <span>{t('title')}</span>
         </CardTitle>
         <CardDescription>
-          Haz una pregunta en lenguaje natural sobre los datos de este dashboard.
+          {t('subtitle')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -76,8 +80,8 @@ export function AIChatBox() {
              <div className="space-y-4">
                 {messages.length === 0 && (
                     <div className="text-center text-muted-foreground py-10">
-                        <p>No hay mensajes aún.</p>
-                        <p className="text-sm">Empieza por hacer una pregunta abajo.</p>
+                        <p>{t('noMessages')}</p>
+                        <p className="text-sm">{t('startQuestion')}</p>
                     </div>
                 )}
                 {messages.map((message, index) => (
@@ -111,7 +115,7 @@ export function AIChatBox() {
         </ScrollArea>
         <div className="flex gap-2 items-start">
           <Textarea
-            placeholder="Ej: ¿Cuál fue el principal motivo de consulta de clientes el último mes?"
+            placeholder={t('placeholder')}
             className="bg-black/20 border-white/10 focus:ring-primary flex-1 resize-none"
             rows={1}
             value={input}

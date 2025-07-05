@@ -4,24 +4,26 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import Tilt from 'react-parallax-tilt';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 export interface Module {
   icon: React.ReactNode;
   title: string;
   description: string;
-  status: 'Disponible' | 'En Desarrollo' | 'Próximamente';
+  status: 'Available' | 'In Development' | 'Coming Soon';
   href: string;
   className?: string;
   glowColor?: string;
 }
 
 export function ModuleCard({ icon, title, description, status, href, className, glowColor }: Module) {
-  const isAvailable = status === 'Disponible';
+  const t = useTranslations('ModuleCard');
+  const isAvailable = status === 'Available';
 
   const statusConfig = {
-    'Disponible': { text: 'Disponible', color: 'bg-green-500/10 text-green-400 border-green-500/20', dot: 'bg-green-500' },
-    'En Desarrollo': { text: 'En Desarrollo', color: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20', dot: 'bg-yellow-500' },
-    'Próximamente': { text: 'Próximamente', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20', dot: 'bg-blue-500' },
+    'Available': { text: t('statusAvailable'), color: 'bg-green-500/10 text-green-400 border-green-500/20', dot: 'bg-green-500' },
+    'In Development': { text: t('statusInDevelopment'), color: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20', dot: 'bg-yellow-500' },
+    'Coming Soon': { text: t('statusComingSoon'), color: 'bg-blue-500/10 text-blue-400 border-blue-500/20', dot: 'bg-blue-500' },
   };
 
   const currentStatus = statusConfig[status];
@@ -86,7 +88,7 @@ export function ModuleCard({ icon, title, description, status, href, className, 
                   'text-sm font-semibold flex items-center transition-colors',
                   isAvailable ? 'text-primary' : 'text-muted-foreground'
                 )}>
-                  {isAvailable ? 'Acceder' : 'Saber más'}
+                  {isAvailable ? t('actionAccess') : t('actionLearnMore')}
                   <span className="transition-transform duration-300 group-hover:translate-x-1 ml-1">&rarr;</span>
                 </p>
               </div>

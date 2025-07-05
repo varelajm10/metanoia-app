@@ -1,9 +1,13 @@
+
 "use client";
 
 import Link from 'next/link';
 import { Logo } from '@/components/logo';
+import { useTranslations } from 'next-intl';
 
 export function Footer() {
+  const t = useTranslations('Footer');
+  const year = new Date().getFullYear();
   return (
     <footer className="border-t border-white/10">
       <div className="container mx-auto py-8 px-4 md:px-6">
@@ -12,14 +16,14 @@ export function Footer() {
             <Logo />
           </div>
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Metanoia.Click. Todos los derechos reservados.
+            {t('copyright', { year })}
           </p>
           <div className="flex items-center gap-6">
             <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors" prefetch={false}>
-              Términos
+              {t('terms')}
             </Link>
             <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors" prefetch={false}>
-              Privacidad
+              {t('privacy')}
             </Link>
           </div>
         </div>

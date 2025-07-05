@@ -8,8 +8,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Loader2, Lightbulb, BarChartBig, ArrowRight, BookOpen, TrendingUp, Users } from "lucide-react";
 import { motion } from "framer-motion";
 import { AIChatBox } from "@/components/ai-chat-box";
+import { useTranslations } from "next-intl";
 
 export default function BusinessIntelligenceClient() {
+  const t = useTranslations("BusinessIntelligence");
+
   const [formData, setFormData] = useState({
     financialData: "",
     marketTrends: "",
@@ -34,7 +37,7 @@ export default function BusinessIntelligenceClient() {
       const output = await generateBusinessIntelligence(formData);
       setResult(output);
     } catch (err) {
-      setError("Ocurrió un error al generar el dashboard. Por favor, inténtalo de nuevo.");
+      setError(t('error'));
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -53,19 +56,19 @@ export default function BusinessIntelligenceClient() {
       <form onSubmit={handleSubmit}>
         <Card className="bg-white/5 border-white/10 backdrop-blur-lg">
           <CardHeader>
-            <CardTitle className="text-2xl font-semibold">Fuentes de Datos</CardTitle>
-            <CardDescription>Proporciona la información para cada categoría. La IA analizará las interconexiones.</CardDescription>
+            <CardTitle className="text-2xl font-semibold">{t('dataSources')}</CardTitle>
+            <CardDescription>{t('dataSourcesSubtitle')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-2">
               <label htmlFor="financialData" className="font-medium flex items-center gap-2 text-muted-foreground">
                 <TrendingUp className="h-5 w-5 text-accent"/>
-                Datos Financieros
+                {t('financialData')}
               </label>
               <Textarea
                 id="financialData"
                 name="financialData"
-                placeholder="Ej: Reportes de ventas, P&L, flujo de caja..."
+                placeholder={t('financialDataPlaceholder')}
                 value={formData.financialData}
                 onChange={handleInputChange}
                 rows={6}
@@ -76,12 +79,12 @@ export default function BusinessIntelligenceClient() {
             <div className="space-y-2">
               <label htmlFor="marketTrends" className="font-medium flex items-center gap-2 text-muted-foreground">
                 <BookOpen className="h-5 w-5 text-accent"/>
-                Tendencias de Mercado
+                {t('marketTrends')}
               </label>
               <Textarea
                 id="marketTrends"
                 name="marketTrends"
-                placeholder="Ej: Análisis de competidores, noticias del sector, informes de mercado..."
+                placeholder={t('marketTrendsPlaceholder')}
                 value={formData.marketTrends}
                 onChange={handleInputChange}
                 rows={6}
@@ -92,12 +95,12 @@ export default function BusinessIntelligenceClient() {
             <div className="space-y-2">
               <label htmlFor="customerData" className="font-medium flex items-center gap-2 text-muted-foreground">
                 <Users className="h-5 w-5 text-accent"/>
-                Datos de Clientes
+                {t('customerData')}
               </label>
               <Textarea
                 id="customerData"
                 name="customerData"
-                placeholder="Ej: Encuestas de satisfacción, feedback de soporte, datos demográficos..."
+                placeholder={t('customerDataPlaceholder')}
                 value={formData.customerData}
                 onChange={handleInputChange}
                 rows={6}
@@ -109,11 +112,11 @@ export default function BusinessIntelligenceClient() {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Generando Insights...
+                  {t('generatingInsights')}
                 </>
               ) : (
                 <>
-                  Generar Dashboard <ArrowRight className="ml-2 h-5 w-5" />
+                  {t('generateDashboard')} <ArrowRight className="ml-2 h-5 w-5" />
                 </>
               )}
             </Button>
@@ -132,7 +135,7 @@ export default function BusinessIntelligenceClient() {
           >
               <div className="flex justify-center items-center gap-2">
                   <Loader2 className="h-6 w-6 animate-spin text-primary" />
-                  <p className="text-muted-foreground">Analizando datos y generando visualizaciones...</p>
+                  <p className="text-muted-foreground">{t('analyzing')}</p>
               </div>
           </motion.div>
       )}
@@ -149,7 +152,7 @@ export default function BusinessIntelligenceClient() {
               <div className="p-2 bg-primary/10 rounded-lg border border-primary/20">
                 <BarChartBig className="h-6 w-6 text-primary" />
               </div>
-              <CardTitle className="text-2xl font-semibold">Dashboard Summary</CardTitle>
+              <CardTitle className="text-2xl font-semibold">{t('dashboardSummary')}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="whitespace-pre-wrap text-base text-muted-foreground leading-relaxed">{result.dashboardSummary}</p>
@@ -160,7 +163,7 @@ export default function BusinessIntelligenceClient() {
               <div className="p-2 bg-accent/10 rounded-lg border border-accent/20">
                   <Lightbulb className="h-6 w-6 text-accent" />
               </div>
-              <CardTitle className="text-2xl font-semibold">Recomendaciones Accionables</CardTitle>
+              <CardTitle className="text-2xl font-semibold">{t('actionableRecommendations')}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="whitespace-pre-wrap text-base text-muted-foreground leading-relaxed">{result.recommendations}</p>

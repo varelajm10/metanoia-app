@@ -6,70 +6,77 @@ import { Badge } from "@/components/ui/badge";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { DollarSign, TrendingDown, Target, ShieldCheck } from "lucide-react";
 import { AIChatBox } from "@/components/ai-chat-box";
+import { useTranslations } from "next-intl";
 
 const recentRequests = [
-    { id: 'SOL-001', client: 'Tech Solutions Inc.', amount: '$15,000', status: 'Aprobado', date: '2024-07-03' },
-    { id: 'SOL-002', client: 'Innovate Corp.', amount: '$25,000', status: 'En Revisión', date: '2024-07-02' },
-    { id: 'SOL-003', client: 'Global Enterprises', amount: '$5,000', status: 'Rechazado', date: '2024-07-01' },
-    { id: 'SOL-004', client: 'Future Systems Ltd.', amount: '$50,000', status: 'Aprobado', date: '2024-06-30' },
+    { id: 'SOL-001', client: 'Tech Solutions Inc.', amount: '$15,000', status: 'Approved', date: '2024-07-03' },
+    { id: 'SOL-002', client: 'Innovate Corp.', amount: '$25,000', status: 'In Review', date: '2024-07-02' },
+    { id: 'SOL-003', client: 'Global Enterprises', amount: '$5,000', status: 'Rejected', date: '2024-07-01' },
+    { id: 'SOL-004', client: 'Future Systems Ltd.', amount: '$50,000', status: 'Approved', date: '2024-06-30' },
 ];
-
-const paymentPipeline = [
-    { name: 'Próximos 7 días', amount: 45000 },
-    { name: '8-15 días', amount: 78000 },
-    { name: '16-30 días', amount: 120000 },
-    { name: '30+ días', amount: 55000 },
-];
-
-const statusVariant = {
-    'Aprobado': 'default',
-    'En Revisión': 'secondary',
-    'Rechazado': 'destructive',
-} as const;
-
 
 export default function CreditManagementDashboardClient() {
+  const t = useTranslations("CreditManagement");
+
+  const paymentPipeline = [
+      { name: t('next7days'), amount: 45000 },
+      { name: t('days8_15'), amount: 78000 },
+      { name: t('days16_30'), amount: 120000 },
+      { name: t('days30plus'), amount: 55000 },
+  ];
+
+  const statusVariant = {
+      'Approved': 'default',
+      'In Review': 'secondary',
+      'Rejected': 'destructive',
+  } as const;
+
+  const getStatusTranslation = (status: 'Approved' | 'In Review' | 'Rejected') => {
+    const key = `status${status.replace(' ', '')}` as 'statusApproved' | 'statusInReview' | 'statusRejected';
+    return t(key);
+  }
+
   return (
     <div className="space-y-8">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Cartera Activa</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('activePortfolio')}</CardTitle>
                     <DollarSign className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">$1.2M</div>
-                    <p className="text-xs text-muted-foreground">+5% vs. el mes pasado</p>
+                    <p className="text-xs text-muted-foreground">+5% {t('vsLastMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Índice de Mora</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('delinquencyRate')}</CardTitle>
                     <TrendingDown className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">3.4%</div>
-                    <p className="text-xs text-muted-foreground">-0.2% vs. el mes pasado</p>
+                    <p className="text-xs text-muted-foreground">-0.2% {t('vsLastMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Recupero del Mes</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('monthlyRecovery')}</CardTitle>
                     <Target className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">$115,000</div>
-                    <p className="text-xs text-muted-foreground">95.8% de la meta</p>
+                    <p className="text-xs text-muted-foreground">95.8% {t('ofGoal')}</p>
                 </CardContent>
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Alertas de Riesgo</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('riskAlerts')}</CardTitle>
                     <ShieldCheck className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold text-destructive">8</div>
-                    <p className="text-xs text-muted-foreground">Carteras con alta probabilidad de default</p>
+                    <p className="text-xs text-muted-foreground">{t('highDefaultProbability')}</p>
                 </CardContent>
             </Card>
         </div>
@@ -77,18 +84,18 @@ export default function CreditManagementDashboardClient() {
         <div className="grid gap-6 lg:grid-cols-5">
             <Card className="lg:col-span-3">
                 <CardHeader>
-                    <CardTitle>Solicitudes de Crédito Recientes</CardTitle>
-                    <CardDescription>Últimas solicitudes procesadas por el sistema.</CardDescription>
+                    <CardTitle>{t('recentCreditRequests')}</CardTitle>
+                    <CardDescription>{t('recentCreditRequestsSubtitle')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>ID</TableHead>
-                                <TableHead>Cliente</TableHead>
-                                <TableHead>Monto</TableHead>
-                                <TableHead>Estado</TableHead>
-                                <TableHead>Fecha</TableHead>
+                                <TableHead>{t('tableId')}</TableHead>
+                                <TableHead>{t('tableClient')}</TableHead>
+                                <TableHead>{t('tableAmount')}</TableHead>
+                                <TableHead>{t('tableStatus')}</TableHead>
+                                <TableHead>{t('tableDate')}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -99,7 +106,7 @@ export default function CreditManagementDashboardClient() {
                                     <TableCell>{req.amount}</TableCell>
                                     <TableCell>
                                         <Badge variant={statusVariant[req.status as keyof typeof statusVariant] || 'default'}>
-                                            {req.status}
+                                            {getStatusTranslation(req.status as keyof typeof statusVariant)}
                                         </Badge>
                                     </TableCell>
                                     <TableCell>{req.date}</TableCell>
@@ -111,8 +118,8 @@ export default function CreditManagementDashboardClient() {
             </Card>
             <Card className="lg:col-span-2">
                 <CardHeader>
-                    <CardTitle>Pipeline de Pagos</CardTitle>
-                    <CardDescription>Cobranza esperada en los próximos períodos.</CardDescription>
+                    <CardTitle>{t('paymentPipeline')}</CardTitle>
+                    <CardDescription>{t('paymentPipelineSubtitle')}</CardDescription>
                 </CardHeader>
                 <CardContent className="h-[250px] w-full">
                      <ResponsiveContainer width="100%" height="100%">

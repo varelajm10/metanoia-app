@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useSearchParams } from 'next/navigation';
@@ -15,6 +16,7 @@ import { CheckCircle, ArrowRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 const demoFormSchema = z.object({
   name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres.'),
@@ -38,6 +40,7 @@ const modules = [
 ];
 
 export default function DemoForm() {
+  const t = useTranslations('Demo');
   const searchParams = useSearchParams();
   const moduleParam = searchParams.get('module');
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -57,8 +60,8 @@ export default function DemoForm() {
   function onSubmit(data: DemoFormValues) {
     console.log(data);
     toast({
-      title: "Solicitud de Demo Enviada",
-      description: "Gracias por tu interés. Nos pondremos en contacto contigo pronto.",
+      title: t('toastTitle'),
+      description: t('toastDescription'),
     });
     setIsSubmitted(true);
   }
@@ -71,15 +74,13 @@ export default function DemoForm() {
                 <div className="mx-auto bg-green-500/10 rounded-full p-3 w-fit border border-green-500/20">
                     <CheckCircle className="h-10 w-10 text-green-400" />
                 </div>
-                <CardTitle className="text-2xl mt-4">¡Solicitud Enviada!</CardTitle>
+                <CardTitle className="text-2xl mt-4">{t('submittedTitle')}</CardTitle>
             </CardHeader>
             <CardContent className="p-0 mt-4">
-                <p className="text-muted-foreground">
-                    Hemos recibido tu solicitud de demo. Nuestro equipo se pondrá en contacto contigo a la brevedad para coordinar los siguientes pasos.
-                </p>
+                <p className="text-muted-foreground">{t('submittedMessage')}</p>
                  <Button asChild size="lg" className="mt-6 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg shadow-primary/20 transition-all duration-300 hover:scale-105">
                   <Link href="/">
-                    Volver al Inicio
+                    {t('backToHome')}
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
@@ -93,10 +94,8 @@ export default function DemoForm() {
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
       <Card className="w-full max-w-lg bg-white/5 border-white/10 backdrop-blur-lg">
         <CardHeader>
-          <CardTitle className="text-3xl font-bold text-glow">Solicita una Demo Personalizada</CardTitle>
-          <CardDescription>
-            Completa el formulario y uno de nuestros especialistas se pondrá en contacto contigo.
-          </CardDescription>
+          <CardTitle className="text-3xl font-bold text-glow">{t('title')}</CardTitle>
+          <CardDescription>{t('subtitle')}</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -107,9 +106,9 @@ export default function DemoForm() {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Nombre Completo</FormLabel>
+                      <FormLabel>{t('fullName')}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Juan Pérez" {...field} className="bg-black/20 border-white/10 focus:ring-primary" />
+                        <Input placeholder={t('fullNamePlaceholder')} {...field} className="bg-black/20 border-white/10 focus:ring-primary" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -120,9 +119,9 @@ export default function DemoForm() {
                   name="company"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Empresa</FormLabel>
+                      <FormLabel>{t('company')}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Tu Empresa S.A." {...field} className="bg-black/20 border-white/10 focus:ring-primary" />
+                        <Input placeholder={t('companyPlaceholder')} {...field} className="bg-black/20 border-white/10 focus:ring-primary" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -134,9 +133,9 @@ export default function DemoForm() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email Corporativo</FormLabel>
+                    <FormLabel>{t('workEmail')}</FormLabel>
                     <FormControl>
-                      <Input placeholder="juan.perez@tuempresa.com" {...field} className="bg-black/20 border-white/10 focus:ring-primary" />
+                      <Input placeholder={t('workEmailPlaceholder')} {...field} className="bg-black/20 border-white/10 focus:ring-primary" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -147,11 +146,11 @@ export default function DemoForm() {
                 name="module"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Módulo de Interés</FormLabel>
+                    <FormLabel>{t('moduleOfInterest')}</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className="bg-black/20 border-white/10 focus:ring-primary">
-                          <SelectValue placeholder="Selecciona un módulo" />
+                          <SelectValue placeholder={t('selectModule')} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="bg-zinc-900 border-white/10">
@@ -169,10 +168,10 @@ export default function DemoForm() {
                 name="message"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Mensaje (Opcional)</FormLabel>
+                    <FormLabel>{t('messageOptional')}</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Cuéntanos un poco sobre tus necesidades..."
+                        placeholder={t('messagePlaceholder')}
                         className="resize-none bg-black/20 border-white/10 focus:ring-primary"
                         {...field}
                       />
@@ -182,7 +181,7 @@ export default function DemoForm() {
                 )}
               />
               <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg shadow-primary/20 transition-all duration-300 hover:scale-105" size="lg">
-                Enviar Solicitud
+                {t('submitRequest')}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </form>
