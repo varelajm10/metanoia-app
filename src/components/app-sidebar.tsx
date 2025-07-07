@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -39,12 +38,14 @@ import {
   SidebarMenuSubButton,
   SidebarTrigger,
   useSidebar,
+  sidebarMenuButtonVariants
 } from '@/components/ui/sidebar';
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
+import { cn } from '@/lib/utils';
 
 
 type MenuItemProps = {
@@ -64,18 +65,12 @@ function MenuItem({ item }: { item: MenuItemProps }) {
   if (!item.subItems || item.subItems.length === 0) {
     return (
       <SidebarMenuItem>
-        <Link href={item.href!} passHref>
-          <SidebarMenuButton
-            asChild
-            isActive={pathname.endsWith(item.href!)}
-            tooltip={item.title}
-          >
-            <a>
+        <SidebarMenuButton asChild isActive={pathname.endsWith(item.href!)} tooltip={item.title}>
+            <Link href={item.href!}>
               <item.icon />
               <span className="truncate">{item.title}</span>
-            </a>
-          </SidebarMenuButton>
-        </Link>
+            </Link>
+        </SidebarMenuButton>
       </SidebarMenuItem>
     );
   }
@@ -85,28 +80,23 @@ function MenuItem({ item }: { item: MenuItemProps }) {
     return (
       <SidebarMenuItem>
         <SidebarMenuSub>
-          <SidebarMenuButton asChild tooltip={item.title}>
-            <button>
-              <item.icon />
-              <span className="sr-only">{item.title}</span>
-            </button>
-          </SidebarMenuButton>
+            <SidebarMenuButton asChild tooltip={item.title}>
+                <button>
+                <item.icon />
+                <span className="sr-only">{item.title}</span>
+                </button>
+            </SidebarMenuButton>
           <SidebarMenuSubItem className="p-1">
             <div className="px-2 py-1.5 text-sm font-semibold text-foreground">
               {item.title}
             </div>
             {item.subItems.map((subItem) => (
-              <Link href={subItem.href!} passHref key={subItem.href}>
-                <SidebarMenuSubButton
-                  asChild
-                  isActive={pathname.endsWith(subItem.href!)}
-                >
-                  <a>
-                    <subItem.icon />
-                    <span className="truncate">{subItem.title}</span>
-                  </a>
-                </SidebarMenuSubButton>
-              </Link>
+              <SidebarMenuSubButton asChild key={subItem.href} isActive={pathname.endsWith(subItem.href!)}>
+                <Link href={subItem.href!}>
+                  <subItem.icon />
+                  <span className="truncate">{subItem.title}</span>
+                </Link>
+              </SidebarMenuSubButton>
             ))}
           </SidebarMenuSubItem>
         </SidebarMenuSub>
@@ -119,31 +109,24 @@ function MenuItem({ item }: { item: MenuItemProps }) {
     <Collapsible asChild defaultOpen={item.subItems.some(si => si.href && pathname.endsWith(si.href))} className="group">
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>
-          <SidebarMenuButton className="w-full justify-between">
-            <div className="flex w-full items-center justify-between">
-              <span className="flex items-center gap-2">
-                  <item.icon />
-                  <span className="truncate">{item.title}</span>
-              </span>
-              <ChevronDown className="size-4 shrink-0 transition-transform duration-200 group-data-[state=open]:-rotate-180" />
-            </div>
-          </SidebarMenuButton>
+          <button className={cn(sidebarMenuButtonVariants(), 'w-full justify-between')}>
+            <span className="flex items-center gap-2">
+                <item.icon />
+                <span className="truncate">{item.title}</span>
+            </span>
+            <ChevronDown className="size-4 shrink-0 transition-transform duration-200 group-data-[state=open]:-rotate-180" />
+          </button>
         </CollapsibleTrigger>
         <CollapsibleContent asChild>
           <SidebarMenuSub>
             {item.subItems.map((subItem) => (
               <SidebarMenuSubItem key={subItem.href}>
-                <Link href={subItem.href!} passHref>
-                  <SidebarMenuSubButton
-                    asChild
-                    isActive={pathname.endsWith(subItem.href!)}
-                  >
-                    <a>
-                      <subItem.icon />
-                      <span>{subItem.title}</span>
-                    </a>
-                  </SidebarMenuSubButton>
-                </Link>
+                <SidebarMenuSubButton asChild isActive={pathname.endsWith(subItem.href!)}>
+                  <Link href={subItem.href!}>
+                    <subItem.icon />
+                    <span>{subItem.title}</span>
+                  </Link>
+                </SidebarMenuSubButton>
               </SidebarMenuSubItem>
             ))}
           </SidebarMenuSub>
