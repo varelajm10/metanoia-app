@@ -3,9 +3,11 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Users, TrendingUp, Heart } from 'lucide-react';
+import { Users, TrendingUp, Heart, PlusCircle } from 'lucide-react';
 import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const recentCustomers = [
     { name: 'Tech Solutions Inc.', status: 'Active', lastContact: '2024-05-20', value: '$50,000' },
@@ -30,6 +32,14 @@ export default function CustomerManagementClient() {
 
   return (
     <div className="space-y-6">
+        <div className="flex justify-end mb-4">
+          <Button asChild>
+            <Link href="/customer-management/new">
+              <PlusCircle className="mr-2 h-4 w-4" />
+              {t('addNewClient')}
+            </Link>
+          </Button>
+        </div>
         <div className="grid gap-6 md:grid-cols-3">
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
