@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid } from 'recharts';
-import { Users, RefreshCw, UserPlus, Cake } from "lucide-react";
+import { Users, RefreshCw, UserPlus, Cake, Briefcase, Clock, Star } from "lucide-react";
 import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
@@ -40,32 +40,32 @@ export default function HRDashboardClient() {
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">{t('turnoverRateYTD')}</CardTitle>
-                    <RefreshCw className="h-4 w-4 text-muted-foreground" />
+                    <CardTitle className="text-sm font-medium">{t('avgSalary')}</CardTitle>
+                    <Briefcase className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">5.8%</div>
-                    <p className="text-xs text-muted-foreground">{t('annualTarget')}</p>
+                    <div className="text-2xl font-bold">$5,800</div>
+                    <p className="text-xs text-muted-foreground">{t('monthlyAvg')}</p>
                 </CardContent>
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">{t('hiresMonth')}</CardTitle>
-                    <UserPlus className="h-4 w-4 text-muted-foreground" />
+                    <CardTitle className="text-sm font-medium">{t('avgTenure')}</CardTitle>
+                    <Clock className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">+3</div>
-                    <p className="text-xs text-muted-foreground">{t('hiresDetail')}</p>
+                    <div className="text-2xl font-bold">2.8 {t('years')}</div>
+                    <p className="text-xs text-muted-foreground">{t('companyWide')}</p>
                 </CardContent>
             </Card>
-             <Card>
+            <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">{t('upcomingAnniversaries')}</CardTitle>
-                    <Cake className="h-4 w-4 text-muted-foreground" />
+                    <CardTitle className="text-sm font-medium">{t('avgPerformance')}</CardTitle>
+                    <Star className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">5</div>
-                    <p className="text-xs text-muted-foreground">{t('thisWeek')}</p>
+                    <div className="text-2xl font-bold">4.2/5</div>
+                    <p className="text-xs text-muted-foreground">{t('lastReviewCycle')}</p>
                 </CardContent>
             </Card>
         </div>
