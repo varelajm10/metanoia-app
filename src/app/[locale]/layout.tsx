@@ -1,11 +1,11 @@
 
-import type {Metadata} from 'next';
+import type {Metadata, Viewport} from 'next';
 import '../globals.css';
 import { Inter } from 'next/font/google'
 import { Toaster } from "@/components/ui/toaster"
 import { ThemeProvider } from "@/components/theme-provider";
 import {NextIntlClientProvider} from 'next-intl';
-import {getLocale, getMessages, getTranslations} from 'next-intl/server';
+import {getLocale, getMessages, getTranslations, unstable_setRequestLocale} from 'next-intl/server';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
@@ -16,7 +16,6 @@ export async function generateMetadata({params: {locale}}: {params: {locale: str
     title: t('title'),
     description: t('description'),
     manifest: '/manifest.json',
-    themeColor: '#ffffff',
     appleWebApp: {
       capable: true,
       statusBarStyle: 'default',
@@ -25,14 +24,18 @@ export async function generateMetadata({params: {locale}}: {params: {locale: str
   };
 }
 
+export const viewport: Viewport = {
+  themeColor: '#ffffff',
+}
+
 export default async function RootLayout({
   children,
-  params
+  params: {locale}
 }: Readonly<{
   children: React.ReactNode;
   params: {locale: string};
 }>) {
-  const locale = await getLocale();
+  unstable_setRequestLocale(locale);
   const messages = await getMessages();
 
   return (
