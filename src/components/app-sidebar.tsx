@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -46,6 +47,7 @@ import {
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 
 type MenuItemProps = {
@@ -61,30 +63,28 @@ function MenuItem({ item }: { item: MenuItemProps }) {
   const { state: sidebarState } = useSidebar();
   const isExpanded = sidebarState === 'expanded';
 
-  // --- Single Menu Item ---
   if (!item.subItems || item.subItems.length === 0) {
     return (
       <SidebarMenuItem>
         <SidebarMenuButton asChild isActive={pathname.endsWith(item.href!)} tooltip={item.title}>
-            <Link href={item.href!}>
-              <item.icon />
-              <span className="truncate">{item.title}</span>
-            </Link>
+          <Link href={item.href!}>
+            <item.icon />
+            <span className="truncate">{item.title}</span>
+          </Link>
         </SidebarMenuButton>
       </SidebarMenuItem>
     );
   }
 
-  // --- Collapsed Menu Group ---
   if (!isExpanded) {
     return (
       <SidebarMenuItem>
         <SidebarMenuSub>
             <SidebarMenuButton asChild tooltip={item.title}>
-                <button>
-                <item.icon />
-                <span className="sr-only">{item.title}</span>
-                </button>
+                <Link href={item.subItems[0].href!}>
+                    <item.icon />
+                    <span className="sr-only">{item.title}</span>
+                </Link>
             </SidebarMenuButton>
           <SidebarMenuSubItem className="p-1">
             <div className="px-2 py-1.5 text-sm font-semibold text-foreground">
@@ -104,18 +104,17 @@ function MenuItem({ item }: { item: MenuItemProps }) {
     );
   }
 
-  // --- Expanded Menu Group ---
   return (
     <Collapsible asChild defaultOpen={item.subItems.some(si => si.href && pathname.endsWith(si.href))} className="group">
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>
-          <button className={cn(sidebarMenuButtonVariants(), 'w-full justify-between')}>
-            <span className="flex items-center gap-2">
-                <item.icon />
-                <span className="truncate">{item.title}</span>
-            </span>
-            <ChevronDown className="size-4 shrink-0 transition-transform duration-200 group-data-[state=open]:-rotate-180" />
-          </button>
+            <button className={cn(sidebarMenuButtonVariants(), 'w-full justify-between')}>
+                <div className='flex items-center gap-2'>
+                    <item.icon />
+                    <span className="truncate">{item.title}</span>
+                </div>
+                <ChevronDown className="size-4 shrink-0 transition-transform duration-200 group-data-[state=open]:-rotate-180" />
+            </button>
         </CollapsibleTrigger>
         <CollapsibleContent asChild>
           <SidebarMenuSub>
@@ -139,7 +138,7 @@ function MenuItem({ item }: { item: MenuItemProps }) {
 
 export function AppSidebar() {
   const t = useTranslations('Sidebar');
-  const { state: sidebarState } = useSidebar();
+  const { state: sidebarState, setOpenMobile } = useSidebar();
 
   const menuItems: MenuItemProps[] = [
     {
@@ -161,7 +160,7 @@ export function AppSidebar() {
       icon: BrainCircuit,
       subItems: [
         { title: t('businessIntelligence'), href: '/business-intelligence', icon: BarChart2 },
-        { title: t('financialAnalysis'), href: '/financial-analysis', icon: DollarSign },
+        { title:t('financialAnalysis'), href: '/financial-analysis', icon: DollarSign },
         { title: t('processAutomation'), href: '/process-automation', icon: Workflow },
         { title: t('intelligentInventory'), href: '/intelligent-inventory', icon: Warehouse },
       ],
@@ -187,23 +186,23 @@ export function AppSidebar() {
   ];
 
   return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader className="h-20 justify-center group-data-[collapsible=icon]:justify-center">
-        <Logo />
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarMenu>
-          {menuItems.map((item) => (
-            <MenuItem key={item.title} item={item} />
-          ))}
-        </SidebarMenu>
-      </SidebarContent>
-      <SidebarFooter className="hidden md:flex justify-center p-4">
-        <SidebarTrigger asChild>
-            <button className="h-10 w-10 flex items-center justify-center rounded-lg hover:bg-muted transition-colors">
-                {sidebarState === 'expanded' ? <PanelLeftClose /> : <PanelLeftOpen />}
-            </button>
-        </SidebarTrigger>
+    <Sidebar>
+        <SidebarHeader className="h-20 flex items-center justify-center">
+            <Logo />
+        </SidebarHeader>
+        <SidebarContent>
+            <SidebarMenu>
+            {menuItems.map((item) => (
+                <MenuItem key={item.title} item={item} />
+            ))}
+            </SidebarMenu>
+        </SidebarContent>
+        <SidebarFooter className="hidden md:flex justify-center p-4">
+            <SidebarTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-10 w-10 flex items-center justify-center rounded-lg hover:bg-muted transition-colors">
+                    {sidebarState === 'expanded' ? <PanelLeftClose /> : <PanelLeftOpen />}
+                </Button>
+            </SidebarTrigger>
       </SidebarFooter>
     </Sidebar>
   );
