@@ -4,15 +4,14 @@ import { financialAnalysis, FinancialAnalysisOutput } from "@/ai/flows/financial
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Loader2, FileText, Scale, ArrowRight, Sparkles, Database, TrendingUp, BrainCircuit } from "lucide-react";
+import { Loader2, FileText, Scale, ArrowRight, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CollectionsForm } from "./collections-form";
 import { ProjectionsForm } from "./projections-form";
 
-function AIAnalysisTab() {
+function AIAnalysis() {
   const t = useTranslations("FinancialAnalysis");
   const [financialData, setFinancialData] = useState("");
   const [result, setResult] = useState<FinancialAnalysisOutput | null>(null);
@@ -37,7 +36,7 @@ function AIAnalysisTab() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mt-8">
       <form onSubmit={handleSubmit}>
         <Card className="bg-white/5 border-white/10 backdrop-blur-lg">
           <CardHeader>
@@ -127,43 +126,20 @@ function AIAnalysisTab() {
 
 
 export default function FinancialAnalysisClient() {
-  const t = useTranslations("FinancialAnalysis");
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+      className="space-y-8"
     >
-      <Tabs defaultValue="collections" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="collections">
-            <Database className="mr-2 h-4 w-4" />
-            {t('tabCollections')}
-          </TabsTrigger>
-          <TabsTrigger value="projections">
-            <TrendingUp className="mr-2 h-4 w-4" />
-            {t('tabProjections')}
-          </TabsTrigger>
-          <TabsTrigger value="ai-analysis">
-            <BrainCircuit className="mr-2 h-4 w-4" />
-            {t('tabAI')}
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="collections">
-          <div className="mx-auto max-w-2xl">
-            <CollectionsForm />
-          </div>
-        </TabsContent>
-        <TabsContent value="projections">
-          <div className="mx-auto max-w-2xl">
-            <ProjectionsForm />
-          </div>
-        </TabsContent>
-        <TabsContent value="ai-analysis">
-          <AIAnalysisTab />
-        </TabsContent>
-      </Tabs>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <CollectionsForm />
+        <ProjectionsForm />
+      </div>
+      
+      <AIAnalysis />
+
       <AIChatBox />
     </motion.div>
   );
