@@ -4,22 +4,20 @@
 import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { generateQuotation, GenerateQuotationOutput } from "@/ai/flows/quotation-generator";
+import { generateQuotation } from "@/ai/flows/quotation-generator";
+import { GenerateQuotationOutput, GenerateQuotationInputSchema } from "@/ai/schemas/quotation-schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Loader2, PlusCircle, Trash2, Wand2, FileText } from "lucide-react";
+import { Loader2, PlusCircle, Trash2, Wand2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import * as z from "zod";
 
-
-const GenerateQuotationInputSchema = z.object({
-  clientName: z.string().min(1, "El nombre del cliente es requerido."),
-  clientCompany: z.string().min(1, "El nombre de la empresa es requerido."),
+const ClientSideQuotationSchema = GenerateQuotationInputSchema.extend({
   items: z.array(z.object({
     name: z.string().min(1, "La descripción es requerida."),
     quantity: z.coerce.number().min(1, "La cantidad debe ser al menos 1."),
@@ -30,12 +28,9 @@ const GenerateQuotationInputSchema = z.object({
     deliveryTime: z.string().min(1, "El plazo de entrega es requerido."),
     validityDays: z.coerce.number().int().positive("La validez debe ser un número positivo."),
   }),
-  notes: z.string().optional(),
-  currency: z.enum(['ARS', 'USD']),
 });
 
-
-type QuotationFormValues = z.infer<typeof GenerateQuotationInputSchema>;
+type QuotationFormValues = z.infer<typeof ClientSideQuotationSchema>;
 
 export function QuotationClient() {
   const t = useTranslations("QuotationGenerator");
@@ -44,7 +39,7 @@ export function QuotationClient() {
   const [error, setError] = useState<string | null>(null);
 
   const form = useForm<QuotationFormValues>({
-    resolver: zodResolver(GenerateQuotationInputSchema),
+    resolver: zodResolver(ClientSideQuotationSchema),
     defaultValues: {
       clientName: "",
       clientCompany: "",
