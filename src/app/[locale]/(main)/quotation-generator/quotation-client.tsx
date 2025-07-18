@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { generateQuotation, GenerateQuotationInputSchema, GenerateQuotationOutput } from "@/ai/flows/quotation-generator";
+import { generateQuotation, GenerateQuotationOutput } from "@/ai/flows/quotation-generator";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -15,6 +15,24 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import * as z from "zod";
+
+
+const GenerateQuotationInputSchema = z.object({
+  clientName: z.string().min(1, "El nombre del cliente es requerido."),
+  clientCompany: z.string().min(1, "El nombre de la empresa es requerido."),
+  items: z.array(z.object({
+    name: z.string().min(1, "La descripción es requerida."),
+    quantity: z.coerce.number().min(1, "La cantidad debe ser al menos 1."),
+    unitPrice: z.coerce.number().positive("El precio debe ser un número positivo."),
+  })).min(1, "Debe haber al menos un ítem en la cotización."),
+  conditions: z.object({
+    paymentTerms: z.string().min(1, "El plazo de pago es requerido."),
+    deliveryTime: z.string().min(1, "El plazo de entrega es requerido."),
+    validityDays: z.coerce.number().int().positive("La validez debe ser un número positivo."),
+  }),
+  notes: z.string().optional(),
+  currency: z.enum(['ARS', 'USD']),
+});
 
 
 type QuotationFormValues = z.infer<typeof GenerateQuotationInputSchema>;
@@ -95,10 +113,10 @@ export function QuotationClient() {
                         )}/>
                         <div className="flex gap-2">
                             <FormField control={form.control} name={`items.${index}.quantity`} render={({ field }) => (
-                                <FormItem className="flex-1"><FormControl><Input type="number" placeholder={t('quantity')} {...field} onChange={e => field.onChange(parseInt(e.target.value, 10) || 0)}/></FormControl><FormMessage /></FormItem>
+                                <FormItem className="flex-1"><FormControl><Input type="number" placeholder={t('quantity')} {...field} /></FormControl><FormMessage /></FormItem>
                             )}/>
                             <FormField control={form.control} name={`items.${index}.unitPrice`} render={({ field }) => (
-                                <FormItem className="flex-1"><FormControl><Input type="number" placeholder={t('unitPrice')} {...field} onChange={e => field.onChange(parseFloat(e.target.value) || 0)}/></FormControl><FormMessage /></FormItem>
+                                <FormItem className="flex-1"><FormControl><Input type="number" placeholder={t('unitPrice')} {...field} /></FormControl><FormMessage /></FormItem>
                             )}/>
                         </div>
                      </div>
@@ -125,7 +143,7 @@ export function QuotationClient() {
                             <FormItem><FormLabel>{t('deliveryTime')}</FormLabel><FormControl><Input placeholder="Ej: Inmediata" {...field} /></FormControl><FormMessage /></FormItem>
                         )}/>
                          <FormField control={form.control} name="conditions.validityDays" render={({ field }) => (
-                            <FormItem><FormLabel>{t('validity')}</FormLabel><FormControl><Input type="number" {...field} onChange={e => field.onChange(parseInt(e.target.value, 10) || 0)} /></FormControl><FormMessage /></FormItem>
+                            <FormItem><FormLabel>{t('validity')}</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>
                         )}/>
                          <FormField control={form.control} name="currency" render={({ field }) => (
                             <FormItem><FormLabel>{t('currency')}</FormLabel>
