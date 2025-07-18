@@ -97,7 +97,7 @@ export default function ProcessAutomationDashboardClient() {
                         </TableHeader>
                         <TableBody>
                             {recentExecutions.map(exec => (
-                                <TableRow key={exec.id}>
+                                <TableRow key={exec.id} className="hover:bg-muted">
                                     <TableCell className="font-mono text-xs">{exec.id}</TableCell>
                                     <TableCell className="font-medium">{exec.workflow}</TableCell>
                                     <TableCell>

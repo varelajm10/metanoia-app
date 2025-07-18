@@ -117,7 +117,7 @@ export default function DocumentManagementClient() {
                     </TableHeader>
                     <TableBody>
                         {recentDocuments.map(doc => (
-                            <TableRow key={doc.id}>
+                            <TableRow key={doc.id} className="hover:bg-muted">
                                 <TableCell className="font-medium">{doc.name}</TableCell>
                                 <TableCell><Badge variant="outline">{doc.category}</Badge></TableCell>
                                 <TableCell>

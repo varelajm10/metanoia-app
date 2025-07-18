@@ -88,7 +88,7 @@ export default function HRDashboardClient() {
                         </TableHeader>
                         <TableBody>
                             {newHires.map(hire => (
-                                <TableRow key={hire.name}>
+                                <TableRow key={hire.name} className="hover:bg-muted">
                                     <TableCell className="font-medium flex items-center gap-2">
                                         <Avatar className="h-8 w-8">
                                             <AvatarImage data-ai-hint="person" src={`https://placehold.co/40x40.png`} />

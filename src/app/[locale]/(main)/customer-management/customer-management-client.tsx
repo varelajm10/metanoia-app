@@ -89,7 +89,7 @@ export default function CustomerManagementClient() {
                     </TableHeader>
                     <TableBody>
                         {recentCustomers.map(customer => (
-                             <TableRow key={customer.name}>
+                             <TableRow key={customer.name} className="hover:bg-muted">
                                 <TableCell className="font-medium">{customer.name}</TableCell>
                                 <TableCell>
                                     <Badge variant={statusVariant[customer.status as keyof typeof statusVariant] || 'default'}>

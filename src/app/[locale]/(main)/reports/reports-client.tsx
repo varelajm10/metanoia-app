@@ -72,7 +72,7 @@ export default function ReportsClient() {
               </TableHeader>
               <TableBody>
                 {myReports.map((report) => (
-                  <TableRow key={report.id}>
+                  <TableRow key={report.id} className="hover:bg-muted">
                     <TableCell className="font-medium">{report.name}</TableCell>
                     <TableCell><Badge variant="outline">{report.category}</Badge></TableCell>
                     <TableCell>{report.lastExecuted === 'Never' ? t('never') : report.lastExecuted}</TableCell>
@@ -110,7 +110,7 @@ export default function ReportsClient() {
               </TableHeader>
               <TableBody>
                 {scheduledReports.map((schedule) => (
-                  <TableRow key={schedule.id}>
+                  <TableRow key={schedule.id} className="hover:bg-muted">
                     <TableCell className="font-medium">{schedule.reportName}</TableCell>
                     <TableCell>{schedule.frequency}</TableCell>
                     <TableCell>{schedule.nextExecution}</TableCell>

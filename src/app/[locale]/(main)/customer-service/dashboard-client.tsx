@@ -99,7 +99,7 @@ export default function CustomerServiceDashboardClient() {
                         </TableHeader>
                         <TableBody>
                             {recentTickets.map(ticket => (
-                                <TableRow key={ticket.id}>
+                                <TableRow key={ticket.id} className="hover:bg-muted">
                                     <TableCell className="font-mono text-xs">{ticket.id}</TableCell>
                                     <TableCell className="font-medium">{ticket.subject}</TableCell>
                                     <TableCell>{ticket.client}</TableCell>

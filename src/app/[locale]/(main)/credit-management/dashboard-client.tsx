@@ -100,7 +100,7 @@ export default function CreditManagementDashboardClient() {
                         </TableHeader>
                         <TableBody>
                             {recentRequests.map(req => (
-                                <TableRow key={req.id}>
+                                <TableRow key={req.id} className="hover:bg-muted">
                                     <TableCell className="font-mono text-xs">{req.id}</TableCell>
                                     <TableCell className="font-medium">{req.client}</TableCell>
                                     <TableCell>{req.amount}</TableCell>

@@ -90,7 +90,7 @@ export default function IntelligentInventoryClient() {
                         </TableHeader>
                         <TableBody>
                             {lowStockItems.map(item => (
-                                <TableRow key={item.id}>
+                                <TableRow key={item.id} className="hover:bg-muted">
                                     <TableCell className="font-mono text-xs">{item.id}</TableCell>
                                     <TableCell className="font-medium">{item.name}</TableCell>
                                     <TableCell><Badge variant="outline">{item.category}</Badge></TableCell>

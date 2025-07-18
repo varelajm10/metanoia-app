@@ -95,7 +95,7 @@ export default function MainDashboard() {
           <CardFooter className="flex-col items-start gap-2 text-sm text-muted-foreground border-t pt-4">
               <div className="flex items-center gap-2">
                   <Lightbulb className="h-4 w-4 text-accent"/>
-                  <span className="font-semibold text-foreground">AI Insight</span>
+                  <span className="font-semibold text-foreground">{t('aiInsight')}</span>
               </div>
               <p>El pico de cobranza en Marzo se correlaciona con el cierre exitoso de 2 proyectos clave del sector tecnológico.</p>
           </CardFooter>
@@ -120,6 +120,13 @@ export default function MainDashboard() {
                 </BarChart>
             </ResponsiveContainer>
           </CardContent>
+           <CardFooter className="flex-col items-start gap-2 text-sm text-muted-foreground border-t pt-4">
+              <div className="flex items-center gap-2">
+                  <Lightbulb className="h-4 w-4 text-accent"/>
+                  <span className="font-semibold text-foreground">{t('aiInsight')}</span>
+              </div>
+              <p>El 75% de la cartera es de bajo riesgo, pero el 5% de alto riesgo requiere acción inmediata.</p>
+          </CardFooter>
         </Card>
       </div>
       
