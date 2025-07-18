@@ -16,6 +16,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import * as z from "zod";
+import { saveQuotation } from "./actions";
+import { useToast } from "@/hooks/use-toast";
 
 const ClientSideQuotationSchema = GenerateQuotationInputSchema.extend({
   items: z.array(z.object({
@@ -34,6 +36,8 @@ type QuotationFormValues = z.infer<typeof ClientSideQuotationSchema>;
 
 export function QuotationClient() {
   const t = useTranslations("QuotationGenerator");
+  const tCommon = useTranslations("Common");
+  const { toast } = useToast();
   const [result, setResult] = useState<GenerateQuotationOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -58,25 +62,50 @@ export function QuotationClient() {
     control: form.control,
     name: "items",
   });
+  
+  const total = form.watch('items').reduce((acc, item) => acc + (item.quantity * item.unitPrice), 0);
+  const currency = form.watch('currency');
 
   const onSubmit = async (data: QuotationFormValues) => {
     setIsLoading(true);
     setError(null);
     setResult(null);
     try {
+      // 1. Generate quotation with AI
       const output = await generateQuotation(data);
       setResult(output);
+
+      // 2. Save the generated quotation to Firestore
+      const saveData = {
+        ...data,
+        totalAmount: output.totalAmount,
+        quotationText: output.quotationText,
+      }
+      const saveResult = await saveQuotation(saveData);
+
+      if (saveResult.success) {
+        toast({
+            title: "Cotización Guardada",
+            description: "La cotización ha sido guardada en la base de datos."
+        });
+      } else {
+        throw new Error(saveResult.error);
+      }
+
     } catch (err) {
-      setError(t('error'));
+      const errorMessage = err instanceof Error ? err.message : t('error');
+      setError(errorMessage);
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
       console.error(err);
     } finally {
       setIsLoading(false);
     }
   };
   
-  const total = form.watch('items').reduce((acc, item) => acc + (item.quantity * item.unitPrice), 0);
-  const currency = form.watch('currency');
-
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
       <Card>
