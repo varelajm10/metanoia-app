@@ -3,12 +3,47 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // WARNING: Insecure rules for development only.
-    // These rules allow anyone to read or write to your database.
-    // You should secure your database before deploying to production.
-    // For example, by using authentication: `allow read, write: if request.auth != null;`
+    
+    // Denegar por defecto. La seguridad es lo primero.
     match /{document=**} {
-      allow read, write: if true;
+      allow read, write: if false;
+    }
+
+    // Permitir acceso a los usuarios autenticados.
+    // En el futuro, se pueden añadir reglas más granulares (ej. por rol de usuario).
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Reglas para la colección 'customers'
+    match /customers/{customerId} {
+      allow read, create, update: if isAuthenticated();
+      // Solo el creador o un admin podrían borrar. Por ahora, deshabilitado.
+      allow delete: if false; 
+    }
+
+    // Reglas para la colección 'employees'
+    match /employees/{employeeId} {
+      allow read, create, update: if isAuthenticated();
+      allow delete: if false;
+    }
+
+    // Reglas para la colección 'collections'
+    match /collections/{collectionId} {
+      allow read, create: if isAuthenticated();
+      allow update, delete: if false; // Las cobranzas registradas no deberían modificarse.
+    }
+
+    // Reglas para la colección 'projections'
+    match /projections/{projectionId} {
+      allow read, create: if isAuthenticated();
+      allow update, delete: if false; // Las proyecciones no deberían modificarse.
+    }
+
+    // Reglas para la colección 'quotations'
+    match /quotations/{quotationId} {
+      allow read, create: if isAuthenticated();
+      allow update, delete: if false;
     }
   }
 }
