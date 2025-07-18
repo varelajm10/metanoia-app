@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -9,7 +10,7 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
+import { z } from 'zod';
 
 export const GenerateQuotationInputSchema = z.object({
   clientName: z.string().describe("Nombre del contacto principal en la empresa cliente."),
