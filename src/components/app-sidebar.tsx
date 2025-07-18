@@ -21,6 +21,7 @@ import {
   ChevronDown,
   PanelLeftClose,
   PanelLeftOpen,
+  Wand2,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
@@ -163,6 +164,7 @@ export function AppSidebar() {
         { title:t('financialAnalysis'), href: '/financial-analysis', icon: DollarSign },
         { title: t('processAutomation'), href: '/process-automation', icon: Workflow },
         { title: t('intelligentInventory'), href: '/intelligent-inventory', icon: Warehouse },
+        { title: t('quotationGenerator'), href: '/quotation-generator', icon: Wand2 },
       ],
     },
     {
