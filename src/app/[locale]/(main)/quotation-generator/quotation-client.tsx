@@ -14,8 +14,10 @@ import { useTranslations } from "next-intl";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
+import * as z from "zod";
 
-type QuotationFormValues = Zod.infer<typeof GenerateQuotationInputSchema>;
+
+type QuotationFormValues = z.infer<typeof GenerateQuotationInputSchema>;
 
 export function QuotationClient() {
   const t = useTranslations("QuotationGenerator");
