@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from 'next-intl';
 
-const MainDashboard = dynamic(() => import('@/components/main-dashboard'), { 
+const DashboardClient = dynamic(() => import('@/components/dashboard-client'), { 
     ssr: false,
     loading: () => <DashboardSkeleton /> 
 });
@@ -37,7 +37,7 @@ export default function DashboardPage() {
                 <p className="text-muted-foreground">{t('subtitle')}</p>
             </div>
           </div>
-        <MainDashboard />
+        <DashboardClient />
     </div>
   );
 }
