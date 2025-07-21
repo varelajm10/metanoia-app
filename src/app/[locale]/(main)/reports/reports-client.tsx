@@ -14,13 +14,13 @@ const myReports = [
   { id: 'REP-001', name: 'Reporte Financiero Mensual', category: 'Finanzas', lastExecuted: '2024-07-01 09:00', format: 'Excel' },
   { id: 'REP-002', name: 'Análisis de Ventas Q2', category: 'Ventas', lastExecuted: '2024-06-28 15:30', format: 'PDF' },
   { id: 'REP-003', name: 'Resumen de Tickets de Soporte', category: 'Atención al Cliente', lastExecuted: '2024-07-03 11:00', format: 'CSV' },
-  { id: 'REP-004', name: 'Performance de Campaña de Marketing', category: 'Marketing', lastExecuted: 'Never', format: 'PDF' },
+  { id: 'REP-004', name: 'Performance de Campaña de Marketing', category: 'Marketing', lastExecuted: 'Nunca', format: 'PDF' },
 ];
 
 const scheduledReports = [
-    { id: 'SCH-001', reportName: 'Reporte Financiero Mensual', frequency: 'Mensual (día 1)', nextExecution: '2024-08-01 09:00', recipients: 'finanzas@metanoia.click', status: 'Active' },
-    { id: 'SCH-002', reportName: 'Reporte Diario de Ventas', frequency: 'Diario (8:00 AM)', nextExecution: '2024-07-05 08:00', recipients: 'equipo.ventas@metanoia.click', status: 'Active' },
-    { id: 'SCH-003', reportName: 'Informe Semanal de Soporte', frequency: 'Semanal (Lunes 9:30 AM)', nextExecution: '2024-07-08 09:30', recipients: 'slack:#soporte', status: 'Inactive' },
+    { id: 'SCH-001', reportName: 'Reporte Financiero Mensual', frequency: 'Mensual (día 1)', nextExecution: '2024-08-01 09:00', recipients: 'finanzas@metanoia.click', status: 'Activo' },
+    { id: 'SCH-002', reportName: 'Reporte Diario de Ventas', frequency: 'Diario (8:00 AM)', nextExecution: '2024-07-05 08:00', recipients: 'equipo.ventas@metanoia.click', status: 'Activo' },
+    { id: 'SCH-003', reportName: 'Informe Semanal de Soporte', frequency: 'Semanal (Lunes 9:30 AM)', nextExecution: '2024-07-08 09:30', recipients: 'slack:#soporte', status: 'Inactivo' },
 ];
 
 const reportAnalyticsData = [
@@ -36,11 +36,9 @@ export default function ReportsClient() {
   const t = useTranslations('Reporting');
   
   const statusVariant = {
-    'Active': 'default',
-    'Inactive': 'secondary',
+    'Activo': 'default',
+    'Inactivo': 'secondary',
   } as const;
-
-  const getStatusTranslation = (status: 'Active' | 'Inactive') => t(`status${status}` as 'statusActive' | 'statusInactive');
 
   return (
     <Tabs defaultValue="my-reports" className="space-y-4">
@@ -75,7 +73,7 @@ export default function ReportsClient() {
                   <TableRow key={report.id} className="hover:bg-muted">
                     <TableCell className="font-medium">{report.name}</TableCell>
                     <TableCell><Badge variant="outline">{report.category}</Badge></TableCell>
-                    <TableCell>{report.lastExecuted === 'Never' ? t('never') : report.lastExecuted}</TableCell>
+                    <TableCell>{report.lastExecuted}</TableCell>
                     <TableCell>{report.format}</TableCell>
                     <TableCell className="text-right space-x-2">
                         <Button variant="outline" size="sm"><Send className="mr-2 h-4 w-4"/> {t('actionExecute')}</Button>
@@ -117,7 +115,7 @@ export default function ReportsClient() {
                     <TableCell className="font-mono text-xs">{schedule.recipients}</TableCell>
                      <TableCell>
                          <Badge variant={statusVariant[schedule.status as keyof typeof statusVariant] || 'default'}>
-                            {getStatusTranslation(schedule.status as keyof typeof statusVariant)}
+                            {schedule.status}
                          </Badge>
                      </TableCell>
                     <TableCell className="text-right space-x-2">

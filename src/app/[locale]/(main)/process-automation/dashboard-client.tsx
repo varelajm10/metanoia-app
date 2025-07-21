@@ -9,28 +9,27 @@ import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
 const recentExecutions = [
-    { id: 'EXEC-987', workflow: 'Onboarding de Cliente', status: 'Completed', start: '2024-07-04 10:05', duration: '3m 15s' },
-    { id: 'EXEC-986', workflow: 'Reporte Financiero Mensual', status: 'Completed', start: '2024-07-04 09:00', duration: '12m 45s' },
-    { id: 'EXEC-985', workflow: 'Conciliación Bancaria', status: 'Failed', start: '2024-07-03 18:30', duration: '1m 22s' },
-    { id: 'EXEC-984', workflow: 'Onboarding de Cliente', status: 'Completed', start: '2024-07-03 15:20', duration: '3m 28s' },
+    { id: 'EXEC-987', workflow: 'Onboarding de Cliente', status: 'Completado', start: '2024-07-04 10:05', duration: '3m 15s' },
+    { id: 'EXEC-986', workflow: 'Reporte Financiero Mensual', status: 'Completado', start: '2024-07-04 09:00', duration: '12m 45s' },
+    { id: 'EXEC-985', workflow: 'Conciliación Bancaria', status: 'Falló', start: '2024-07-03 18:30', duration: '1m 22s' },
+    { id: 'EXEC-984', workflow: 'Onboarding de Cliente', status: 'Completado', start: '2024-07-03 15:20', duration: '3m 28s' },
 ];
 
 const efficiencyData = [
     { name: 'Manual', time: 120 },
-    { name: 'Automated', time: 15 },
+    { name: 'Automatizado', time: 15 },
 ];
 
 export default function ProcessAutomationDashboardClient() {
   const t = useTranslations("ProcessAutomation");
 
   const statusVariant = {
-      'Completed': 'default',
-      'In Progress': 'secondary',
-      'Failed': 'destructive',
+      'Completado': 'default',
+      'En Progreso': 'secondary',
+      'Falló': 'destructive',
   } as const;
   
-  const getStatusTranslation = (status: 'Completed' | 'Failed') => t(`status${status}`);
-  const getEfficiencyTranslation = (name: 'Manual' | 'Automated') => t(name.toLowerCase() as 'manual' | 'automated');
+  const getEfficiencyTranslation = (name: 'Manual' | 'Automatizado') => t(name.toLowerCase() as 'manual' | 'automated');
   const localizedEfficiencyData = efficiencyData.map(d => ({...d, name: getEfficiencyTranslation(d.name as 'Manual' | 'Automated')}));
 
   return (
@@ -102,7 +101,7 @@ export default function ProcessAutomationDashboardClient() {
                                     <TableCell className="font-medium">{exec.workflow}</TableCell>
                                     <TableCell>
                                         <Badge variant={statusVariant[exec.status as keyof typeof statusVariant] || 'default'}>
-                                            {getStatusTranslation(exec.status as keyof typeof statusVariant)}
+                                            {exec.status}
                                         </Badge>
                                     </TableCell>
                                     <TableCell>{exec.start}</TableCell>

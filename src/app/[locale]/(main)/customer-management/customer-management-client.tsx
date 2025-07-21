@@ -10,25 +10,20 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const recentCustomers = [
-    { name: 'Tech Solutions Inc.', status: 'Active', lastContact: '2024-05-20', value: '$50,000' },
-    { name: 'Innovate Corp.', status: 'New', lastContact: '2024-05-22', value: '$75,000' },
-    { name: 'Global Enterprises', status: 'At Risk', lastContact: '2024-04-15', value: '$120,000' },
-    { name: 'Future Systems Ltd.', status: 'Active', lastContact: '2024-05-18', value: '$30,000' },
+    { name: 'Tech Solutions Inc.', status: 'Activo', lastContact: '2024-05-20', value: '$50,000' },
+    { name: 'Innovate Corp.', status: 'Nuevo', lastContact: '2024-05-22', value: '$75,000' },
+    { name: 'Global Enterprises', status: 'En Riesgo', lastContact: '2024-04-15', value: '$120,000' },
+    { name: 'Future Systems Ltd.', status: 'Activo', lastContact: '2024-05-18', value: '$30,000' },
 ];
 
 export default function CustomerManagementClient() {
   const t = useTranslations("CustomerManagement");
 
   const statusVariant = {
-    'Active': 'default',
-    'New': 'secondary',
-    'At Risk': 'destructive',
+    'Activo': 'default',
+    'Nuevo': 'secondary',
+    'En Riesgo': 'destructive',
   } as const;
-
-  const getStatusTranslation = (status: 'Active' | 'New' | 'At Risk') => {
-    const key = `status${status.replace(' ', '')}` as 'statusActive' | 'statusNew' | 'statusAtRisk';
-    return t(key);
-  }
 
   return (
     <div className="space-y-6">
@@ -93,7 +88,7 @@ export default function CustomerManagementClient() {
                                 <TableCell className="font-medium">{customer.name}</TableCell>
                                 <TableCell>
                                     <Badge variant={statusVariant[customer.status as keyof typeof statusVariant] || 'default'}>
-                                        {getStatusTranslation(customer.status as keyof typeof statusVariant)}
+                                        {customer.status}
                                     </Badge>
                                 </TableCell>
                                 <TableCell>{customer.lastContact}</TableCell>

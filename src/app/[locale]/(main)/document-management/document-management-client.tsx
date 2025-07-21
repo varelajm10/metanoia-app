@@ -9,26 +9,21 @@ import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
 const recentDocuments = [
-    { id: 'DOC-0789', name: 'Contrato Cliente A.pdf', category: 'Contratos', status: 'Approved', modified: '2024-07-03' },
-    { id: 'DOC-0790', name: 'Propuesta Comercial B.docx', category: 'Propuestas', status: 'In Review', modified: '2024-07-04' },
-    { id: 'DOC-0791', name: 'Reporte Financiero Q2.xlsx', category: 'Finanzas', status: 'Draft', modified: '2024-07-04' },
-    { id: 'DOC-0792', name: 'Manual de Políticas Internas.pdf', category: 'RRHH', status: 'Published', modified: '2024-06-20' },
+    { id: 'DOC-0789', name: 'Contrato Cliente A.pdf', category: 'Contratos', status: 'Aprobado', modified: '2024-07-03' },
+    { id: 'DOC-0790', name: 'Propuesta Comercial B.docx', category: 'Propuestas', status: 'En Revisión', modified: '2024-07-04' },
+    { id: 'DOC-0791', name: 'Reporte Financiero Q2.xlsx', category: 'Finanzas', status: 'Borrador', modified: '2024-07-04' },
+    { id: 'DOC-0792', name: 'Manual de Políticas Internas.pdf', category: 'RRHH', status: 'Publicado', modified: '2024-06-20' },
 ];
 
 export default function DocumentManagementClient() {
   const t = useTranslations("DocumentManagement");
 
   const statusVariant = {
-      'Approved': 'default',
-      'In Review': 'secondary',
-      'Draft': 'outline',
-      'Published': 'default',
+      'Aprobado': 'default',
+      'En Revisión': 'secondary',
+      'Borrador': 'outline',
+      'Publicado': 'default',
   } as const;
-
-  const getStatusTranslation = (status: keyof typeof statusVariant) => {
-    const key = `status${status.replace(' ', '')}` as 'statusApproved' | 'statusInReview' | 'statusDraft' | 'statusPublished';
-    return t(key);
-  }
 
   return (
     <div className="space-y-8">
@@ -122,7 +117,7 @@ export default function DocumentManagementClient() {
                                 <TableCell><Badge variant="outline">{doc.category}</Badge></TableCell>
                                 <TableCell>
                                     <Badge variant={statusVariant[doc.status as keyof typeof statusVariant] || 'default'}>
-                                        {getStatusTranslation(doc.status as keyof typeof statusVariant)}
+                                        {doc.status}
                                     </Badge>
                                 </TableCell>
                                 <TableCell>{doc.modified}</TableCell>

@@ -15,17 +15,18 @@ const lowStockItems = [
     { id: 'PROD-045', name: 'Insumo D-W4', category: 'Consumibles', stock: 120, reorderPoint: 150 },
 ];
 
-const inventoryByCategory = [
-    { name: 'Electrónica', value: 250000 },
-    { name: 'Materias Primas', value: 450000 },
-    { name: 'Venta Directa', value: 150000 },
-    { name: 'Consumibles', value: 50000 },
-];
-
 const COLORS = ['hsl(var(--primary))', 'hsl(var(--accent))', 'hsl(var(--secondary))', 'hsl(220, 13%, 63%)'];
 
 export default function IntelligentInventoryClient() {
   const t = useTranslations("IntelligentInventory");
+  
+  const inventoryByCategory = [
+      { name: t('valueByCategory'), value: 250000 },
+      { name: 'Materias Primas', value: 450000 },
+      { name: 'Venta Directa', value: 150000 },
+      { name: 'Consumibles', value: 50000 },
+  ];
+
   return (
     <div className="space-y-8">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">

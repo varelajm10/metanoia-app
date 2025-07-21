@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from 'next/link';
@@ -18,7 +19,8 @@ export function Footer() {
             {t('copyright', { year })}
           </p>
           <div className="flex items-center gap-6">
-            {/* Links removed as per user request */}
+            <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t('terms')}</Link>
+            <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t('privacy')}</Link>
           </div>
         </div>
       </div>

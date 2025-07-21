@@ -2,7 +2,7 @@
 "use client";
 
 import { Footer } from "@/components/footer";
-import { Header } from "@/components/header";
+import { Header }s from "@/components/header";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
 export default function MarketingLayout({

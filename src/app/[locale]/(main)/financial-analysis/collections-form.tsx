@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useForm } from "react-hook-form"
@@ -22,7 +23,7 @@ import { useToast } from "@/hooks/use-toast"
 import { addCollectionEntry } from "./actions"
 import { Loader2, Save } from "lucide-react"
 
-const countries = ["Argentina", "Brazil", "Chile", "Colombia", "Mexico", "Peru", "United States"];
+const countries = ["Argentina", "Brasil", "Chile", "Colombia", "México", "Perú", "Estados Unidos"];
 
 const formSchema = z.object({
   country: z.string({ required_error: "Debe seleccionar un país." }),

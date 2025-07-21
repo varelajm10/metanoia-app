@@ -18,20 +18,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 // Mock Data
 const users = [
-  { id: 'usr_001', name: 'Super Usuario', email: 'admin@metanoia.click', role: 'SUPER_ADMIN', status: 'active' },
-  { id: 'usr_002', name: 'Analista Financiero', email: 'finance@metanoia.click', role: 'Financial Analyst', status: 'active' },
-  { id: 'usr_003', name: 'Agente de Soporte', email: 'support@metanoia.click', role: 'Support Agent', status: 'inactive' },
+  { id: 'usr_001', name: 'Super Usuario', email: 'admin@metanoia.click', role: 'SUPER_ADMIN', status: 'activo' },
+  { id: 'usr_002', name: 'Analista Financiero', email: 'finance@metanoia.click', role: 'Analista Financiero', status: 'activo' },
+  { id: 'usr_003', name: 'Agente de Soporte', email: 'support@metanoia.click', role: 'Agente de Soporte', status: 'inactivo' },
 ];
 
 const roles = [
-  { id: 'role_01', name: 'SUPER_ADMIN', description: 'Acceso total al sistema.', permissions: 'ALL' },
-  { id: 'role_02', name: 'Financial Analyst', description: 'Acceso a módulos financieros y de BI.', permissions: 'financial-analysis, business-intelligence' },
-  { id: 'role_03', name: 'Support Agent', description: 'Acceso a módulos de atención al cliente.', permissions: 'customer-service' },
+  { id: 'role_01', name: 'SUPER_ADMIN', description: 'Acceso total al sistema.', permissions: 'TODOS' },
+  { id: 'role_02', name: 'Analista Financiero', description: 'Acceso a módulos financieros y de BI.', permissions: 'analisis-financiero, business-intelligence' },
+  { id: 'role_03', name: 'Agente de Soporte', description: 'Acceso a módulos de atención al cliente.', permissions: 'atencion-al-cliente' },
 ];
 
 const statusVariant = {
-  active: 'default',
-  inactive: 'destructive',
+  activo: 'default',
+  inactivo: 'destructive',
   pending: 'secondary',
 } as const;
 
@@ -40,8 +40,6 @@ export default function SettingsClient() {
   const locale = useLocale();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-
-  const getStatusTranslation = (status: 'active' | 'inactive') => t(`status${status.charAt(0).toUpperCase() + status.slice(1)}` as 'statusActive' | 'statusInactive');
 
   function onSelectChange(nextLocale: string) {
     startTransition(() => {
@@ -101,7 +99,7 @@ export default function SettingsClient() {
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.role}</TableCell>
                     <TableCell>
-                      <Badge variant={statusVariant[user.status as keyof typeof statusVariant]}>{getStatusTranslation(user.status as keyof typeof statusVariant)}</Badge>
+                      <Badge variant={statusVariant[user.status as keyof typeof statusVariant]}>{user.status}</Badge>
                     </TableCell>
                     <TableCell className="text-right">
                       <Button variant="ghost" size="sm">{t('actionManage')}</Button>

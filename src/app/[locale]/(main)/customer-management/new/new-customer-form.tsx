@@ -17,7 +17,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Save, UploadCloud, X, File as FileIcon } from "lucide-react";
 
-const countries = ["Argentina", "Chile", "Uruguay", "Bolivia", "Peru", "Colombia", "Ecuador", "Costa Rica", "Dominican Republic", "Mexico", "United States"];
+const countries = ["Argentina", "Chile", "Uruguay", "Bolivia", "Peru", "Colombia", "Ecuador", "Costa Rica", "República Dominicana", "México", "Estados Unidos"];
 
 const FormSchema = z.object({
   accountExecutive: z.string().min(1),
@@ -70,7 +70,7 @@ const FormSchema = z.object({
     }
     return true;
   }, {
-    message: "Shipping address is required when not same as legal",
+    message: "La dirección de envío es obligatoria si no es la misma que la legal.",
     path: ["shippingAddress"],
   });
 

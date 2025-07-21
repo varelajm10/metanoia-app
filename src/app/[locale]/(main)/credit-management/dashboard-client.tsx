@@ -9,10 +9,10 @@ import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
 const recentRequests = [
-    { id: 'SOL-001', client: 'Tech Solutions Inc.', amount: '$15,000', status: 'Approved', date: '2024-07-03' },
-    { id: 'SOL-002', client: 'Innovate Corp.', amount: '$25,000', status: 'In Review', date: '2024-07-02' },
-    { id: 'SOL-003', client: 'Global Enterprises', amount: '$5,000', status: 'Rejected', date: '2024-07-01' },
-    { id: 'SOL-004', client: 'Future Systems Ltd.', amount: '$50,000', status: 'Approved', date: '2024-06-30' },
+    { id: 'SOL-001', client: 'Tech Solutions Inc.', amount: '$15,000', status: 'Aprobado', date: '2024-07-03' },
+    { id: 'SOL-002', client: 'Innovate Corp.', amount: '$25,000', status: 'En Revisión', date: '2024-07-02' },
+    { id: 'SOL-003', client: 'Global Enterprises', amount: '$5,000', status: 'Rechazado', date: '2024-07-01' },
+    { id: 'SOL-004', client: 'Future Systems Ltd.', amount: '$50,000', status: 'Aprobado', date: '2024-06-30' },
 ];
 
 export default function CreditManagementDashboardClient() {
@@ -26,15 +26,10 @@ export default function CreditManagementDashboardClient() {
   ];
 
   const statusVariant = {
-      'Approved': 'default',
-      'In Review': 'secondary',
-      'Rejected': 'destructive',
+      'Aprobado': 'default',
+      'En Revisión': 'secondary',
+      'Rechazado': 'destructive',
   } as const;
-
-  const getStatusTranslation = (status: 'Approved' | 'In Review' | 'Rejected') => {
-    const key = `status${status.replace(' ', '')}` as 'statusApproved' | 'statusInReview' | 'statusRejected';
-    return t(key);
-  }
 
   return (
     <div className="space-y-8">
@@ -106,7 +101,7 @@ export default function CreditManagementDashboardClient() {
                                     <TableCell>{req.amount}</TableCell>
                                     <TableCell>
                                         <Badge variant={statusVariant[req.status as keyof typeof statusVariant] || 'default'}>
-                                            {getStatusTranslation(req.status as keyof typeof statusVariant)}
+                                            {req.status}
                                         </Badge>
                                     </TableCell>
                                     <TableCell>{req.date}</TableCell>

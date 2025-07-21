@@ -29,7 +29,7 @@ const demoFormSchema = z.object({
 type DemoFormValues = z.infer<typeof demoFormSchema>;
 
 const modules = [
-    'Business Intelligence',
+    'Inteligencia de Negocios',
     'Análisis Financiero',
     'Gestión de Créditos',
     'Atención al Cliente',

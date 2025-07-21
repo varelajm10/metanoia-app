@@ -9,10 +9,10 @@ import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
 const recentTickets = [
-    { id: 'TKT-721', subject: 'Problema de facturación', client: 'Tech Solutions Inc.', priority: 'High', status: 'Open' },
-    { id: 'TKT-720', subject: 'Consulta sobre producto X', client: 'Innovate Corp.', priority: 'Medium', status: 'In Progress' },
-    { id: 'TKT-719', subject: 'No puedo acceder a mi cuenta', client: 'Global Enterprises', priority: 'High', status: 'Open' },
-    { id: 'TKT-718', subject: 'Feedback sobre nueva feature', client: 'Future Systems Ltd.', priority: 'Low', status: 'Resolved' },
+    { id: 'TKT-721', subject: 'Problema de facturación', client: 'Tech Solutions Inc.', priority: 'Alta', status: 'Abierto' },
+    { id: 'TKT-720', subject: 'Consulta sobre producto X', client: 'Innovate Corp.', priority: 'Media', status: 'En Progreso' },
+    { id: 'TKT-719', subject: 'No puedo acceder a mi cuenta', client: 'Global Enterprises', priority: 'Alta', status: 'Abierto' },
+    { id: 'TKT-718', subject: 'Feedback sobre nueva feature', client: 'Future Systems Ltd.', priority: 'Baja', status: 'Resuelto' },
 ];
 
 const COLORS = ['hsl(var(--primary))', 'hsl(var(--accent))', 'hsl(var(--secondary))'];
@@ -27,13 +27,10 @@ export default function CustomerServiceDashboardClient() {
   ];
 
   const priorityVariant = {
-      'High': 'destructive',
-      'Medium': 'secondary',
-      'Low': 'outline',
+      'Alta': 'destructive',
+      'Media': 'secondary',
+      'Baja': 'outline',
   } as const;
-  
-  const getPriorityTranslation = (p: 'High' | 'Medium' | 'Low') => t(`priority${p}`);
-  const getStatusTranslation = (s: 'Open' | 'In Progress' | 'Resolved') => t(`status${s.replace(' ','')}`);
 
   return (
     <div className="space-y-8">
@@ -105,10 +102,10 @@ export default function CustomerServiceDashboardClient() {
                                     <TableCell>{ticket.client}</TableCell>
                                     <TableCell>
                                         <Badge variant={priorityVariant[ticket.priority as keyof typeof priorityVariant] || 'default'}>
-                                            {getPriorityTranslation(ticket.priority as keyof typeof priorityVariant)}
+                                            {ticket.priority}
                                         </Badge>
                                     </TableCell>
-                                    <TableCell>{getStatusTranslation(ticket.status as 'Open' | 'In Progress' | 'Resolved')}</TableCell>
+                                    <TableCell>{ticket.status}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
