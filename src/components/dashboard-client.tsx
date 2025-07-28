@@ -5,8 +5,9 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine, LabelList } from 'recharts';
-import { DollarSign, Users, TrendingUp, Target, Briefcase, Handshake, Bot, ShieldCheck, Banknote, TrendingDown, Lightbulb } from "lucide-react";
+import { DollarSign, Users, TrendingUp, Target, Briefcase, Handshake, Bot, ShieldCheck, Banknote, TrendingDown, Lightbulb, CreditCard, Headset, Workflow, HeartHandshake, BarChart2, SlidersHorizontal, Warehouse, FolderKanban, FileText, Settings, LayoutDashboard } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { ModuleCard, Module } from "@/components/module-card";
 
 const monthlyData = [
   { name: 'Ene', Cobrado: 85000 },
@@ -19,6 +20,99 @@ const RISK_COLORS = ['hsl(var(--primary))', 'hsl(var(--accent))', 'hsl(var(--des
 
 export default function DashboardClient() {
   const t = useTranslations('Dashboard');
+  const t_sidebar = useTranslations('Sidebar');
+  
+  const modules: Module[] = [
+    {
+        title: t_sidebar('crm'),
+        description: 'Alta, análisis y gestión integral de la cartera de clientes.',
+        href: '/customer-management',
+        icon: <Users size={24} />,
+        status: 'Disponible',
+        glowColor: 'hsl(260, 100%, 75%)',
+    },
+    {
+        title: t_sidebar('credits'),
+        description: 'Automatización del ciclo de cobranzas, análisis de riesgo y pipeline de pagos.',
+        href: '/credit-management',
+        icon: <CreditCard size={24} />,
+        status: 'Disponible',
+        glowColor: 'hsl(145, 63%, 49%)',
+    },
+    {
+        title: t_sidebar('customerService'),
+        description: 'Gestión omnicanal de tickets, análisis de sentimiento y métricas de resolución.',
+        href: '/customer-service',
+        icon: <Headset size={24} />,
+        status: 'Disponible',
+        glowColor: 'hsl(320, 100%, 75%)',
+    },
+    {
+        title: t_sidebar('businessIntelligence'),
+        description: 'Centro de análisis y reportes ejecutivos para una toma de decisiones informada.',
+        href: '/business-intelligence',
+        icon: <LayoutDashboard size={24} />,
+        status: 'Disponible',
+        glowColor: 'hsl(210, 100%, 75%)',
+    },
+    {
+        title: t_sidebar('financialAnalysis'),
+        description: 'Gestión financiera integral, proyecciones y análisis de rentabilidad.',
+        href: '/financial-analysis',
+        icon: <DollarSign size={24} />,
+        status: 'Disponible',
+        glowColor: 'hsl(50, 100%, 65%)',
+    },
+    {
+        title: t_sidebar('processAutomation'),
+        description: 'Orquestación de workflows, métricas de eficiencia y análisis de ROI.',
+        href: '/process-automation',
+        icon: <Workflow size={24} />,
+        status: 'Disponible',
+        glowColor: 'hsl(25, 84%, 60%)',
+    },
+    {
+        title: t_sidebar('humanResources'),
+        description: 'Gestión integral del talento, análisis de performance y predicción de rotación.',
+        href: '/hr',
+        icon: <Users size={24} />,
+        status: 'Disponible',
+        glowColor: 'hsl(180, 100%, 45%)',
+    },
+    {
+        title: t_sidebar('intelligentInventory'),
+        description: 'Optimización de stock, predicción de demanda y gestión automatizada de inventario.',
+        href: '/intelligent-inventory',
+        icon: <Warehouse size={24} />,
+        status: 'Disponible',
+        glowColor: 'hsl(200, 100%, 60%)',
+    },
+    {
+        title: t_sidebar('documentManagement'),
+        description: 'Repositorio centralizado, versionado y flujos de aprobación para todos sus documentos.',
+        href: '/document-management',
+        icon: <FolderKanban size={24} />,
+        status: 'Disponible',
+        glowColor: 'hsl(35, 100%, 65%)',
+    },
+    {
+        title: t_sidebar('reporting'),
+        description: 'Genera y exporta dashboards ejecutivos y métricas de performance.',
+        href: '/reports',
+        icon: <FileText size={24} />,
+        status: 'Disponible',
+        glowColor: 'hsl(0, 100%, 70%)',
+    },
+    {
+        title: t_sidebar('missionControl'),
+        description: 'Gestiona los parámetros del sistema y las preferencias de tu cuenta.',
+        href: '/settings',
+        icon: <Settings size={24} />,
+        status: 'Disponible',
+        glowColor: 'hsl(280, 100%, 75%)',
+    },
+];
+
   const creditAnalysisData = [
       { name: t('lowRisk'), value: 75, fill: RISK_COLORS[0] },
       { name: t('mediumRisk'), value: 20, fill: RISK_COLORS[1] },
@@ -174,6 +268,12 @@ export default function DashboardClient() {
             </Link>
         </CardContent>
       </Card>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {modules.map((module) => (
+                <ModuleCard key={module.title} {...module} />
+            ))}
+        </div>
     </div>
   );
 }
