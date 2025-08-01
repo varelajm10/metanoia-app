@@ -2,7 +2,6 @@
 "use client";
 
 import Link from "next/link";
-import { ThemeToggle } from './theme-toggle';
 import { Button } from "./ui/button";
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useTranslations } from "next-intl";
@@ -19,7 +18,6 @@ export function Header() {
         <Button asChild variant="ghost">
           <Link href="/demo">{t('demo')}</Link>
         </Button>
-        <ThemeToggle />
       </div>
     </header>
   );

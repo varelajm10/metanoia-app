@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useTransition } from "react";
@@ -11,8 +12,9 @@ import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Users, ShieldCheck, Settings, KeyRound, PlusCircle, FileDown } from "lucide-react";
+import { Users, ShieldCheck, Settings, KeyRound, PlusCircle, FileDown, Palette, Languages } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useTheme } from "next-themes";
 
 
 // Mock Data
@@ -30,6 +32,8 @@ export default function SettingsClient() {
   const locale = useLocale();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const { theme, setTheme } = useTheme();
+
 
   function onSelectChange(nextLocale: string) {
     startTransition(() => {
@@ -163,19 +167,6 @@ export default function SettingsClient() {
               <Label htmlFor="supportEmail">{t('supportEmail')}</Label>
               <Input id="supportEmail" type="email" defaultValue="soporte@metanoia.click" />
             </div>
-            <div className="space-y-2">
-              <Label>{t('language')}</Label>
-              <Select defaultValue={locale} onValueChange={onSelectChange} disabled={isPending}>
-                <SelectTrigger className="w-full md:w-1/2">
-                  <SelectValue placeholder="Language" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="en">English</SelectItem>
-                  <SelectItem value="es">Español</SelectItem>
-                </SelectContent>
-              </Select>
-              <p className="text-sm text-muted-foreground">{t('languageSubtitle')}</p>
-            </div>
             <div className="flex items-center space-x-2 pt-2">
               <Switch id="maintenance-mode" />
               <Label htmlFor="maintenance-mode" className="text-sm font-normal">{t('maintenanceMode')}</Label>
@@ -185,6 +176,45 @@ export default function SettingsClient() {
             </div>
           </CardContent>
         </Card>
+        
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2"><Languages/>{t('language')}</CardTitle>
+                <CardDescription>{t('languageSubtitle')}</CardDescription>
+            </CardHeader>
+            <CardContent>
+                 <Select defaultValue={locale} onValueChange={onSelectChange} disabled={isPending}>
+                    <SelectTrigger className="w-full md:w-1/2">
+                    <SelectValue placeholder="Language" />
+                    </SelectTrigger>
+                    <SelectContent>
+                    <SelectItem value="en">English</SelectItem>
+                    <SelectItem value="es">Español</SelectItem>
+                    </SelectContent>
+                </Select>
+            </CardContent>
+        </Card>
+
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2"><Palette />Tema</CardTitle>
+                <CardDescription>Selecciona la apariencia visual de la plataforma.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                 <Select value={theme} onValueChange={setTheme}>
+                    <SelectTrigger className="w-full md:w-1/2">
+                    <SelectValue placeholder="Theme" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="light">Claro</SelectItem>
+                        <SelectItem value="dark">Oscuro</SelectItem>
+                        <SelectItem value="theme-oasis">Oasis</SelectItem>
+                        <SelectItem value="system">Sistema</SelectItem>
+                    </SelectContent>
+                </Select>
+            </CardContent>
+        </Card>
+
       </TabsContent>
 
       {/* Security Tab */}
