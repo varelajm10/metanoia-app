@@ -27,14 +27,14 @@ export default function LoginPage() {
   const { toast } = useToast();
   const router = useRouter();
   const { user, loading } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [actionType, setActionType] = useState<'signIn' | 'signUp'>('signIn');
 
   useEffect(() => {
-    if (user) {
+    if (!loading && user) {
       router.push('/dashboard');
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 
 
   const form = useForm<FormValues>({
@@ -46,13 +46,13 @@ export default function LoginPage() {
   });
 
   async function onSubmit(data: FormValues) {
-    setIsLoading(true);
+    setIsSubmitting(true);
     
     const result = actionType === 'signIn' 
       ? await signInUser(data) 
       : await signUpUser(data);
 
-    setIsLoading(false);
+    setIsSubmitting(false);
 
     if (result.success) {
       const title = actionType === 'signIn' ? "Inicio de Sesión Exitoso" : "Cuenta Creada Exitosamente";
@@ -68,7 +68,7 @@ export default function LoginPage() {
     }
   }
   
-  if (loading || user) {
+  if (loading) {
      return (
       <div className="flex h-screen items-center justify-center bg-background bg-page-gradient">
         <Loader2 className="h-12 w-12 animate-spin text-primary" />
@@ -116,16 +116,16 @@ export default function LoginPage() {
                 )}
               />
               <div className="flex flex-col sm:flex-row gap-2">
-                <Button type="submit" className="w-full" disabled={isLoading} onClick={() => setActionType('signIn')}>
-                   {isLoading && actionType === 'signIn' ? (
+                <Button type="submit" className="w-full" disabled={isSubmitting} onClick={() => setActionType('signIn')}>
+                   {isSubmitting && actionType === 'signIn' ? (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                    ) : (
                       <LogIn className="mr-2 h-4 w-4" />
                    )}
                   Ingresar
                 </Button>
-                <Button type="submit" variant="secondary" className="w-full" disabled={isLoading} onClick={() => setActionType('signUp')}>
-                   {isLoading && actionType === 'signUp' ? (
+                <Button type="submit" variant="secondary" className="w-full" disabled={isSubmitting} onClick={() => setActionType('signUp')}>
+                   {isSubmitting && actionType === 'signUp' ? (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                    ) : (
                       <UserPlus className="mr-2 h-4 w-4" />

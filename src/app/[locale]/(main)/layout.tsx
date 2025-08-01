@@ -19,9 +19,9 @@ export default function MainAppLayout({
   const router = useRouter();
 
   useEffect(() => {
-    if (loading) return;
+    if (loading) return; // No hacer nada mientras se carga
     if (!user) {
-      router.push('/login');
+      router.push('/login'); // Si la carga terminó y no hay usuario, proteger ruta
     }
   }, [user, loading, router]);
 
