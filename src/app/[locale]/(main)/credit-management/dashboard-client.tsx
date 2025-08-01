@@ -33,8 +33,21 @@ export default function CreditManagementDashboardClient() {
   } as const;
 
   const getStatusTranslation = (status: string) => {
-    const statusKey = `status${status.replace(/\s+/g, '')}` as 'statusApproved' | 'statusInReview' | 'statusRejected';
-    return t(statusKey);
+    let key: 'statusApproved' | 'statusInReview' | 'statusRejected';
+    switch (status) {
+        case 'Aprobado':
+            key = 'statusApproved';
+            break;
+        case 'En Revisión':
+            key = 'statusInReview';
+            break;
+        case 'Rechazado':
+            key = 'statusRejected';
+            break;
+        default:
+            key = 'statusInReview'; 
+    }
+    return t(key);
   }
 
   const getPipelineTranslation = React.useCallback((name: string) => {
