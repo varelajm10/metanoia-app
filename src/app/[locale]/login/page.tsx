@@ -32,7 +32,7 @@ export default function LoginPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "varelajm84@gmail.com",
-      password: "",
+      password: "Tool2225",
     },
   });
 
