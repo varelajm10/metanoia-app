@@ -2,7 +2,7 @@
 "use server";
 
 import { z } from 'zod';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { FirebaseError } from 'firebase/app';
 
@@ -19,6 +19,7 @@ const errorMessages: { [key: string]: string } = {
     'auth/wrong-password': 'La contraseña es incorrecta.',
     'auth/invalid-email': 'El formato del correo electrónico no es válido.',
     'auth/user-disabled': 'Esta cuenta de usuario ha sido deshabilitada.',
+    'auth/email-already-in-use': 'Este correo electrónico ya está en uso. Por favor, inicie sesión.',
 };
 
 export async function signInUser(data: FormValues): Promise<{ success: boolean, error?: any }> {
@@ -32,8 +33,29 @@ export async function signInUser(data: FormValues): Promise<{ success: boolean, 
     await signInWithEmailAndPassword(auth, parsedData.data.email, parsedData.data.password);
     return { success: true };
   } catch (error) {
-    console.error("Firebase Auth Error:", error); // Log completo del error
+    console.error("Firebase SignIn Error:", error);
     let errorMessage = "Ocurrió un error inesperado durante el inicio de sesión.";
+    if (error instanceof FirebaseError) {
+        errorMessage = errorMessages[error.code] || `Error de Firebase: ${error.message} (código: ${error.code})`;
+    }
+    return { success: false, error: errorMessage };
+  }
+}
+
+
+export async function signUpUser(data: FormValues): Promise<{ success: boolean, error?: any }> {
+  const parsedData = formSchema.safeParse(data);
+
+  if (!parsedData.success) {
+    return { success: false, error: "Datos de formulario inválidos." };
+  }
+
+  try {
+    await createUserWithEmailAndPassword(auth, parsedData.data.email, parsedData.data.password);
+    return { success: true };
+  } catch (error) {
+    console.error("Firebase SignUp Error:", error);
+    let errorMessage = "Ocurrió un error inesperado durante el registro.";
     if (error instanceof FirebaseError) {
         errorMessage = errorMessages[error.code] || `Error de Firebase: ${error.message} (código: ${error.code})`;
     }

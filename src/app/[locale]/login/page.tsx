@@ -1,10 +1,8 @@
-
 "use client";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -12,9 +10,9 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, LogIn } from "lucide-react";
+import { Loader2, LogIn, UserPlus } from "lucide-react";
 import { Logo } from "@/components/logo";
-import { signInUser } from "./actions";
+import { signInUser, signUpUser } from "./actions";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Por favor ingrese un email válido." }),
@@ -27,6 +25,7 @@ export default function LoginPage() {
   const { toast } = useToast();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [actionType, setActionType] = useState<'signIn' | 'signUp'>('signIn');
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -38,15 +37,21 @@ export default function LoginPage() {
 
   async function onSubmit(data: FormValues) {
     setIsLoading(true);
-    const result = await signInUser(data);
+    
+    const result = actionType === 'signIn' 
+      ? await signInUser(data) 
+      : await signUpUser(data);
+
     setIsLoading(false);
 
     if (result.success) {
-      toast({ title: "Inicio de Sesión Exitoso", description: "Bienvenido a Metanoia.Click" });
+      const title = actionType === 'signIn' ? "Inicio de Sesión Exitoso" : "Cuenta Creada Exitosamente";
+      toast({ title: title, description: "Bienvenido a Metanoia.Click" });
       router.push("/dashboard");
     } else {
+      const title = actionType === 'signIn' ? "Error en Inicio de Sesión" : "Error al Crear Cuenta";
       toast({
-        title: "Error en Inicio de Sesión",
+        title: title,
         description: result.error,
         variant: "destructive",
       });
@@ -61,7 +66,7 @@ export default function LoginPage() {
               <Logo />
             </div>
             <CardTitle className="text-2xl">Bienvenido de Vuelta</CardTitle>
-            <CardDescription>Inicia sesión para acceder a tu Command Center</CardDescription>
+            <CardDescription>Inicia sesión o crea una cuenta para acceder a tu Command Center</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -92,14 +97,24 @@ export default function LoginPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                 {isLoading ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                 ) : (
-                    <LogIn className="mr-2 h-4 w-4" />
-                 )}
-                {isLoading ? "Ingresando..." : "Ingresar"}
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Button type="submit" className="w-full" disabled={isLoading} onClick={() => setActionType('signIn')}>
+                   {isLoading && actionType === 'signIn' ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                   ) : (
+                      <LogIn className="mr-2 h-4 w-4" />
+                   )}
+                  Ingresar
+                </Button>
+                <Button type="submit" variant="secondary" className="w-full" disabled={isLoading} onClick={() => setActionType('signUp')}>
+                   {isLoading && actionType === 'signUp' ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                   ) : (
+                      <UserPlus className="mr-2 h-4 w-4" />
+                   )}
+                  Crear Cuenta
+                </Button>
+              </div>
             </form>
           </Form>
         </CardContent>
