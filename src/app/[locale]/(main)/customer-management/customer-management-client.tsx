@@ -9,26 +9,38 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
 interface Customer {
   id: string;
   legalName: string;
   status: string;
-  lastContact: string; // This should be a timestamp in a real app
+  lastContact: string;
   value: number;
 }
 
 export default function CustomerManagementClient() {
   const t = useTranslations("CustomerManagement");
+  const tCommon = useTranslations("Common");
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // In a real app, you would fetch and update this data from Firestore
-    // For now, we will just show an empty state.
-    setLoading(false);
+    const q = query(collection(db, "customers"), orderBy("legalName", "asc"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const customersData = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            legalName: doc.data().legalName,
+            status: doc.data().status || 'Activo',
+            lastContact: doc.data().createdAt?.toDate().toLocaleDateString() || 'N/A',
+            value: doc.data().value || 0,
+        }));
+        setCustomers(customersData);
+        setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
 
@@ -37,6 +49,11 @@ export default function CustomerManagementClient() {
     'Nuevo': 'secondary',
     'En Riesgo': 'destructive',
   } as const;
+
+  const getStatusTranslation = (status: string) => {
+    const statusKey = `status${status.replace(/\s+/g, '')}` as 'statusActive' | 'statusNew' | 'statusAtRisk';
+    return t(statusKey);
+  }
 
   return (
     <div className="space-y-6">
@@ -55,7 +72,7 @@ export default function CustomerManagementClient() {
                     <Users className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">0</div>
+                    <div className="text-2xl font-bold">{customers.length}</div>
                     <p className="text-xs text-muted-foreground">+0 {t('sinceLastMonth')}</p>
                 </CardContent>
             </Card>
@@ -106,11 +123,11 @@ export default function CustomerManagementClient() {
                                 <TableCell className="font-medium">{customer.legalName}</TableCell>
                                 <TableCell>
                                     <Badge variant={statusVariant[customer.status as keyof typeof statusVariant] || 'default'}>
-                                        {customer.status}
+                                        {getStatusTranslation(customer.status)}
                                     </Badge>
                                 </TableCell>
                                 <TableCell>{customer.lastContact}</TableCell>
-                                <TableCell>{customer.value}</TableCell>
+                                <TableCell>{new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'USD' }).format(customer.value)}</TableCell>
                             </TableRow>
                           ))
                         )}

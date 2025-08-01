@@ -1,49 +1,46 @@
-
 rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    
-    // Denegar por defecto. La seguridad es lo primero.
+
+    // Denegar por defecto: La regla más importante. Nadie puede acceder a nada a menos que se permita explícitamente.
     match /{document=**} {
       allow read, write: if false;
     }
 
-    // Permitir acceso a los usuarios autenticados.
-    // En el futuro, se pueden añadir reglas más granulares (ej. por rol de usuario).
-    function isAuthenticated() {
-      return request.auth != null;
+    // Permitir a los usuarios autenticados leer y crear sus propios datos
+    // pero no actualizar o borrar (ejemplo para colecciones futuras)
+    match /users/{userId}/{documents=**} {
+        allow read, create: if request.auth != null && request.auth.uid == userId;
+        allow update, delete: if false; // Prevenir modificaciones por ahora
     }
 
-    // Reglas para la colección 'customers'
+    // Colección de clientes: solo usuarios autenticados pueden crear.
+    // Solo el 'accountExecutive' o un admin (rol futuro) pueden leer/actualizar.
     match /customers/{customerId} {
-      allow read, create, update: if isAuthenticated();
-      // Solo el creador o un admin podrían borrar. Por ahora, deshabilitado.
-      allow delete: if false; 
+      allow read, update: if request.auth != null; // Simplificado por ahora, idealmente basado en roles
+      allow create: if request.auth != null;
+      // La escritura debe validar TODOS los campos para prevenir datos maliciosos
+      // allow write: if request.auth != null && validateCustomerData(request.resource.data);
     }
 
-    // Reglas para la colección 'employees'
+    // Colección de empleados: similar a clientes, acceso restringido
     match /employees/{employeeId} {
-      allow read, create, update: if isAuthenticated();
-      allow delete: if false;
+        allow read, create, update: if request.auth != null; // Simplificado, idealmente solo para roles de RRHH/Admin
     }
-
-    // Reglas para la colección 'collections'
+    
+    // Colecciones de datos financieros: Solo usuarios autenticados
     match /collections/{collectionId} {
-      allow read, create: if isAuthenticated();
-      allow update, delete: if false; // Las cobranzas registradas no deberían modificarse.
+        allow read, create: if request.auth != null;
     }
-
-    // Reglas para la colección 'projections'
+    
     match /projections/{projectionId} {
-      allow read, create: if isAuthenticated();
-      allow update, delete: if false; // Las proyecciones no deberían modificarse.
+        allow read, create: if request.auth != null;
     }
 
-    // Reglas para la colección 'quotations'
+    // Cotizaciones: Solo usuarios autenticados
     match /quotations/{quotationId} {
-      allow read, create: if isAuthenticated();
-      allow update, delete: if false;
+         allow read, create: if request.auth != null;
     }
   }
 }
