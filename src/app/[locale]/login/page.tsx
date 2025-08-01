@@ -1,9 +1,10 @@
+
 "use client";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2, LogIn, UserPlus } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { signInUser, signUpUser } from "./actions";
+import { useAuth } from "@/hooks/use-auth";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Por favor ingrese un email válido." }),
@@ -24,8 +26,16 @@ type FormValues = z.infer<typeof formSchema>;
 export default function LoginPage() {
   const { toast } = useToast();
   const router = useRouter();
+  const { user, loading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [actionType, setActionType] = useState<'signIn' | 'signUp'>('signIn');
+
+  useEffect(() => {
+    if (user) {
+      router.push('/dashboard');
+    }
+  }, [user, router]);
+
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -47,7 +57,7 @@ export default function LoginPage() {
     if (result.success) {
       const title = actionType === 'signIn' ? "Inicio de Sesión Exitoso" : "Cuenta Creada Exitosamente";
       toast({ title: title, description: "Bienvenido a Metanoia.Click. Redirigiendo..." });
-      // La redirección ahora es manejada por el AuthProvider
+      // La redirección ahora se maneja en el useEffect
     } else {
       const title = actionType === 'signIn' ? "Error en Inicio de Sesión" : "Error al Crear Cuenta";
       toast({
@@ -56,6 +66,14 @@ export default function LoginPage() {
         variant: "destructive",
       });
     }
+  }
+  
+  if (loading || user) {
+     return (
+      <div className="flex h-screen items-center justify-center bg-background bg-page-gradient">
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+      </div>
+    );
   }
 
   return (
