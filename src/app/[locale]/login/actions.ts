@@ -18,6 +18,7 @@ const errorMessages: { [key: string]: string } = {
     'auth/user-not-found': 'No se encontró ningún usuario con este correo electrónico.',
     'auth/wrong-password': 'La contraseña es incorrecta.',
     'auth/invalid-email': 'El formato del correo electrónico no es válido.',
+    'auth/user-disabled': 'Esta cuenta de usuario ha sido deshabilitada.',
 };
 
 export async function signInUser(data: FormValues): Promise<{ success: boolean, error?: any }> {
@@ -28,13 +29,13 @@ export async function signInUser(data: FormValues): Promise<{ success: boolean, 
   }
 
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, parsedData.data.email, parsedData.data.password);
+    await signInWithEmailAndPassword(auth, parsedData.data.email, parsedData.data.password);
     return { success: true };
   } catch (error) {
-    console.error("Firebase Auth Error:", error);
+    console.error("Firebase Auth Error:", error); // Log completo del error
     let errorMessage = "Ocurrió un error inesperado durante el inicio de sesión.";
     if (error instanceof FirebaseError) {
-        errorMessage = errorMessages[error.code] || `Error desconocido: ${error.message}`;
+        errorMessage = errorMessages[error.code] || `Error de Firebase: ${error.message} (código: ${error.code})`;
     }
     return { success: false, error: errorMessage };
   }
