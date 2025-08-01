@@ -12,9 +12,11 @@ import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Users, ShieldCheck, Settings, KeyRound, PlusCircle, FileDown, Palette, Languages } from "lucide-react";
+import { Users, ShieldCheck, Settings, KeyRound, PlusCircle, FileDown, Palette, Languages, SidebarOpen } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTheme } from "next-themes";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useInterfaceBehavior } from "@/hooks/use-interface-behavior";
 
 
 // Mock Data
@@ -33,12 +35,29 @@ export default function SettingsClient() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const { theme, setTheme } = useTheme();
-
+  const { setSidebarVariant, setSidebarCollapsible } = useInterfaceBehavior();
 
   function onSelectChange(nextLocale: string) {
     startTransition(() => {
       router.replace(`/${nextLocale}`);
     });
+  }
+  
+  const handleBehaviorChange = (value: string) => {
+    switch(value) {
+      case 'fixed':
+        setSidebarVariant('sidebar');
+        setSidebarCollapsible('none');
+        break;
+      case 'icons':
+        setSidebarVariant('sidebar');
+        setSidebarCollapsible('icon');
+        break;
+      case 'hidden':
+        setSidebarVariant('sidebar');
+        setSidebarCollapsible('offcanvas');
+        break;
+    }
   }
 
   return (
@@ -175,6 +194,29 @@ export default function SettingsClient() {
                 <Button>{t('saveChanges')}</Button>
             </div>
           </CardContent>
+        </Card>
+
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2"><SidebarOpen />Comportamiento de la Interfaz</CardTitle>
+                <CardDescription>Personaliza la apariencia y comportamiento de la barra lateral.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <RadioGroup defaultValue="icons" onValueChange={handleBehaviorChange}>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="fixed" id="fixed"/>
+                        <Label htmlFor="fixed">Fija (Anclada)</Label>
+                    </div>
+                     <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="icons" id="icons"/>
+                        <Label htmlFor="icons">Solo Iconos (Compacta)</Label>
+                    </div>
+                     <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="hidden" id="hidden"/>
+                        <Label htmlFor="hidden">Oculta (Flotante)</Label>
+                    </div>
+                </RadioGroup>
+            </CardContent>
         </Card>
         
         <Card>

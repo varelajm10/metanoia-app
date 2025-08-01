@@ -40,7 +40,8 @@ import {
   SidebarMenuSubButton,
   SidebarTrigger,
   useSidebar,
-  sidebarMenuButtonVariants
+  sidebarMenuButtonVariants,
+  SidebarProps
 } from '@/components/ui/sidebar';
 import {
   Collapsible,
@@ -137,9 +138,9 @@ function MenuItem({ item }: { item: MenuItemProps }) {
 }
 
 
-export function AppSidebar() {
+export function AppSidebar({ variant, collapsible }: SidebarProps) {
   const t = useTranslations('Sidebar');
-  const { state: sidebarState, setOpenMobile } = useSidebar();
+  const { state: sidebarState } = useSidebar();
 
   const menuItems: MenuItemProps[] = [
     {
@@ -188,7 +189,7 @@ export function AppSidebar() {
   ];
 
   return (
-    <Sidebar>
+    <Sidebar variant={variant} collapsible={collapsible}>
         <SidebarHeader className="h-20 flex items-center justify-center">
             <Logo />
         </SidebarHeader>
