@@ -50,9 +50,7 @@ export default async function RootLayout({
             defaultTheme="dark"
             disableTransitionOnChange
           >
-            <AuthProvider>
-              {children}
-            </AuthProvider>
+            {children}
             <Toaster />
           </ThemeProvider>
         </NextIntlClientProvider>
