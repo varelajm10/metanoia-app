@@ -19,9 +19,8 @@ export default function MainAppLayout({
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
-    }
+    // La lógica de redirección ahora está centralizada en AuthProvider
+    // por lo que este useEffect ya no es necesario aquí.
   }, [user, loading, router]);
 
   if (loading || !user) {

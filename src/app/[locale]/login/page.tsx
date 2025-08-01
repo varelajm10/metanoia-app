@@ -46,8 +46,8 @@ export default function LoginPage() {
 
     if (result.success) {
       const title = actionType === 'signIn' ? "Inicio de Sesión Exitoso" : "Cuenta Creada Exitosamente";
-      toast({ title: title, description: "Bienvenido a Metanoia.Click" });
-      router.push("/dashboard");
+      toast({ title: title, description: "Bienvenido a Metanoia.Click. Redirigiendo..." });
+      // La redirección ahora es manejada por el AuthProvider
     } else {
       const title = actionType === 'signIn' ? "Error en Inicio de Sesión" : "Error al Crear Cuenta";
       toast({
