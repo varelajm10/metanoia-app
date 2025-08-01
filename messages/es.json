@@ -156,9 +156,9 @@
     "tableStatus": "Estado",
     "tableLastContact": "Último Contacto",
     "tableValue": "Valor",
-    "statusActive": "Activo",
-    "statusNew": "Nuevo",
-    "statusAtRisk": "En Riesgo"
+    "statusActivo": "Activo",
+    "statusNuevo": "Nuevo",
+    "statusEnRiesgo": "En Riesgo"
   },
   "NewCustomerForm": {
     "title": "Crear Nuevo Cliente",
@@ -524,3 +524,5 @@
     "loading": "Cargando..."
   }
 }
+
+    

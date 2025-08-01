@@ -38,6 +38,9 @@ export default function CustomerManagementClient() {
         }));
         setCustomers(customersData);
         setLoading(false);
+    }, (error) => {
+        console.error("Error fetching customers:", error);
+        setLoading(false);
     });
 
     return () => unsubscribe();
@@ -51,7 +54,7 @@ export default function CustomerManagementClient() {
   } as const;
 
   const getStatusTranslation = (status: string) => {
-    const statusKey = `status${status.replace(/\s+/g, '')}` as 'statusActive' | 'statusNew' | 'statusAtRisk';
+    const statusKey = `status${status.replace(/\s+/g, '')}` as 'statusActivo' | 'statusNuevo' | 'statusEnRiesgo';
     return t(statusKey);
   }
 
@@ -139,3 +142,5 @@ export default function CustomerManagementClient() {
     </div>
   );
 }
+
+    
