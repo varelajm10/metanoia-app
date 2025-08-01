@@ -71,7 +71,7 @@ function MenuItem({ item }: { item: MenuItemProps }) {
         <SidebarMenuButton asChild isActive={pathname.endsWith(item.href!)} tooltip={item.title}>
           <Link href={item.href!}>
             <item.icon />
-            <span className="truncate">{item.title}</span>
+            {isExpanded ? <span className="truncate">{item.title}</span> : <span className="sr-only">{item.title}</span>}
           </Link>
         </SidebarMenuButton>
       </SidebarMenuItem>
