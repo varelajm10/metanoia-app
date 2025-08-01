@@ -1,4 +1,3 @@
-
 "use client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -8,14 +7,23 @@ import { Warehouse, PackageSearch, Clock, AlertTriangle } from "lucide-react";
 import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
-const lowStockItems: any[] = [];
+const lowStockItems = [
+    { id: 'PROD-1024', name: 'Sensor de Presión X-200', category: 'Sensores', stock: 12, reorderPoint: 20 },
+    { id: 'PROD-3050', name: 'Microcontrolador ATMega Pro', category: 'Componentes', stock: 25, reorderPoint: 30 },
+    { id: 'PROD-8123', name: 'Cableado Estructurado 5m', category: 'Accesorios', stock: 48, reorderPoint: 50 },
+];
 
 const COLORS = ['hsl(var(--primary))', 'hsl(var(--accent))', 'hsl(var(--secondary))', 'hsl(220, 13%, 63%)'];
 
 export default function IntelligentInventoryClient() {
   const t = useTranslations("IntelligentInventory");
   
-  const inventoryByCategory: any[] = [];
+  const inventoryByCategory = [
+      { name: 'Sensores', value: 120000 },
+      { name: 'Componentes', value: 85000 },
+      { name: 'Actuadores', value: 65000 },
+      { name: 'Accesorios', value: 30000 },
+  ];
 
   return (
     <div className="space-y-8">
@@ -26,8 +34,8 @@ export default function IntelligentInventoryClient() {
                     <Warehouse className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">$0</div>
-                    <p className="text-xs text-muted-foreground">+0% {t('vsLastMonth')}</p>
+                    <div className="text-2xl font-bold">$300,000</div>
+                    <p className="text-xs text-muted-foreground">+5% {t('vsLastMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -36,7 +44,7 @@ export default function IntelligentInventoryClient() {
                     <PackageSearch className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">0</div>
+                    <div className="text-2xl font-bold">4.5</div>
                     <p className="text-xs text-muted-foreground">{t('annualRatio')}</p>
                 </CardContent>
             </Card>
@@ -46,7 +54,7 @@ export default function IntelligentInventoryClient() {
                     <Clock className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">0</div>
+                    <div className="text-2xl font-bold">81</div>
                     <p className="text-xs text-muted-foreground">{t('avgToDeplete')}</p>
                 </CardContent>
             </Card>
@@ -56,7 +64,7 @@ export default function IntelligentInventoryClient() {
                     <AlertTriangle className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold text-destructive">0</div>
+                    <div className="text-2xl font-bold text-destructive">3</div>
                     <p className="text-xs text-muted-foreground">{t('belowReorderPoint')}</p>
                 </CardContent>
             </Card>
@@ -112,7 +120,7 @@ export default function IntelligentInventoryClient() {
                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                 ))}
                             </Pie>
-                            <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: 'var(--radius)' }}/>
+                            <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: 'var(--radius)' }} formatter={(value: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value)} />
                             <Legend iconType="circle" />
                         </PieChart>
                     </ResponsiveContainer>

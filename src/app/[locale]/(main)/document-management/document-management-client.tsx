@@ -1,4 +1,3 @@
-
 "use client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -8,7 +7,12 @@ import { FolderKanban, FileCheck, HardDrive, Share2, UploadCloud, FileText, User
 import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
-const recentDocuments: any[] = [];
+const recentDocuments = [
+    { id: 'DOC-01', name: 'Contrato Cliente A.pdf', category: 'Contratos', status: 'Aprobado', modified: '2024-07-29' },
+    { id: 'DOC-02', name: 'Balance Q2 2024.xlsx', category: 'Finanzas', status: 'En Revisión', modified: '2024-07-28' },
+    { id: 'DOC-03', name: 'Presentación de Ventas.pptx', category: 'Marketing', status: 'Borrador', modified: '2024-07-27' },
+    { id: 'DOC-04', name: 'Manual de Políticas Internas.docx', category: 'RRHH', status: 'Publicado', modified: '2024-07-25' },
+];
 
 export default function DocumentManagementClient() {
   const t = useTranslations("DocumentManagement");
@@ -20,6 +24,16 @@ export default function DocumentManagementClient() {
       'Publicado': 'default',
   } as const;
 
+  const getStatusTranslation = (status: string) => {
+    const keyMap: { [key: string]: 'statusApproved' | 'statusInReview' | 'statusDraft' | 'statusPublished' } = {
+        'Aprobado': 'statusApproved',
+        'En Revisión': 'statusInReview',
+        'Borrador': 'statusDraft',
+        'Publicado': 'statusPublished',
+    };
+    return t(keyMap[status]);
+  }
+
   return (
     <div className="space-y-8">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -29,8 +43,8 @@ export default function DocumentManagementClient() {
                     <FolderKanban className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">0</div>
-                    <p className="text-xs text-muted-foreground">+0 {t('thisMonth')}</p>
+                    <div className="text-2xl font-bold">1,482</div>
+                    <p className="text-xs text-muted-foreground">+52 {t('thisMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -39,8 +53,8 @@ export default function DocumentManagementClient() {
                     <FileCheck className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">0</div>
-                    <p className="text-xs text-muted-foreground">0 {t('olderThan48h')}</p>
+                    <div className="text-2xl font-bold">15</div>
+                    <p className="text-xs text-muted-foreground">{t('olderThan48h')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -49,8 +63,8 @@ export default function DocumentManagementClient() {
                     <HardDrive className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">0 GB</div>
-                    <p className="text-xs text-muted-foreground">0% {t('ofTotalQuota')}</p>
+                    <div className="text-2xl font-bold">25.6 GB</div>
+                    <p className="text-xs text-muted-foreground">51% {t('ofTotalQuota')}</p>
                 </CardContent>
             </Card>
              <Card>
@@ -59,7 +73,7 @@ export default function DocumentManagementClient() {
                     <Share2 className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">0</div>
+                    <div className="text-2xl font-bold">89</div>
                     <p className="text-xs text-muted-foreground">{t('sharedExternally')}</p>
                 </CardContent>
             </Card>
@@ -117,7 +131,7 @@ export default function DocumentManagementClient() {
                                     <TableCell><Badge variant="outline">{doc.category}</Badge></TableCell>
                                     <TableCell>
                                         <Badge variant={statusVariant[doc.status as keyof typeof statusVariant] || 'default'}>
-                                            {doc.status}
+                                            {getStatusTranslation(doc.status)}
                                         </Badge>
                                     </TableCell>
                                     <TableCell>{doc.modified}</TableCell>

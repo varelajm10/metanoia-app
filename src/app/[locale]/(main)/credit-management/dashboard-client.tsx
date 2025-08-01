@@ -1,4 +1,3 @@
-
 "use client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -8,8 +7,19 @@ import { DollarSign, TrendingDown, Target, ShieldCheck } from "lucide-react";
 import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
-const recentRequests: any[] = [];
-const paymentPipeline: any[] = [];
+const recentRequests = [
+    { id: 'REQ-001', client: 'Tech Solutions Inc.', amount: '$5,000.00', status: 'Aprobado', date: '2024-07-28' },
+    { id: 'REQ-002', client: 'Innovate LLC', amount: '$12,000.00', status: 'En Revisión', date: '2024-07-27' },
+    { id: 'REQ-003', client: 'Global Exports', amount: '$7,500.00', status: 'Aprobado', date: '2024-07-26' },
+    { id: 'REQ-004', client: 'Quantum Dynamics', amount: '$25,000.00', status: 'Rechazado', date: '2024-07-25' },
+];
+
+const paymentPipeline = [
+    { name: 'Próximos 7 días', amount: 15000 },
+    { name: '8-15 días', amount: 25000 },
+    { name: '16-30 días', amount: 18000 },
+    { name: '30+ días', amount: 5000 },
+];
 
 export default function CreditManagementDashboardClient() {
   const t = useTranslations("CreditManagement");
@@ -21,6 +31,26 @@ export default function CreditManagementDashboardClient() {
       'Rechazado': 'destructive',
   } as const;
 
+  const getStatusTranslation = (status: string) => {
+    const statusKey = `status${status.replace(/\s+/g, '')}` as 'statusApproved' | 'statusInReview' | 'statusRejected';
+    return t(statusKey);
+  }
+
+  const getPipelineTranslation = (name: string) => {
+    const keyMap: { [key: string]: 'next7days' | 'days8_15' | 'days16_30' | 'days30plus' } = {
+      'Próximos 7 días': 'next7days',
+      '8-15 días': 'days8_15',
+      '16-30 días': 'days16_30',
+      '30+ días': 'days30plus',
+    };
+    return t(keyMap[name]);
+  }
+
+  const localizedPaymentPipeline = paymentPipeline.map(p => ({
+    ...p,
+    name: getPipelineTranslation(p.name),
+  }));
+
   return (
     <div className="space-y-8">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -30,8 +60,8 @@ export default function CreditManagementDashboardClient() {
                     <DollarSign className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">$0</div>
-                    <p className="text-xs text-muted-foreground">+0% {t('vsLastMonth')}</p>
+                    <div className="text-2xl font-bold">$1.2M</div>
+                    <p className="text-xs text-muted-foreground">+2.5% {t('vsLastMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -40,8 +70,8 @@ export default function CreditManagementDashboardClient() {
                     <TrendingDown className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">0%</div>
-                    <p className="text-xs text-muted-foreground">-0% {t('vsLastMonth')}</p>
+                    <div className="text-2xl font-bold">4.2%</div>
+                    <p className="text-xs text-muted-foreground">-0.5% {t('vsLastMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -50,8 +80,8 @@ export default function CreditManagementDashboardClient() {
                     <Target className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">$0</div>
-                    <p className="text-xs text-muted-foreground">0% {t('ofGoal')}</p>
+                    <div className="text-2xl font-bold">$150,000</div>
+                    <p className="text-xs text-muted-foreground">75% {t('ofGoal')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -60,7 +90,7 @@ export default function CreditManagementDashboardClient() {
                     <ShieldCheck className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold text-destructive">0</div>
+                    <div className="text-2xl font-bold text-destructive">5</div>
                     <p className="text-xs text-muted-foreground">{t('highDefaultProbability')}</p>
                 </CardContent>
             </Card>
@@ -96,7 +126,7 @@ export default function CreditManagementDashboardClient() {
                                     <TableCell>{req.amount}</TableCell>
                                     <TableCell>
                                         <Badge variant={statusVariant[req.status as keyof typeof statusVariant] || 'default'}>
-                                            {req.status}
+                                            {getStatusTranslation(req.status)}
                                         </Badge>
                                     </TableCell>
                                     <TableCell>{req.date}</TableCell>
@@ -114,7 +144,7 @@ export default function CreditManagementDashboardClient() {
                 </CardHeader>
                 <CardContent className="h-[250px] w-full">
                      <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={paymentPipeline} layout="vertical" margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
+                        <BarChart data={localizedPaymentPipeline} layout="vertical" margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
                             <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="hsl(var(--border) / 0.5)" />
                             <XAxis type="number" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `$${Number(value)/1000}k`} />
                             <YAxis type="category" dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} width={80} />

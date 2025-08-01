@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
@@ -10,9 +9,24 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart3, CalendarClock, CheckCircle, Clock, Edit, FileText, PlusCircle, Send, Trash2, XCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-const myReports: any[] = [];
-const scheduledReports: any[] = [];
-const reportAnalyticsData: any[] = [];
+const myReports = [
+    { id: 'REP-01', name: 'Ventas Mensuales por Región', category: 'Ventas', lastExecuted: '2024-07-30', format: 'PDF' },
+    { id: 'REP-02', name: 'Performance de Cartera de Clientes', category: 'Finanzas', lastExecuted: '2024-07-29', format: 'XLSX' },
+    { id: 'REP-03', name: 'Actividad de Soporte', category: 'Atención al Cliente', lastExecuted: 'Nunca', format: 'PDF' },
+    { id: 'REP-04', name: 'Resumen de Inventario', category: 'Operaciones', lastExecuted: '2024-07-28', format: 'CSV' },
+];
+
+const scheduledReports = [
+    { id: 'SCH-01', reportName: 'Ventas Mensuales por Región', frequency: 'Mensual', nextExecution: '2024-08-31', recipients: 'directorio@...', status: 'Activo' },
+    { id: 'SCH-02', reportName: 'Performance de Cartera de Clientes', frequency: 'Semanal', nextExecution: '2024-08-05', recipients: 'finanzas@...', status: 'Activo' },
+    { id: 'SCH-03', reportName: 'Reporte de Tickets Abiertos', frequency: 'Diario', nextExecution: '2024-08-01', recipients: 'soporte@...', status: 'Inactivo' },
+];
+
+const reportAnalyticsData = [
+    { month: 'Ene', executions: 120 }, { month: 'Feb', executions: 130 }, { month: 'Mar', executions: 150 },
+    { month: 'Abr', executions: 140 }, { month: 'May', executions: 160 }, { month: 'Jun', executions: 155 },
+    { month: 'Jul', executions: 180 },
+];
 
 export default function ReportsClient() {
   const t = useTranslations('Reporting');
@@ -21,6 +35,11 @@ export default function ReportsClient() {
     'Activo': 'default',
     'Inactivo': 'secondary',
   } as const;
+
+  const getStatusTranslation = (status: 'Activo' | 'Inactivo') => {
+      const keyMap = { 'Activo': 'statusActive', 'Inactivo': 'statusInactive' };
+      return t(keyMap[status]);
+  }
 
   return (
     <Tabs defaultValue="my-reports" className="space-y-4">
@@ -60,7 +79,7 @@ export default function ReportsClient() {
                       <TableRow key={report.id} className="hover:bg-muted">
                         <TableCell className="font-medium">{report.name}</TableCell>
                         <TableCell><Badge variant="outline">{report.category}</Badge></TableCell>
-                        <TableCell>{report.lastExecuted}</TableCell>
+                        <TableCell>{report.lastExecuted === 'Nunca' ? t('never') : report.lastExecuted}</TableCell>
                         <TableCell>{report.format}</TableCell>
                         <TableCell className="text-right space-x-2">
                             <Button variant="outline" size="sm"><Send className="mr-2 h-4 w-4"/> {t('actionExecute')}</Button>
@@ -108,7 +127,7 @@ export default function ReportsClient() {
                         <TableCell className="font-mono text-xs">{schedule.recipients}</TableCell>
                          <TableCell>
                              <Badge variant={statusVariant[schedule.status as keyof typeof statusVariant] || 'default'}>
-                                {schedule.status}
+                                {getStatusTranslation(schedule.status as 'Activo' | 'Inactivo')}
                              </Badge>
                          </TableCell>
                         <TableCell className="text-right space-x-2">
@@ -132,8 +151,8 @@ export default function ReportsClient() {
                     <FileText className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">0</div>
-                    <p className="text-xs text-muted-foreground">+0% {t('vsPreviousMonth')}</p>
+                    <div className="text-2xl font-bold">180</div>
+                    <p className="text-xs text-muted-foreground">+15% {t('vsPreviousMonth')}</p>
                 </CardContent>
             </Card>
              <Card>
@@ -142,7 +161,7 @@ export default function ReportsClient() {
                     <CheckCircle className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">0%</div>
+                    <div className="text-2xl font-bold">99.9%</div>
                     <p className="text-xs text-muted-foreground">{t('emailsAndWebhooks')}</p>
                 </CardContent>
             </Card>
@@ -152,8 +171,8 @@ export default function ReportsClient() {
                     <Clock className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">0s</div>
-                    <p className="text-xs text-muted-foreground">-0s {t('vsPreviousMonth')}</p>
+                    <div className="text-2xl font-bold">12s</div>
+                    <p className="text-xs text-muted-foreground">-2s {t('vsPreviousMonth')}</p>
                 </CardContent>
             </Card>
         </div>

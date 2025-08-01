@@ -1,4 +1,3 @@
-
 "use client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -8,8 +7,19 @@ import { Users, RefreshCw, UserPlus, Cake, Briefcase, Clock, Star } from "lucide
 import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
-const newHires: any[] = [];
-const departmentData: any[] = [];
+const newHires = [
+    { name: 'Elena Petrova', position: 'AI Engineer', department: 'Tecnología', date: '2024-07-15' },
+    { name: 'John Sullivan', position: 'Sales Executive', department: 'Ventas', date: '2024-07-10' },
+    { name: 'Aisha Khan', position: 'Marketing Specialist', department: 'Marketing', date: '2024-07-01' },
+];
+
+const departmentData = [
+    { name: 'Tecnología', count: 45 },
+    { name: 'Ventas', count: 30 },
+    { name: 'Marketing', count: 15 },
+    { name: 'Operaciones', count: 25 },
+    { name: 'Finanzas', count: 10 },
+];
 
 export default function HRDashboardClient() {
   const t = useTranslations("HR");
@@ -22,8 +32,8 @@ export default function HRDashboardClient() {
                     <Users className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">0</div>
-                    <p className="text-xs text-muted-foreground">+0 {t('vsPreviousMonth')}</p>
+                    <div className="text-2xl font-bold">125</div>
+                    <p className="text-xs text-muted-foreground">+3 {t('vsPreviousMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -32,7 +42,7 @@ export default function HRDashboardClient() {
                     <Briefcase className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">$0</div>
+                    <div className="text-2xl font-bold">$65,000</div>
                     <p className="text-xs text-muted-foreground">{t('monthlyAvg')}</p>
                 </CardContent>
             </Card>
@@ -42,7 +52,7 @@ export default function HRDashboardClient() {
                     <Clock className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">0 {t('years')}</div>
+                    <div className="text-2xl font-bold">3.2 {t('years')}</div>
                     <p className="text-xs text-muted-foreground">{t('companyWide')}</p>
                 </CardContent>
             </Card>
@@ -52,7 +62,7 @@ export default function HRDashboardClient() {
                     <Star className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">0/5</div>
+                    <div className="text-2xl font-bold">4.1/5</div>
                     <p className="text-xs text-muted-foreground">{t('lastReviewCycle')}</p>
                 </CardContent>
             </Card>
