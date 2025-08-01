@@ -7,17 +7,8 @@ import { Bot, Workflow, ArrowUpCircle, AlertTriangle } from "lucide-react";
 import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
-const recentExecutions = [
-    { id: 'WFE-987', workflow: 'Onboarding de Cliente', status: 'Completado', start: '2025-07-31 10:00', duration: '2.5m' },
-    { id: 'WFE-986', workflow: 'Generación de Factura', status: 'Completado', start: '2025-07-31 09:45', duration: '1.2m' },
-    { id: 'WFE-985', workflow: 'Sincronización de Inventario', status: 'Falló', start: '2025-07-31 09:30', duration: '0.5m' },
-    { id: 'WFE-984', workflow: 'Reporte Financiero Mensual', status: 'Completado', start: '2025-07-31 09:00', duration: '5.1m' },
-];
-
-const efficiencyData = [
-    { name: 'Manual', time: 45 },
-    { name: 'Automatizado', time: 5 },
-];
+const recentExecutions: any[] = [];
+const efficiencyData: any[] = [];
 
 export default function ProcessAutomationDashboardClient() {
   const t = useTranslations("ProcessAutomation");
@@ -44,8 +35,8 @@ export default function ProcessAutomationDashboardClient() {
                     <Workflow className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">24</div>
-                    <p className="text-xs text-muted-foreground">+2 {t('newThisMonth')}</p>
+                    <div className="text-2xl font-bold">0</div>
+                    <p className="text-xs text-muted-foreground">+0 {t('newThisMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -54,8 +45,8 @@ export default function ProcessAutomationDashboardClient() {
                     <Bot className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">1,254</div>
-                    <p className="text-xs text-muted-foreground">99.8% {t('successRate')}</p>
+                    <div className="text-2xl font-bold">0</div>
+                    <p className="text-xs text-muted-foreground">0% {t('successRate')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -64,7 +55,7 @@ export default function ProcessAutomationDashboardClient() {
                     <ArrowUpCircle className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">160</div>
+                    <div className="text-2xl font-bold">0</div>
                     <p className="text-xs text-muted-foreground">{t('estimatedAutomationROI')}</p>
                 </CardContent>
             </Card>
@@ -74,7 +65,7 @@ export default function ProcessAutomationDashboardClient() {
                     <AlertTriangle className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold text-destructive">3</div>
+                    <div className="text-2xl font-bold text-destructive">0</div>
                     <p className="text-xs text-muted-foreground">{t('requireReview')}</p>
                 </CardContent>
             </Card>

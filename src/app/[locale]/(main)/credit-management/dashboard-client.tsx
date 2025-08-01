@@ -8,19 +8,8 @@ import { DollarSign, TrendingDown, Target, ShieldCheck } from "lucide-react";
 import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
-const recentRequests = [
-    { id: 'REQ-001', client: 'Tech Solutions Inc.', amount: '$5,000.00', status: 'Aprobado', date: '2025-07-31' },
-    { id: 'REQ-002', client: 'Innovate LLC', amount: '$12,000.00', status: 'En Revisión', date: '2025-07-30' },
-    { id: 'REQ-003', client: 'Global Exports', amount: '$7,500.00', status: 'Aprobado', date: '2025-07-29' },
-    { id: 'REQ-004', client: 'Quantum Dynamics', amount: '$25,000.00', status: 'Rechazado', date: '2025-07-28' },
-];
-
-const paymentPipeline = [
-    { name: 'Próximos 7 días', amount: 15000 },
-    { name: '8-15 días', amount: 25000 },
-    { name: '16-30 días', amount: 18000 },
-    { name: '30+ días', amount: 5000 },
-];
+const recentRequests: any[] = [];
+const paymentPipeline: any[] = [];
 
 export default function CreditManagementDashboardClient() {
   const t = useTranslations("CreditManagement");
@@ -39,6 +28,7 @@ export default function CreditManagementDashboardClient() {
             key = 'statusApproved';
             break;
         case 'En Revisión':
+        case 'En Revision': // Handle variations
             key = 'statusInReview';
             break;
         case 'Rechazado':
@@ -74,8 +64,8 @@ export default function CreditManagementDashboardClient() {
                     <DollarSign className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">$1.2M</div>
-                    <p className="text-xs text-muted-foreground">+2.5% {t('vsLastMonth')}</p>
+                    <div className="text-2xl font-bold">$0</div>
+                    <p className="text-xs text-muted-foreground">+0% {t('vsLastMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -84,8 +74,8 @@ export default function CreditManagementDashboardClient() {
                     <TrendingDown className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">4.2%</div>
-                    <p className="text-xs text-muted-foreground">-0.5% {t('vsLastMonth')}</p>
+                    <div className="text-2xl font-bold">0%</div>
+                    <p className="text-xs text-muted-foreground">-0% {t('vsLastMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -94,8 +84,8 @@ export default function CreditManagementDashboardClient() {
                     <Target className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">$150,000</div>
-                    <p className="text-xs text-muted-foreground">75% {t('ofGoal')}</p>
+                    <div className="text-2xl font-bold">$0</div>
+                    <p className="text-xs text-muted-foreground">0% {t('ofGoal')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -104,7 +94,7 @@ export default function CreditManagementDashboardClient() {
                     <ShieldCheck className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold text-destructive">5</div>
+                    <div className="text-2xl font-bold text-destructive">0</div>
                     <p className="text-xs text-muted-foreground">{t('highDefaultProbability')}</p>
                 </CardContent>
             </Card>

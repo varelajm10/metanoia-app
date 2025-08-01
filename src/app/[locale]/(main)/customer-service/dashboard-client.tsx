@@ -7,22 +7,16 @@ import { Ticket, Clock, Smile, Phone, Mail, MessageSquare } from "lucide-react";
 import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
-const recentTickets = [
-  { id: 'TKT-7892', subject: 'Problema con la facturación', client: 'Innovate LLC', priority: 'Alta', status: 'Abierto' },
-  { id: 'TKT-7891', subject: 'Consulta sobre API', client: 'Tech Solutions Inc.', priority: 'Media', status: 'En Progreso' },
-  { id: 'TKT-7890', subject: 'No puedo acceder a mi cuenta', client: 'Global Exports', priority: 'Alta', status: 'Abierto' },
-  { id: 'TKT-7889', subject: 'Reporte de bug en dashboard', client: 'Quantum Dynamics', priority: 'Baja', status: 'Resuelto' },
-];
-
+const recentTickets: any[] = [];
 const COLORS = ['hsl(var(--primary))', 'hsl(var(--accent))', 'hsl(var(--secondary))'];
 
 export default function CustomerServiceDashboardClient() {
   const t = useTranslations("CustomerService");
 
   const channelData = [
-      { name: t('channelEmail'), value: 450, icon: Mail },
-      { name: t('channelPhone'), value: 200, icon: Phone },
-      { name: t('channelChat'), value: 350, icon: MessageSquare },
+      { name: t('channelEmail'), value: 0, icon: Mail },
+      { name: t('channelPhone'), value: 0, icon: Phone },
+      { name: t('channelChat'), value: 0, icon: MessageSquare },
   ];
 
   const priorityVariant = {
@@ -58,8 +52,8 @@ export default function CustomerServiceDashboardClient() {
                     <Ticket className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">125</div>
-                    <p className="text-xs text-muted-foreground">+12 {t('last24h')}</p>
+                    <div className="text-2xl font-bold">0</div>
+                    <p className="text-xs text-muted-foreground">+0 {t('last24h')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -68,7 +62,7 @@ export default function CustomerServiceDashboardClient() {
                     <Clock className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">1h 32m</div>
+                    <div className="text-2xl font-bold">0h 0m</div>
                     <p className="text-xs text-muted-foreground">{t('withinSLA')}</p>
                 </CardContent>
             </Card>
@@ -78,8 +72,8 @@ export default function CustomerServiceDashboardClient() {
                     <Smile className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">92%</div>
-                    <p className="text-xs text-muted-foreground">+1.2% {t('vsLastWeek')}</p>
+                    <div className="text-2xl font-bold">0%</div>
+                    <p className="text-xs text-muted-foreground">+0% {t('vsLastWeek')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -88,7 +82,7 @@ export default function CustomerServiceDashboardClient() {
                     <Ticket className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">85%</div>
+                    <div className="text-2xl font-bold">0%</div>
                     <p className="text-xs text-muted-foreground">{t('firstContactResolution')}</p>
                 </CardContent>
             </Card>

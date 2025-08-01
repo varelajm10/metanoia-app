@@ -7,12 +7,7 @@ import { FolderKanban, FileCheck, HardDrive, Share2, UploadCloud, FileText, User
 import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
-const recentDocuments = [
-    { id: 'DOC-01', name: 'Contrato Cliente A.pdf', category: 'Contratos', status: 'Aprobado', modified: '2025-07-31' },
-    { id: 'DOC-02', name: 'Balance Q2 2025.xlsx', category: 'Finanzas', status: 'En Revisión', modified: '2025-07-30' },
-    { id: 'DOC-03', name: 'Presentación de Ventas.pptx', category: 'Marketing', status: 'Borrador', modified: '2025-07-29' },
-    { id: 'DOC-04', name: 'Manual de Políticas Internas.docx', category: 'RRHH', status: 'Publicado', modified: '2025-07-28' },
-];
+const recentDocuments: any[] = [];
 
 export default function DocumentManagementClient() {
   const t = useTranslations("DocumentManagement");
@@ -43,8 +38,8 @@ export default function DocumentManagementClient() {
                     <FolderKanban className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">1,482</div>
-                    <p className="text-xs text-muted-foreground">+52 {t('thisMonth')}</p>
+                    <div className="text-2xl font-bold">0</div>
+                    <p className="text-xs text-muted-foreground">+0 {t('thisMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -53,8 +48,8 @@ export default function DocumentManagementClient() {
                     <FileCheck className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">15</div>
-                    <p className="text-xs text-muted-foreground">{t('olderThan48h')}</p>
+                    <div className="text-2xl font-bold">0</div>
+                    <p className="text-xs text-muted-foreground">0 {t('olderThan48h')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -63,8 +58,8 @@ export default function DocumentManagementClient() {
                     <HardDrive className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">25.6 GB</div>
-                    <p className="text-xs text-muted-foreground">51% {t('ofTotalQuota')}</p>
+                    <div className="text-2xl font-bold">0 GB</div>
+                    <p className="text-xs text-muted-foreground">0% {t('ofTotalQuota')}</p>
                 </CardContent>
             </Card>
              <Card>
@@ -73,7 +68,7 @@ export default function DocumentManagementClient() {
                     <Share2 className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">89</div>
+                    <div className="text-2xl font-bold">0</div>
                     <p className="text-xs text-muted-foreground">{t('sharedExternally')}</p>
                 </CardContent>
             </Card>

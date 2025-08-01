@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useTransition } from "react";
@@ -17,17 +16,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 
 // Mock Data
-const users = [
-  { id: 'usr_001', name: 'Super Usuario', email: 'admin@metanoia.click', role: 'SUPER_ADMIN', status: 'activo' },
-  { id: 'usr_002', name: 'Analista Financiero', email: 'finance@metanoia.click', role: 'Analista Financiero', status: 'activo' },
-  { id: 'usr_003', name: 'Agente de Soporte', email: 'support@metanoia.click', role: 'Agente de Soporte', status: 'inactivo' },
-];
-
-const roles = [
-  { id: 'role_01', name: 'SUPER_ADMIN', description: 'Acceso total al sistema.', permissions: 'TODOS' },
-  { id: 'role_02', name: 'Analista Financiero', description: 'Acceso a módulos financieros y de BI.', permissions: 'analisis-financiero, business-intelligence' },
-  { id: 'role_03', name: 'Agente de Soporte', description: 'Acceso a módulos de atención al cliente.', permissions: 'atencion-al-cliente' },
-];
+const users: any[] = [];
+const roles: any[] = [];
 
 const statusVariant = {
   activo: 'default',
@@ -93,19 +83,23 @@ export default function SettingsClient() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {users.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell className="font-medium">{user.name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.role}</TableCell>
-                    <TableCell>
-                      <Badge variant={statusVariant[user.status as keyof typeof statusVariant]}>{user.status}</Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button variant="ghost" size="sm">{t('actionManage')}</Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {users.length === 0 ? (
+                  <TableRow><TableCell colSpan={5} className="h-24 text-center">No hay usuarios.</TableCell></TableRow>
+                ) : (
+                  users.map((user) => (
+                    <TableRow key={user.id}>
+                      <TableCell className="font-medium">{user.name}</TableCell>
+                      <TableCell>{user.email}</TableCell>
+                      <TableCell>{user.role}</TableCell>
+                      <TableCell>
+                        <Badge variant={statusVariant[user.status as keyof typeof statusVariant]}>{user.status}</Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button variant="ghost" size="sm">{t('actionManage')}</Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
           </CardContent>
@@ -133,16 +127,20 @@ export default function SettingsClient() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {roles.map((role) => (
-                  <TableRow key={role.id}>
-                    <TableCell className="font-medium">{role.name}</TableCell>
-                    <TableCell>{role.description}</TableCell>
-                    <TableCell><Badge variant="outline">{role.permissions}</Badge></TableCell>
-                    <TableCell className="text-right">
-                      <Button variant="ghost" size="sm">{t('actionEdit')}</Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {roles.length === 0 ? (
+                   <TableRow><TableCell colSpan={4} className="h-24 text-center">No hay roles creados.</TableCell></TableRow>
+                ) : (
+                  roles.map((role) => (
+                    <TableRow key={role.id}>
+                      <TableCell className="font-medium">{role.name}</TableCell>
+                      <TableCell>{role.description}</TableCell>
+                      <TableCell><Badge variant="outline">{role.permissions}</Badge></TableCell>
+                      <TableCell className="text-right">
+                        <Button variant="ghost" size="sm">{t('actionEdit')}</Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
           </CardContent>

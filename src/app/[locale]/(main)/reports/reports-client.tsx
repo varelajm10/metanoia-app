@@ -9,24 +9,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart3, CalendarClock, CheckCircle, Clock, Edit, FileText, PlusCircle, Send, Trash2, XCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-const myReports = [
-    { id: 'REP-01', name: 'Ventas Mensuales por Región', category: 'Ventas', lastExecuted: '2025-07-31', format: 'PDF' },
-    { id: 'REP-02', name: 'Performance de Cartera de Clientes', category: 'Finanzas', lastExecuted: '2025-07-30', format: 'XLSX' },
-    { id: 'REP-03', name: 'Actividad de Soporte', category: 'Atención al Cliente', lastExecuted: 'Nunca', format: 'PDF' },
-    { id: 'REP-04', name: 'Resumen de Inventario', category: 'Operaciones', lastExecuted: '2025-07-28', format: 'CSV' },
-];
-
-const scheduledReports = [
-    { id: 'SCH-01', reportName: 'Ventas Mensuales por Región', frequency: 'Mensual', nextExecution: '2025-08-31', recipients: 'directorio@...', status: 'Activo' },
-    { id: 'SCH-02', reportName: 'Performance de Cartera de Clientes', frequency: 'Semanal', nextExecution: '2025-08-05', recipients: 'finanzas@...', status: 'Activo' },
-    { id: 'SCH-03', reportName: 'Reporte de Tickets Abiertos', frequency: 'Diario', nextExecution: '2025-08-01', recipients: 'soporte@...', status: 'Inactivo' },
-];
-
-const reportAnalyticsData = [
-    { month: 'Ene', executions: 120 }, { month: 'Feb', executions: 130 }, { month: 'Mar', executions: 150 },
-    { month: 'Abr', executions: 140 }, { month: 'May', executions: 160 }, { month: 'Jun', executions: 155 },
-    { month: 'Jul', executions: 180 },
-];
+const myReports: any[] = [];
+const scheduledReports: any[] = [];
+const reportAnalyticsData: any[] = [];
 
 export default function ReportsClient() {
   const t = useTranslations('Reporting');
@@ -151,8 +136,8 @@ export default function ReportsClient() {
                     <FileText className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">180</div>
-                    <p className="text-xs text-muted-foreground">+15% {t('vsPreviousMonth')}</p>
+                    <div className="text-2xl font-bold">0</div>
+                    <p className="text-xs text-muted-foreground">+0% {t('vsPreviousMonth')}</p>
                 </CardContent>
             </Card>
              <Card>
@@ -161,7 +146,7 @@ export default function ReportsClient() {
                     <CheckCircle className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">99.9%</div>
+                    <div className="text-2xl font-bold">0%</div>
                     <p className="text-xs text-muted-foreground">{t('emailsAndWebhooks')}</p>
                 </CardContent>
             </Card>
@@ -171,8 +156,8 @@ export default function ReportsClient() {
                     <Clock className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">12s</div>
-                    <p className="text-xs text-muted-foreground">-2s {t('vsPreviousMonth')}</p>
+                    <div className="text-2xl font-bold">0s</div>
+                    <p className="text-xs text-muted-foreground">-0s {t('vsPreviousMonth')}</p>
                 </CardContent>
             </Card>
         </div>
