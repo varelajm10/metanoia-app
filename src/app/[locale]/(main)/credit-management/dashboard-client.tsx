@@ -8,10 +8,10 @@ import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
 const recentRequests = [
-    { id: 'REQ-001', client: 'Tech Solutions Inc.', amount: '$5,000.00', status: 'Aprobado', date: '2024-07-28' },
-    { id: 'REQ-002', client: 'Innovate LLC', amount: '$12,000.00', status: 'En Revisión', date: '2024-07-27' },
-    { id: 'REQ-003', client: 'Global Exports', amount: '$7,500.00', status: 'Aprobado', date: '2024-07-26' },
-    { id: 'REQ-004', client: 'Quantum Dynamics', amount: '$25,000.00', status: 'Rechazado', date: '2024-07-25' },
+    { id: 'REQ-001', client: 'Tech Solutions Inc.', amount: '$5,000.00', status: 'Aprobado', date: '2025-07-31' },
+    { id: 'REQ-002', client: 'Innovate LLC', amount: '$12,000.00', status: 'En Revisión', date: '2025-07-30' },
+    { id: 'REQ-003', client: 'Global Exports', amount: '$7,500.00', status: 'Aprobado', date: '2025-07-29' },
+    { id: 'REQ-004', client: 'Quantum Dynamics', amount: '$25,000.00', status: 'Rechazado', date: '2025-07-28' },
 ];
 
 const paymentPipeline = [

@@ -8,10 +8,10 @@ import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
 const recentDocuments = [
-    { id: 'DOC-01', name: 'Contrato Cliente A.pdf', category: 'Contratos', status: 'Aprobado', modified: '2024-07-29' },
-    { id: 'DOC-02', name: 'Balance Q2 2024.xlsx', category: 'Finanzas', status: 'En Revisión', modified: '2024-07-28' },
-    { id: 'DOC-03', name: 'Presentación de Ventas.pptx', category: 'Marketing', status: 'Borrador', modified: '2024-07-27' },
-    { id: 'DOC-04', name: 'Manual de Políticas Internas.docx', category: 'RRHH', status: 'Publicado', modified: '2024-07-25' },
+    { id: 'DOC-01', name: 'Contrato Cliente A.pdf', category: 'Contratos', status: 'Aprobado', modified: '2025-07-31' },
+    { id: 'DOC-02', name: 'Balance Q2 2025.xlsx', category: 'Finanzas', status: 'En Revisión', modified: '2025-07-30' },
+    { id: 'DOC-03', name: 'Presentación de Ventas.pptx', category: 'Marketing', status: 'Borrador', modified: '2025-07-29' },
+    { id: 'DOC-04', name: 'Manual de Políticas Internas.docx', category: 'RRHH', status: 'Publicado', modified: '2025-07-28' },
 ];
 
 export default function DocumentManagementClient() {

@@ -8,9 +8,9 @@ import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
 const newHires = [
-    { name: 'Elena Petrova', position: 'AI Engineer', department: 'Tecnología', date: '2024-07-15' },
-    { name: 'John Sullivan', position: 'Sales Executive', department: 'Ventas', date: '2024-07-10' },
-    { name: 'Aisha Khan', position: 'Marketing Specialist', department: 'Marketing', date: '2024-07-01' },
+    { name: 'Elena Petrova', position: 'AI Engineer', department: 'Tecnología', date: '2025-07-15' },
+    { name: 'John Sullivan', position: 'Sales Executive', department: 'Ventas', date: '2025-07-10' },
+    { name: 'Aisha Khan', position: 'Marketing Specialist', department: 'Marketing', date: '2025-07-01' },
 ];
 
 const departmentData = [

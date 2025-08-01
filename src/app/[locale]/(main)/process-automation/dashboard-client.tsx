@@ -8,10 +8,10 @@ import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
 const recentExecutions = [
-    { id: 'WFE-987', workflow: 'Onboarding de Cliente', status: 'Completado', start: '2024-07-30 10:00', duration: '2.5m' },
-    { id: 'WFE-986', workflow: 'Generación de Factura', status: 'Completado', start: '2024-07-30 09:45', duration: '1.2m' },
-    { id: 'WFE-985', workflow: 'Sincronización de Inventario', status: 'Falló', start: '2024-07-30 09:30', duration: '0.5m' },
-    { id: 'WFE-984', workflow: 'Reporte Financiero Mensual', status: 'Completado', start: '2024-07-30 09:00', duration: '5.1m' },
+    { id: 'WFE-987', workflow: 'Onboarding de Cliente', status: 'Completado', start: '2025-07-31 10:00', duration: '2.5m' },
+    { id: 'WFE-986', workflow: 'Generación de Factura', status: 'Completado', start: '2025-07-31 09:45', duration: '1.2m' },
+    { id: 'WFE-985', workflow: 'Sincronización de Inventario', status: 'Falló', start: '2025-07-31 09:30', duration: '0.5m' },
+    { id: 'WFE-984', workflow: 'Reporte Financiero Mensual', status: 'Completado', start: '2025-07-31 09:00', duration: '5.1m' },
 ];
 
 const efficiencyData = [

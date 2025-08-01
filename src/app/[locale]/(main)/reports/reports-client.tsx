@@ -10,16 +10,16 @@ import { BarChart3, CalendarClock, CheckCircle, Clock, Edit, FileText, PlusCircl
 import { useTranslations } from "next-intl";
 
 const myReports = [
-    { id: 'REP-01', name: 'Ventas Mensuales por Región', category: 'Ventas', lastExecuted: '2024-07-30', format: 'PDF' },
-    { id: 'REP-02', name: 'Performance de Cartera de Clientes', category: 'Finanzas', lastExecuted: '2024-07-29', format: 'XLSX' },
+    { id: 'REP-01', name: 'Ventas Mensuales por Región', category: 'Ventas', lastExecuted: '2025-07-31', format: 'PDF' },
+    { id: 'REP-02', name: 'Performance de Cartera de Clientes', category: 'Finanzas', lastExecuted: '2025-07-30', format: 'XLSX' },
     { id: 'REP-03', name: 'Actividad de Soporte', category: 'Atención al Cliente', lastExecuted: 'Nunca', format: 'PDF' },
-    { id: 'REP-04', name: 'Resumen de Inventario', category: 'Operaciones', lastExecuted: '2024-07-28', format: 'CSV' },
+    { id: 'REP-04', name: 'Resumen de Inventario', category: 'Operaciones', lastExecuted: '2025-07-28', format: 'CSV' },
 ];
 
 const scheduledReports = [
-    { id: 'SCH-01', reportName: 'Ventas Mensuales por Región', frequency: 'Mensual', nextExecution: '2024-08-31', recipients: 'directorio@...', status: 'Activo' },
-    { id: 'SCH-02', reportName: 'Performance de Cartera de Clientes', frequency: 'Semanal', nextExecution: '2024-08-05', recipients: 'finanzas@...', status: 'Activo' },
-    { id: 'SCH-03', reportName: 'Reporte de Tickets Abiertos', frequency: 'Diario', nextExecution: '2024-08-01', recipients: 'soporte@...', status: 'Inactivo' },
+    { id: 'SCH-01', reportName: 'Ventas Mensuales por Región', frequency: 'Mensual', nextExecution: '2025-08-31', recipients: 'directorio@...', status: 'Activo' },
+    { id: 'SCH-02', reportName: 'Performance de Cartera de Clientes', frequency: 'Semanal', nextExecution: '2025-08-05', recipients: 'finanzas@...', status: 'Activo' },
+    { id: 'SCH-03', reportName: 'Reporte de Tickets Abiertos', frequency: 'Diario', nextExecution: '2025-08-01', recipients: 'soporte@...', status: 'Inactivo' },
 ];
 
 const reportAnalyticsData = [
