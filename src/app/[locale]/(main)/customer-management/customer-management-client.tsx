@@ -8,16 +8,29 @@ import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
-const recentCustomers = [
-    { name: 'Tech Solutions Inc.', status: 'Activo', lastContact: '2024-05-20', value: '$50,000' },
-    { name: 'Innovate Corp.', status: 'Nuevo', lastContact: '2024-05-22', value: '$75,000' },
-    { name: 'Global Enterprises', status: 'En Riesgo', lastContact: '2024-04-15', value: '$120,000' },
-    { name: 'Future Systems Ltd.', status: 'Activo', lastContact: '2024-05-18', value: '$30,000' },
-];
+interface Customer {
+  id: string;
+  legalName: string;
+  status: string;
+  lastContact: string; // This should be a timestamp in a real app
+  value: number;
+}
 
 export default function CustomerManagementClient() {
   const t = useTranslations("CustomerManagement");
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // In a real app, you would fetch and update this data from Firestore
+    // For now, we will just show an empty state.
+    setLoading(false);
+  }, []);
+
 
   const statusVariant = {
     'Activo': 'default',
@@ -42,8 +55,8 @@ export default function CustomerManagementClient() {
                     <Users className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">1,254</div>
-                    <p className="text-xs text-muted-foreground">+20 {t('sinceLastMonth')}</p>
+                    <div className="text-2xl font-bold">0</div>
+                    <p className="text-xs text-muted-foreground">+0 {t('sinceLastMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -52,7 +65,7 @@ export default function CustomerManagementClient() {
                     <Heart className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">95.2%</div>
+                    <div className="text-2xl font-bold">0%</div>
                     <p className="text-xs text-muted-foreground">{t('target')}: 95%</p>
                 </CardContent>
             </Card>
@@ -62,7 +75,7 @@ export default function CustomerManagementClient() {
                     <TrendingUp className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">$8,430</div>
+                    <div className="text-2xl font-bold">$0</div>
                     <p className="text-xs text-muted-foreground">{t('avgPerClient')}</p>
                 </CardContent>
             </Card>
@@ -83,9 +96,14 @@ export default function CustomerManagementClient() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {recentCustomers.map(customer => (
-                             <TableRow key={customer.name} className="hover:bg-muted">
-                                <TableCell className="font-medium">{customer.name}</TableCell>
+                        {loading ? (
+                           <TableRow><TableCell colSpan={4} className="h-24 text-center">{tCommon('loading')}</TableCell></TableRow>
+                        ) : customers.length === 0 ? (
+                           <TableRow><TableCell colSpan={4} className="h-24 text-center">No hay clientes para mostrar.</TableCell></TableRow>
+                        ) : (
+                          customers.map(customer => (
+                             <TableRow key={customer.id} className="hover:bg-muted">
+                                <TableCell className="font-medium">{customer.legalName}</TableCell>
                                 <TableCell>
                                     <Badge variant={statusVariant[customer.status as keyof typeof statusVariant] || 'default'}>
                                         {customer.status}
@@ -94,7 +112,8 @@ export default function CustomerManagementClient() {
                                 <TableCell>{customer.lastContact}</TableCell>
                                 <TableCell>{customer.value}</TableCell>
                             </TableRow>
-                        ))}
+                          ))
+                        )}
                     </TableBody>
                 </Table>
             </CardContent>

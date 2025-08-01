@@ -8,12 +8,7 @@ import { FolderKanban, FileCheck, HardDrive, Share2, UploadCloud, FileText, User
 import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
-const recentDocuments = [
-    { id: 'DOC-0789', name: 'Contrato Cliente A.pdf', category: 'Contratos', status: 'Aprobado', modified: '2024-07-03' },
-    { id: 'DOC-0790', name: 'Propuesta Comercial B.docx', category: 'Propuestas', status: 'En Revisión', modified: '2024-07-04' },
-    { id: 'DOC-0791', name: 'Reporte Financiero Q2.xlsx', category: 'Finanzas', status: 'Borrador', modified: '2024-07-04' },
-    { id: 'DOC-0792', name: 'Manual de Políticas Internas.pdf', category: 'RRHH', status: 'Publicado', modified: '2024-06-20' },
-];
+const recentDocuments: any[] = [];
 
 export default function DocumentManagementClient() {
   const t = useTranslations("DocumentManagement");
@@ -34,8 +29,8 @@ export default function DocumentManagementClient() {
                     <FolderKanban className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">12,450</div>
-                    <p className="text-xs text-muted-foreground">+210 {t('thisMonth')}</p>
+                    <div className="text-2xl font-bold">0</div>
+                    <p className="text-xs text-muted-foreground">+0 {t('thisMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -44,8 +39,8 @@ export default function DocumentManagementClient() {
                     <FileCheck className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">18</div>
-                    <p className="text-xs text-muted-foreground">{t('olderThan48h')}</p>
+                    <div className="text-2xl font-bold">0</div>
+                    <p className="text-xs text-muted-foreground">0 {t('olderThan48h')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -54,8 +49,8 @@ export default function DocumentManagementClient() {
                     <HardDrive className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">128 GB</div>
-                    <p className="text-xs text-muted-foreground">64% {t('ofTotalQuota')}</p>
+                    <div className="text-2xl font-bold">0 GB</div>
+                    <p className="text-xs text-muted-foreground">0% {t('ofTotalQuota')}</p>
                 </CardContent>
             </Card>
              <Card>
@@ -64,7 +59,7 @@ export default function DocumentManagementClient() {
                     <Share2 className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">345</div>
+                    <div className="text-2xl font-bold">0</div>
                     <p className="text-xs text-muted-foreground">{t('sharedExternally')}</p>
                 </CardContent>
             </Card>
@@ -111,18 +106,24 @@ export default function DocumentManagementClient() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {recentDocuments.map(doc => (
-                            <TableRow key={doc.id} className="hover:bg-muted">
-                                <TableCell className="font-medium">{doc.name}</TableCell>
-                                <TableCell><Badge variant="outline">{doc.category}</Badge></TableCell>
-                                <TableCell>
-                                    <Badge variant={statusVariant[doc.status as keyof typeof statusVariant] || 'default'}>
-                                        {doc.status}
-                                    </Badge>
-                                </TableCell>
-                                <TableCell>{doc.modified}</TableCell>
+                        {recentDocuments.length === 0 ? (
+                            <TableRow>
+                                <TableCell colSpan={4} className="h-24 text-center">No hay documentos recientes.</TableCell>
                             </TableRow>
-                        ))}
+                        ) : (
+                            recentDocuments.map(doc => (
+                                <TableRow key={doc.id} className="hover:bg-muted">
+                                    <TableCell className="font-medium">{doc.name}</TableCell>
+                                    <TableCell><Badge variant="outline">{doc.category}</Badge></TableCell>
+                                    <TableCell>
+                                        <Badge variant={statusVariant[doc.status as keyof typeof statusVariant] || 'default'}>
+                                            {doc.status}
+                                        </Badge>
+                                    </TableCell>
+                                    <TableCell>{doc.modified}</TableCell>
+                                </TableRow>
+                            ))
+                        )}
                     </TableBody>
                 </Table>
             </CardContent>

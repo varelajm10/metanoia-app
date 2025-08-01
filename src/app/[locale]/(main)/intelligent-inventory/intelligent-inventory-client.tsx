@@ -8,24 +8,14 @@ import { Warehouse, PackageSearch, Clock, AlertTriangle } from "lucide-react";
 import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
-const lowStockItems = [
-    { id: 'PROD-012', name: 'Componente A-X1', category: 'Electrónica', stock: 15, reorderPoint: 20 },
-    { id: 'PROD-088', name: 'Materia Prima B-Y2', category: 'Materias Primas', stock: 50, reorderPoint: 75 },
-    { id: 'PROD-105', name: 'Producto Terminado C-Z3', category: 'Venta Directa', stock: 5, reorderPoint: 10 },
-    { id: 'PROD-045', name: 'Insumo D-W4', category: 'Consumibles', stock: 120, reorderPoint: 150 },
-];
+const lowStockItems: any[] = [];
 
 const COLORS = ['hsl(var(--primary))', 'hsl(var(--accent))', 'hsl(var(--secondary))', 'hsl(220, 13%, 63%)'];
 
 export default function IntelligentInventoryClient() {
   const t = useTranslations("IntelligentInventory");
   
-  const inventoryByCategory = [
-      { name: t('valueByCategory'), value: 250000 },
-      { name: 'Materias Primas', value: 450000 },
-      { name: 'Venta Directa', value: 150000 },
-      { name: 'Consumibles', value: 50000 },
-  ];
+  const inventoryByCategory: any[] = [];
 
   return (
     <div className="space-y-8">
@@ -36,8 +26,8 @@ export default function IntelligentInventoryClient() {
                     <Warehouse className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">$900,000</div>
-                    <p className="text-xs text-muted-foreground">+2.1% {t('vsLastMonth')}</p>
+                    <div className="text-2xl font-bold">$0</div>
+                    <p className="text-xs text-muted-foreground">+0% {t('vsLastMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -46,7 +36,7 @@ export default function IntelligentInventoryClient() {
                     <PackageSearch className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">6.2</div>
+                    <div className="text-2xl font-bold">0</div>
                     <p className="text-xs text-muted-foreground">{t('annualRatio')}</p>
                 </CardContent>
             </Card>
@@ -56,7 +46,7 @@ export default function IntelligentInventoryClient() {
                     <Clock className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">58</div>
+                    <div className="text-2xl font-bold">0</div>
                     <p className="text-xs text-muted-foreground">{t('avgToDeplete')}</p>
                 </CardContent>
             </Card>
@@ -66,7 +56,7 @@ export default function IntelligentInventoryClient() {
                     <AlertTriangle className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold text-destructive">4</div>
+                    <div className="text-2xl font-bold text-destructive">0</div>
                     <p className="text-xs text-muted-foreground">{t('belowReorderPoint')}</p>
                 </CardContent>
             </Card>
@@ -90,15 +80,21 @@ export default function IntelligentInventoryClient() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {lowStockItems.map(item => (
-                                <TableRow key={item.id} className="hover:bg-muted">
-                                    <TableCell className="font-mono text-xs">{item.id}</TableCell>
-                                    <TableCell className="font-medium">{item.name}</TableCell>
-                                    <TableCell><Badge variant="outline">{item.category}</Badge></TableCell>
-                                    <TableCell className="font-bold text-destructive">{item.stock}</TableCell>
-                                    <TableCell>{item.reorderPoint}</TableCell>
+                             {lowStockItems.length === 0 ? (
+                                <TableRow>
+                                    <TableCell colSpan={5} className="h-24 text-center">No hay productos con stock bajo.</TableCell>
                                 </TableRow>
-                            ))}
+                            ) : (
+                                lowStockItems.map(item => (
+                                    <TableRow key={item.id} className="hover:bg-muted">
+                                        <TableCell className="font-mono text-xs">{item.id}</TableCell>
+                                        <TableCell className="font-medium">{item.name}</TableCell>
+                                        <TableCell><Badge variant="outline">{item.category}</Badge></TableCell>
+                                        <TableCell className="font-bold text-destructive">{item.stock}</TableCell>
+                                        <TableCell>{item.reorderPoint}</TableCell>
+                                    </TableRow>
+                                ))
+                            )}
                         </TableBody>
                     </Table>
                 </CardContent>

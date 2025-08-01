@@ -8,16 +8,11 @@ import { Bot, Workflow, ArrowUpCircle, AlertTriangle } from "lucide-react";
 import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
-const recentExecutions = [
-    { id: 'EXEC-987', workflow: 'Onboarding de Cliente', status: 'Completado', start: '2024-07-04 10:05', duration: '3m 15s' },
-    { id: 'EXEC-986', workflow: 'Reporte Financiero Mensual', status: 'Completado', start: '2024-07-04 09:00', duration: '12m 45s' },
-    { id: 'EXEC-985', workflow: 'Conciliación Bancaria', status: 'Falló', start: '2024-07-03 18:30', duration: '1m 22s' },
-    { id: 'EXEC-984', workflow: 'Onboarding de Cliente', status: 'Completado', start: '2024-07-03 15:20', duration: '3m 28s' },
-];
+const recentExecutions: any[] = [];
 
 const efficiencyData = [
-    { name: 'Manual', time: 120 },
-    { name: 'Automatizado', time: 15 },
+    { name: 'Manual', time: 0 },
+    { name: 'Automatizado', time: 0 },
 ];
 
 export default function ProcessAutomationDashboardClient() {
@@ -41,8 +36,8 @@ export default function ProcessAutomationDashboardClient() {
                     <Workflow className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">27</div>
-                    <p className="text-xs text-muted-foreground">+2 {t('newThisMonth')}</p>
+                    <div className="text-2xl font-bold">0</div>
+                    <p className="text-xs text-muted-foreground">+0 {t('newThisMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -51,8 +46,8 @@ export default function ProcessAutomationDashboardClient() {
                     <Bot className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">1,482</div>
-                    <p className="text-xs text-muted-foreground">99.8% {t('successRate')}</p>
+                    <div className="text-2xl font-bold">0</div>
+                    <p className="text-xs text-muted-foreground">0% {t('successRate')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -61,7 +56,7 @@ export default function ProcessAutomationDashboardClient() {
                     <ArrowUpCircle className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">215</div>
+                    <div className="text-2xl font-bold">0</div>
                     <p className="text-xs text-muted-foreground">{t('estimatedAutomationROI')}</p>
                 </CardContent>
             </Card>
@@ -71,7 +66,7 @@ export default function ProcessAutomationDashboardClient() {
                     <AlertTriangle className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold text-destructive">3</div>
+                    <div className="text-2xl font-bold text-destructive">0</div>
                     <p className="text-xs text-muted-foreground">{t('requireReview')}</p>
                 </CardContent>
             </Card>
@@ -95,19 +90,25 @@ export default function ProcessAutomationDashboardClient() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {recentExecutions.map(exec => (
-                                <TableRow key={exec.id} className="hover:bg-muted">
-                                    <TableCell className="font-mono text-xs">{exec.id}</TableCell>
-                                    <TableCell className="font-medium">{exec.workflow}</TableCell>
-                                    <TableCell>
-                                        <Badge variant={statusVariant[exec.status as keyof typeof statusVariant] || 'default'}>
-                                            {exec.status}
-                                        </Badge>
-                                    </TableCell>
-                                    <TableCell>{exec.start}</TableCell>
-                                    <TableCell>{exec.duration}</TableCell>
+                            {recentExecutions.length === 0 ? (
+                                <TableRow>
+                                    <TableCell colSpan={5} className="h-24 text-center">No hay ejecuciones recientes.</TableCell>
                                 </TableRow>
-                            ))}
+                            ) : (
+                                recentExecutions.map(exec => (
+                                    <TableRow key={exec.id} className="hover:bg-muted">
+                                        <TableCell className="font-mono text-xs">{exec.id}</TableCell>
+                                        <TableCell className="font-medium">{exec.workflow}</TableCell>
+                                        <TableCell>
+                                            <Badge variant={statusVariant[exec.status as keyof typeof statusVariant] || 'default'}>
+                                                {exec.status}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell>{exec.start}</TableCell>
+                                        <TableCell>{exec.duration}</TableCell>
+                                    </TableRow>
+                                ))
+                            )}
                         </TableBody>
                     </Table>
                 </CardContent>

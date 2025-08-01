@@ -8,22 +8,12 @@ import { DollarSign, TrendingDown, Target, ShieldCheck } from "lucide-react";
 import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
-const recentRequests = [
-    { id: 'SOL-001', client: 'Tech Solutions Inc.', amount: '$15,000', status: 'Aprobado', date: '2024-07-03' },
-    { id: 'SOL-002', client: 'Innovate Corp.', amount: '$25,000', status: 'En Revisión', date: '2024-07-02' },
-    { id: 'SOL-003', client: 'Global Enterprises', amount: '$5,000', status: 'Rechazado', date: '2024-07-01' },
-    { id: 'SOL-004', client: 'Future Systems Ltd.', amount: '$50,000', status: 'Aprobado', date: '2024-06-30' },
-];
+const recentRequests: any[] = [];
+const paymentPipeline: any[] = [];
 
 export default function CreditManagementDashboardClient() {
   const t = useTranslations("CreditManagement");
-
-  const paymentPipeline = [
-      { name: t('next7days'), amount: 45000 },
-      { name: t('days8_15'), amount: 78000 },
-      { name: t('days16_30'), amount: 120000 },
-      { name: t('days30plus'), amount: 55000 },
-  ];
+  const tCommon = useTranslations("Common");
 
   const statusVariant = {
       'Aprobado': 'default',
@@ -40,8 +30,8 @@ export default function CreditManagementDashboardClient() {
                     <DollarSign className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">$1.2M</div>
-                    <p className="text-xs text-muted-foreground">+5% {t('vsLastMonth')}</p>
+                    <div className="text-2xl font-bold">$0</div>
+                    <p className="text-xs text-muted-foreground">+0% {t('vsLastMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -50,8 +40,8 @@ export default function CreditManagementDashboardClient() {
                     <TrendingDown className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">3.4%</div>
-                    <p className="text-xs text-muted-foreground">-0.2% {t('vsLastMonth')}</p>
+                    <div className="text-2xl font-bold">0%</div>
+                    <p className="text-xs text-muted-foreground">-0% {t('vsLastMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -60,8 +50,8 @@ export default function CreditManagementDashboardClient() {
                     <Target className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">$115,000</div>
-                    <p className="text-xs text-muted-foreground">95.8% {t('ofGoal')}</p>
+                    <div className="text-2xl font-bold">$0</div>
+                    <p className="text-xs text-muted-foreground">0% {t('ofGoal')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -70,7 +60,7 @@ export default function CreditManagementDashboardClient() {
                     <ShieldCheck className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold text-destructive">8</div>
+                    <div className="text-2xl font-bold text-destructive">0</div>
                     <p className="text-xs text-muted-foreground">{t('highDefaultProbability')}</p>
                 </CardContent>
             </Card>
@@ -94,7 +84,12 @@ export default function CreditManagementDashboardClient() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {recentRequests.map(req => (
+                            {recentRequests.length === 0 ? (
+                                <TableRow>
+                                    <TableCell colSpan={5} className="h-24 text-center">No hay solicitudes recientes.</TableCell>
+                                </TableRow>
+                            ) : (
+                                recentRequests.map(req => (
                                 <TableRow key={req.id} className="hover:bg-muted">
                                     <TableCell className="font-mono text-xs">{req.id}</TableCell>
                                     <TableCell className="font-medium">{req.client}</TableCell>
@@ -106,7 +101,8 @@ export default function CreditManagementDashboardClient() {
                                     </TableCell>
                                     <TableCell>{req.date}</TableCell>
                                 </TableRow>
-                            ))}
+                                ))
+                            )}
                         </TableBody>
                     </Table>
                 </CardContent>

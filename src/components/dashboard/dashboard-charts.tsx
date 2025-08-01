@@ -5,22 +5,16 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Lightbulb } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-const monthlyData = [
-    { name: 'Ene', Cobrado: 85000 },
-    { name: 'Feb', Cobrado: 95000 },
-    { name: 'Mar', Cobrado: 110000 },
-    { name: 'Abr', Cobrado: 105000 },
-];
-
+const monthlyData: any[] = [];
 const RISK_COLORS = ['hsl(var(--primary))', 'hsl(var(--accent))', 'hsl(var(--destructive))'];
 
 export function DashboardCharts() {
     const t = useTranslations('Dashboard');
 
     const creditAnalysisData = [
-        { name: t('lowRisk'), value: 75, fill: RISK_COLORS[0] },
-        { name: t('mediumRisk'), value: 20, fill: RISK_COLORS[1] },
-        { name: t('highRisk'), value: 5, fill: RISK_COLORS[2] },
+        { name: t('lowRisk'), value: 0, fill: RISK_COLORS[0] },
+        { name: t('mediumRisk'), value: 0, fill: RISK_COLORS[1] },
+        { name: t('highRisk'), value: 0, fill: RISK_COLORS[2] },
     ];
 
     return (
@@ -46,7 +40,7 @@ export function DashboardCharts() {
                         <Lightbulb className="h-4 w-4 text-accent" />
                         <span className="font-semibold text-foreground">{t('aiInsight')}</span>
                     </div>
-                    <p>El pico de cobranza en Marzo se correlaciona con el cierre exitoso de 2 proyectos clave del sector tecnológico.</p>
+                    <p>No hay datos suficientes para el análisis de IA.</p>
                 </CardFooter>
             </Card>
             <Card className="lg:col-span-2">
@@ -74,7 +68,7 @@ export function DashboardCharts() {
                         <Lightbulb className="h-4 w-4 text-accent" />
                         <span className="font-semibold text-foreground">{t('aiInsight')}</span>
                     </div>
-                    <p>El 75% de la cartera es de bajo riesgo, pero el 5% de alto riesgo requiere acción inmediata.</p>
+                    <p>No hay datos suficientes para el análisis de IA.</p>
                 </CardFooter>
             </Card>
         </div>

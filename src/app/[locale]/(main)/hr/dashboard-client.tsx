@@ -8,20 +8,8 @@ import { Users, RefreshCw, UserPlus, Cake, Briefcase, Clock, Star } from "lucide
 import { AIChatBox } from "@/components/ai-chat-box";
 import { useTranslations } from "next-intl";
 
-const newHires = [
-    { name: 'Laura García', position: 'AI Engineer', department: 'Tecnología', date: '2024-07-01' },
-    { name: 'Marcos Rodriguez', position: 'Sales Executive', department: 'Ventas', date: '2024-07-01' },
-    { name: 'Sofía Martinez', position: 'UX/UI Designer', department: 'Producto', date: '2024-06-25' },
-];
-
-const departmentData = [
-    { name: 'Tecnología', count: 45 },
-    { name: 'Ventas', count: 32 },
-    { name: 'Producto', count: 28 },
-    { name: 'Marketing', count: 22 },
-    { name: 'Operaciones', count: 18 },
-    { name: 'RRHH', count: 7 },
-];
+const newHires: any[] = [];
+const departmentData: any[] = [];
 
 export default function HRDashboardClient() {
   const t = useTranslations("HR");
@@ -34,8 +22,8 @@ export default function HRDashboardClient() {
                     <Users className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">152</div>
-                    <p className="text-xs text-muted-foreground">+2 {t('vsPreviousMonth')}</p>
+                    <div className="text-2xl font-bold">0</div>
+                    <p className="text-xs text-muted-foreground">+0 {t('vsPreviousMonth')}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -44,7 +32,7 @@ export default function HRDashboardClient() {
                     <Briefcase className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">$5,800</div>
+                    <div className="text-2xl font-bold">$0</div>
                     <p className="text-xs text-muted-foreground">{t('monthlyAvg')}</p>
                 </CardContent>
             </Card>
@@ -54,7 +42,7 @@ export default function HRDashboardClient() {
                     <Clock className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">2.8 {t('years')}</div>
+                    <div className="text-2xl font-bold">0 {t('years')}</div>
                     <p className="text-xs text-muted-foreground">{t('companyWide')}</p>
                 </CardContent>
             </Card>
@@ -64,7 +52,7 @@ export default function HRDashboardClient() {
                     <Star className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">4.2/5</div>
+                    <div className="text-2xl font-bold">0/5</div>
                     <p className="text-xs text-muted-foreground">{t('lastReviewCycle')}</p>
                 </CardContent>
             </Card>
@@ -87,20 +75,26 @@ export default function HRDashboardClient() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {newHires.map(hire => (
-                                <TableRow key={hire.name} className="hover:bg-muted">
-                                    <TableCell className="font-medium flex items-center gap-2">
-                                        <Avatar className="h-8 w-8">
-                                            <AvatarImage data-ai-hint="person" src={`https://placehold.co/40x40.png`} />
-                                            <AvatarFallback>{hire.name.charAt(0)}</AvatarFallback>
-                                        </Avatar>
-                                        {hire.name}
-                                    </TableCell>
-                                    <TableCell>{hire.position}</TableCell>
-                                    <TableCell>{hire.department}</TableCell>
-                                    <TableCell>{hire.date}</TableCell>
+                            {newHires.length === 0 ? (
+                                <TableRow>
+                                    <TableCell colSpan={4} className="h-24 text-center">No hay nuevos ingresos.</TableCell>
                                 </TableRow>
-                            ))}
+                            ) : (
+                                newHires.map(hire => (
+                                    <TableRow key={hire.name} className="hover:bg-muted">
+                                        <TableCell className="font-medium flex items-center gap-2">
+                                            <Avatar className="h-8 w-8">
+                                                <AvatarImage data-ai-hint="person" src={`https://placehold.co/40x40.png`} />
+                                                <AvatarFallback>{hire.name.charAt(0)}</AvatarFallback>
+                                            </Avatar>
+                                            {hire.name}
+                                        </TableCell>
+                                        <TableCell>{hire.position}</TableCell>
+                                        <TableCell>{hire.department}</TableCell>
+                                        <TableCell>{hire.date}</TableCell>
+                                    </TableRow>
+                                ))
+                            )}
                         </TableBody>
                     </Table>
                 </CardContent>
