@@ -127,7 +127,7 @@ export default function IntelligentInventoryClient() {
                 </CardContent>
             </Card>
         </div>
-        <AIChatBox />
+        <AIChatBox dashboardContext={t('title')} />
     </div>
   );
 }

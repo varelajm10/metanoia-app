@@ -18,7 +18,8 @@ const MessageSchema = z.object({
 const MainAssistantInputSchema = z.object({
   history: z.array(MessageSchema).describe('The conversation history.'),
   query: z.string().describe('The latest user query.'),
-  locale: z.string().optional().describe('The language for the response (e.g., "en", "es").')
+  locale: z.string().optional().describe('The language for the response (e.g., "en", "es").'),
+  dashboardContext: z.string().optional().describe('The context of the dashboard the user is currently viewing.'),
 });
 export type MainAssistantInput = z.infer<typeof MainAssistantInputSchema>;
 
@@ -38,11 +39,14 @@ const mainAssistantFlow = ai.defineFlow(
     inputSchema: MainAssistantInputSchema,
     outputSchema: MainAssistantOutputSchema,
   },
-  async ({ history, query, locale }) => {
+  async ({ history, query, locale, dashboardContext }) => {
     const lang = locale === 'en' ? 'English' : 'Spanish';
     const languageInstruction = `You must respond in ${lang}.`;
+    const contextInstruction = dashboardContext 
+      ? `The user is currently viewing the "${dashboardContext}" dashboard in the Metanoia.click platform. Frame your answers within this context.`
+      : "The user is currently viewing a dashboard in the Metanoia.click platform.";
 
-    const systemInstruction = `You are Metanoia.Click's AI Assistant, an expert in business data analysis. You are helpful, friendly, and concise. Your goal is to answer user questions about their business data. If you don't have enough context from the conversation, ask clarifying questions. The user is currently viewing a dashboard in the Metanoia.click platform. ${languageInstruction}`;
+    const systemInstruction = `You are Metanoia.Click's AI Assistant, an expert in business data analysis. You are helpful, friendly, and concise. Your goal is to answer user questions about their business data. ${contextInstruction} If you don't have enough context from the conversation, ask clarifying questions. ${languageInstruction}`;
     
     const messages = [
       ...history.map(msg => ({

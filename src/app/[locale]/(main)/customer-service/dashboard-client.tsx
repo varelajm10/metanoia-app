@@ -155,7 +155,7 @@ export default function CustomerServiceDashboardClient() {
                 </CardContent>
             </Card>
         </div>
-        <AIChatBox />
+        <AIChatBox dashboardContext={t('title')} />
     </div>
   );
 }

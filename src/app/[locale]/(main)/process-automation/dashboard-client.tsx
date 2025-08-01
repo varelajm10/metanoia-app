@@ -139,7 +139,7 @@ export default function ProcessAutomationDashboardClient() {
                 </CardContent>
             </Card>
         </div>
-        <AIChatBox />
+        <AIChatBox dashboardContext={t('title')} />
     </div>
   );
 }

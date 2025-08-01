@@ -142,7 +142,7 @@ export default function DocumentManagementClient() {
                 </Table>
             </CardContent>
         </Card>
-        <AIChatBox />
+        <AIChatBox dashboardContext={t('title')} />
     </div>
   );
 }

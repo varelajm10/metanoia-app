@@ -172,7 +172,7 @@ export default function BusinessIntelligenceClient() {
         </motion.div>
       )}
 
-      <AIChatBox />
+      <AIChatBox dashboardContext={t('title')} />
     </motion.div>
   );
 }

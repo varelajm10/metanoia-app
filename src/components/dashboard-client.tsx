@@ -17,7 +17,7 @@ export default function DashboardClient() {
       <DashboardCharts />
       <DashboardQuickAccess />
       <DashboardModuleGrid />
-      <AIChatBox />
+      <AIChatBox dashboardContext={t('title')} />
     </div>
   );
 }

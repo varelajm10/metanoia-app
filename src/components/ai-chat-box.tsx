@@ -16,7 +16,11 @@ interface Message {
     content: string;
 }
 
-export function AIChatBox() {
+interface AIChatBoxProps {
+    dashboardContext?: string;
+}
+
+export function AIChatBox({ dashboardContext }: AIChatBoxProps) {
     const t = useTranslations('AIChatBox');
     const locale = useLocale();
     const [messages, setMessages] = useState<Message[]>([]);
@@ -45,7 +49,7 @@ export function AIChatBox() {
 
         try {
             const history = messages.map(msg => ({ role: msg.role, content: msg.content }));
-            const result = await mainAssistant({ history, query: currentInput, locale });
+            const result = await mainAssistant({ history, query: currentInput, locale, dashboardContext });
             const assistantMessage: Message = { role: 'assistant', content: result.response };
             setMessages(prev => [...prev, assistantMessage]);
         } catch (error) {

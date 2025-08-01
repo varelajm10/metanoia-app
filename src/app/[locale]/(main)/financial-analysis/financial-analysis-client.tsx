@@ -126,6 +126,7 @@ function AIAnalysis() {
 
 
 export default function FinancialAnalysisClient() {
+  const t = useTranslations("FinancialAnalysis");
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -140,7 +141,7 @@ export default function FinancialAnalysisClient() {
       
       <AIAnalysis />
 
-      <AIChatBox />
+      <AIChatBox dashboardContext={t('title')} />
     </motion.div>
   );
 }

@@ -127,7 +127,7 @@ export default function HRDashboardClient() {
                 </CardContent>
             </Card>
         </div>
-        <AIChatBox />
+        <AIChatBox dashboardContext={t('dashboardTab')} />
     </div>
   );
 }
