@@ -3,44 +3,11 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Denegar por defecto: La regla más importante. Nadie puede acceder a nada a menos que se permita explícitamente.
+    // REGLA DE DESARROLLO: Permitir lectura y escritura públicas.
+    // ADVERTENCIA: NO USAR EN PRODUCCIÓN.
+    // Un sistema de autenticación y reglas granulares son necesarios antes de lanzar.
     match /{document=**} {
-      allow read, write: if false;
-    }
-
-    // Permitir a los usuarios autenticados leer y crear sus propios datos
-    // pero no actualizar o borrar (ejemplo para colecciones futuras)
-    match /users/{userId}/{documents=**} {
-        allow read, create: if request.auth != null && request.auth.uid == userId;
-        allow update, delete: if false; // Prevenir modificaciones por ahora
-    }
-
-    // Colección de clientes: solo usuarios autenticados pueden crear.
-    // Solo el 'accountExecutive' o un admin (rol futuro) pueden leer/actualizar.
-    match /customers/{customerId} {
-      allow read, update: if request.auth != null; // Simplificado por ahora, idealmente basado en roles
-      allow create: if request.auth != null;
-      // La escritura debe validar TODOS los campos para prevenir datos maliciosos
-      // allow write: if request.auth != null && validateCustomerData(request.resource.data);
-    }
-
-    // Colección de empleados: similar a clientes, acceso restringido
-    match /employees/{employeeId} {
-        allow read, create, update: if request.auth != null; // Simplificado, idealmente solo para roles de RRHH/Admin
-    }
-    
-    // Colecciones de datos financieros: Solo usuarios autenticados
-    match /collections/{collectionId} {
-        allow read, create: if request.auth != null;
-    }
-    
-    match /projections/{projectionId} {
-        allow read, create: if request.auth != null;
-    }
-
-    // Cotizaciones: Solo usuarios autenticados
-    match /quotations/{quotationId} {
-         allow read, create: if request.auth != null;
+      allow read, write: if true;
     }
   }
 }
