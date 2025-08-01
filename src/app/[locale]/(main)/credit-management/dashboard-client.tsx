@@ -1,4 +1,5 @@
 "use client";
+import * as React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
@@ -36,7 +37,7 @@ export default function CreditManagementDashboardClient() {
     return t(statusKey);
   }
 
-  const getPipelineTranslation = (name: string) => {
+  const getPipelineTranslation = React.useCallback((name: string) => {
     const keyMap: { [key: string]: 'next7days' | 'days8_15' | 'days16_30' | 'days30plus' } = {
       'Próximos 7 días': 'next7days',
       '8-15 días': 'days8_15',
@@ -44,12 +45,12 @@ export default function CreditManagementDashboardClient() {
       '30+ días': 'days30plus',
     };
     return t(keyMap[name]);
-  }
+  }, [t]);
 
-  const localizedPaymentPipeline = paymentPipeline.map(p => ({
+  const localizedPaymentPipeline = React.useMemo(() => paymentPipeline.map(p => ({
     ...p,
     name: getPipelineTranslation(p.name),
-  }));
+  })), [getPipelineTranslation]);
 
   return (
     <div className="space-y-8">
