@@ -29,13 +29,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    if (loading) return; // No hacer nada mientras se carga el estado inicial
+    if (loading) return; 
 
-    if (user && (pathname.startsWith('/login') || pathname === '/')) {
-      // Si el usuario está logueado y está en la página de login o en la raíz, redirigir al dashboard.
+    const isPublicRoute = pathname.startsWith('/login') || pathname.startsWith('/demo') || pathname === '/';
+    
+    if (user && pathname.startsWith('/login')) {
       router.push('/dashboard');
-    } else if (!user && !pathname.startsWith('/login') && !pathname.startsWith('/demo') && pathname !== '/') {
-      // Si el usuario no está logueado y no está en una ruta pública, redirigir al login.
+    } else if (!user && !isPublicRoute) {
       router.push('/login');
     }
   }, [user, loading, router, pathname]);
