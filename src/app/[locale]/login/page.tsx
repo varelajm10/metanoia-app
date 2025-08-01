@@ -4,8 +4,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -13,8 +12,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, LogIn, UserPlus } from "lucide-react";
 import { Logo } from "@/components/logo";
-import { signInUser, signUpUser } from "./actions";
-import { useAuth } from "@/hooks/use-auth";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Por favor ingrese un email válido." }),
@@ -25,57 +22,32 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function LoginPage() {
   const { toast } = useToast();
-  const router = useRouter();
-  const { user, loading } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [actionType, setActionType] = useState<'signIn' | 'signUp'>('signIn');
-
-  useEffect(() => {
-    if (!loading && user) {
-      router.push('/dashboard');
-    }
-  }, [user, loading, router]);
 
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "varelajm84@gmail.com",
-      password: "",
+      password: "Tool2225",
     },
   });
 
   async function onSubmit(data: FormValues) {
     setIsSubmitting(true);
-    
-    const result = actionType === 'signIn' 
-      ? await signInUser(data) 
-      : await signUpUser(data);
-
-    setIsSubmitting(false);
-
-    if (result.success) {
-      const title = actionType === 'signIn' ? "Inicio de Sesión Exitoso" : "Cuenta Creada Exitosamente";
-      toast({ title: title, description: "Bienvenido a Metanoia.Click. Redirigiendo..." });
-      // La redirección ahora se maneja en el useEffect
-    } else {
-      const title = actionType === 'signIn' ? "Error en Inicio de Sesión" : "Error al Crear Cuenta";
-      toast({
-        title: title,
-        description: result.error,
-        variant: "destructive",
-      });
-    }
+    // La funcionalidad de login ha sido desactivada temporalmente.
+    console.log("Login/SignUp intentado con:", data);
+    setTimeout(() => {
+        toast({
+            title: "Funcionalidad Desactivada",
+            description: "El inicio de sesión ha sido desactivado temporalmente.",
+            variant: "destructive"
+        });
+        setIsSubmitting(false);
+    }, 1000);
   }
   
-  if (loading) {
-     return (
-      <div className="flex h-screen items-center justify-center bg-background bg-page-gradient">
-        <Loader2 className="h-12 w-12 animate-spin text-primary" />
-      </div>
-    );
-  }
-
   return (
     <div className="flex-1 flex items-center justify-center p-4">
       <Card className="w-full max-w-sm bg-card/80 backdrop-blur-lg">
