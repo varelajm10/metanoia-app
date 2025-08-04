@@ -1,7 +1,7 @@
 
 "use client";
 import { useState, useEffect } from "react";
-import { collection, onSnapshot, query, Timestamp } from "firebase/firestore";
+import { collection, onSnapshot, query, Timestamp, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { format, subMonths } from 'date-fns';
 import { es } from 'date-fns/locale';
