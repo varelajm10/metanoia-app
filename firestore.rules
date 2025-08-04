@@ -3,11 +3,61 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // REGLA DE DESARROLLO: Permitir lectura y escritura públicas.
-    // ADVERTENCIA: NO USAR EN PRODUCCIÓN.
-    // Un sistema de autenticación y reglas granulares son necesarios antes de lanzar.
+    // Default deny all reads and writes
     match /{document=**} {
-      allow read, write: if true;
+      allow read, write: if false;
     }
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    // Customers collection
+    match /customers/{customerId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && request.resource.data.legalName is string && request.resource.data.legalAddress.country is string;
+      allow update: if isAuthenticated();
+      allow delete: if isAuthenticated(); // Consider restricting this to admins
+    }
+
+    // Employees collection
+    match /employees/{employeeId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && request.resource.data.fullName is string && request.resource.data.department is string;
+      allow update: if isAuthenticated();
+      allow delete: if isAuthenticated(); // Consider restricting this to admins
+    }
+
+    // Collections (financial)
+    match /collections/{collectionId} {
+      allow read, create: if isAuthenticated();
+    }
+
+    // Projections (financial)
+    match /projections/{projectionId} {
+      allow read, create: if isAuthenticated();
+    }
+    
+    // Quotations
+    match /quotations/{quotationId} {
+      allow read, create: if isAuthenticated();
+    }
+    
+    // Tickets (for Customer Service)
+    match /tickets/{ticketId} {
+        allow read, create, update: if isAuthenticated();
+    }
+
+    // Documents (for Document Management)
+    match /documents/{documentId} {
+        allow read, create, update: if isAuthenticated();
+    }
+
+    // Other collections can be added here following the same pattern
   }
 }
