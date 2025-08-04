@@ -1,55 +1,51 @@
-
 rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // Deny all reads and writes by default
+    // Regla general: Denegar escritura por defecto, permitir lectura
     match /{document=**} {
-      allow read, write: if false;
+      allow read: if true;
+      allow write: if request.auth != null;
     }
-
-    // Allow authenticated users to read and write their own data
-    match /users/{userId} {
-      allow read, update, delete: if request.auth != null && request.auth.uid == userId;
-      allow create: if request.auth != null;
-    }
-
-    // Rules for 'customers' collection
+    
+    // Colección de Clientes
     match /customers/{customerId} {
-      allow read: if true; // Allow public reads for demo purposes
-      allow create, update: if request.auth != null &&
-                               request.resource.data.legalName is string &&
-                               request.resource.data.legalName.size() > 1;
+      allow create: if true;
+      allow update, delete: if request.auth != null; 
     }
 
-    // Rules for 'employees' collection
+    // Colección de Empleados
     match /employees/{employeeId} {
-      allow read: if true; // Allow public reads for demo purposes
-      allow create: if request.auth != null &&
-                       request.resource.data.fullName is string &&
-                       request.resource.data.position is string;
+      allow create: if true; 
+      allow update, delete: if request.auth != null;
     }
-
-    // Rules for 'collections' collection
+    
+    // Colección de Cobranzas
     match /collections/{collectionId} {
-      allow read: if true; // Allow public reads for demo purposes
-      allow create: if request.auth != null &&
-                       request.resource.data.amount is number &&
-                       request.resource.data.amount > 0;
+      allow create: if true;
+      allow update, delete: if request.auth != null;
     }
 
-    // Rules for 'projections' collection
+    // Colección de Proyecciones
     match /projections/{projectionId} {
-      allow read: if true; // Allow public reads for demo purposes
-      allow create: if request.auth != null &&
-                       request.resource.data.projectedAmount is number;
+      allow create: if true;
+      allow update, delete: if request.auth != null;
     }
 
-    // Rules for 'quotations' collection
+    // Colección de Cotizaciones
     match /quotations/{quotationId} {
-      allow read: if true; // Allow public reads for demo purposes
-      allow create: if request.auth != null;
+      allow create: if true;
+      allow update, delete: if request.auth != null;
+    }
+
+    // Colección de Tickets (para futura implementación)
+    match /tickets/{ticketId} {
+      allow create, update, delete: if request.auth != null;
+    }
+
+    // Colección de Documentos (para futura implementación)
+    match /documents/{documentId} {
+      allow create, update, delete: if request.auth != null;
     }
   }
 }
