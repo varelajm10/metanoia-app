@@ -1,29 +1,7 @@
 "use client";
 
-import dynamic from 'next/dynamic';
-import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from 'next-intl';
-
-const DashboardClient = dynamic(() => import('@/components/dashboard-client'), { 
-    ssr: false,
-    loading: () => <DashboardSkeleton /> 
-});
-
-const DashboardSkeleton = () => (
-    <div className="space-y-8">
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <Skeleton className="h-[116px] rounded-xl" />
-            <Skeleton className="h-[116px] rounded-xl" />
-            <Skeleton className="h-[116px] rounded-xl" />
-            <Skeleton className="h-[116px] rounded-xl" />
-        </div>
-        <div className="grid gap-6 lg:grid-cols-5">
-            <Skeleton className="lg:col-span-3 h-[420px] rounded-xl" />
-            <Skeleton className="lg:col-span-2 h-[420px] rounded-xl" />
-        </div>
-        <Skeleton className="h-[230px] rounded-xl" />
-    </div>
-);
+import DashboardClient from '@/components/dashboard-client';
 
 
 export default function DashboardPage() {
