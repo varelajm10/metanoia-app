@@ -8,7 +8,6 @@ import {NextIntlClientProvider} from 'next-intl';
 import {getMessages} from 'next-intl/server';
 import {unstable_setRequestLocale} from 'next-intl/server';
 import {getTranslations} from 'next-intl/server';
-import { AuthProvider } from '@/hooks/use-auth';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
@@ -45,7 +44,6 @@ export default async function RootLayout({
     <html lang={locale} className={`${inter.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
-         <AuthProvider>
             <ThemeProvider
               attribute="class"
               defaultTheme="dark"
@@ -54,7 +52,6 @@ export default async function RootLayout({
               {children}
               <Toaster />
             </ThemeProvider>
-          </AuthProvider>
         </NextIntlClientProvider>
       </body>
     </html>

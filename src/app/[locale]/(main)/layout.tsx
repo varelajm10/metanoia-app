@@ -7,10 +7,12 @@ import { Footer } from "@/components/footer";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider, SidebarProps } from "@/components/ui/sidebar";
 import { InterfaceBehaviorContext } from "@/hooks/use-interface-behavior";
-import { ProtectedRoute } from "@/components/protected-route";
-import { AuthProvider } from "@/hooks/use-auth";
 
-function MainLayoutContent({ children }: { children: React.ReactNode }) {
+export default function MainAppLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [sidebarVariant, setSidebarVariant] = useState<SidebarProps['variant']>('sidebar');
   const [sidebarCollapsible, setSidebarCollapsible] = useState<SidebarProps['collapsible']>('icon');
 
@@ -36,19 +38,5 @@ function MainLayoutContent({ children }: { children: React.ReactNode }) {
         </div>
       </SidebarProvider>
     </InterfaceBehaviorContext.Provider>
-  );
-}
-
-export default function MainAppLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <AuthProvider>
-        <ProtectedRoute>
-            <MainLayoutContent>{children}</MainLayoutContent>
-        </ProtectedRoute>
-    </AuthProvider>
   );
 }

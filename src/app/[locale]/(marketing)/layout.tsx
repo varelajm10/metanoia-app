@@ -3,7 +3,6 @@
 
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
-import { AuthProvider } from "@/hooks/use-auth";
 
 export default function MarketingLayout({
   children,
@@ -11,14 +10,12 @@ export default function MarketingLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AuthProvider>
-      <div className="flex min-h-screen flex-col bg-background bg-page-gradient">
-        <Header />
-        <main className="flex-1 flex flex-col">
-          {children}
-        </main>
-        <Footer />
-      </div>
-    </AuthProvider>
+    <div className="flex min-h-screen flex-col bg-background bg-page-gradient">
+      <Header />
+      <main className="flex-1 flex flex-col">
+        {children}
+      </main>
+      <Footer />
+    </div>
   );
 }
