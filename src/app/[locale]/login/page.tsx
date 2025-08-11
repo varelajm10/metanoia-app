@@ -12,6 +12,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, LogIn, UserPlus } from "lucide-react";
 import { Logo } from "@/components/logo";
+import { signUp, signIn } from "./actions";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Por favor ingrese un email válido." }),
@@ -24,6 +26,7 @@ export default function LoginPage() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [actionType, setActionType] = useState<'signIn' | 'signUp'>('signIn');
+  const router = useRouter();
 
 
   const form = useForm<FormValues>({
@@ -36,16 +39,23 @@ export default function LoginPage() {
 
   async function onSubmit(data: FormValues) {
     setIsSubmitting(true);
-    // La funcionalidad de login ha sido desactivada temporalmente.
-    console.log("Login/SignUp intentado con:", data);
-    setTimeout(() => {
-        toast({
-            title: "Funcionalidad Desactivada",
-            description: "El inicio de sesión ha sido desactivado temporalmente.",
-            variant: "destructive"
-        });
-        setIsSubmitting(false);
-    }, 1000);
+    const action = actionType === 'signIn' ? signIn : signUp;
+    const result = await action(data);
+    setIsSubmitting(false);
+
+    if (result.success) {
+      toast({
+        title: actionType === 'signIn' ? "Inicio de Sesión Exitoso" : "Cuenta Creada",
+        description: "Bienvenido a Metanoia.Click",
+      });
+      router.push('/dashboard');
+    } else {
+      toast({
+        title: "Error",
+        description: result.error,
+        variant: "destructive"
+      });
+    }
   }
   
   return (

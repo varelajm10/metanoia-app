@@ -45,14 +45,16 @@ export default async function RootLayout({
     <html lang={locale} className={`${inter.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            disableTransitionOnChange
-          >
-            {children}
-            <Toaster />
-          </ThemeProvider>
+         <AuthProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              disableTransitionOnChange
+            >
+              {children}
+              <Toaster />
+            </ThemeProvider>
+          </AuthProvider>
         </NextIntlClientProvider>
       </body>
     </html>
