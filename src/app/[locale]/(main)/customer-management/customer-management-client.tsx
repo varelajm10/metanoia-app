@@ -11,6 +11,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { useRouter } from "next/navigation";
+
 
 interface Customer {
   id: string;
@@ -25,6 +27,8 @@ export default function CustomerManagementClient() {
   const tCommon = useTranslations("Common");
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
 
   useEffect(() => {
     const q = query(collection(db, "customers"), orderBy("legalName", "asc"));
@@ -60,6 +64,10 @@ export default function CustomerManagementClient() {
     const statusKey = `status${status.replace(/\s+/g, '')}` as 'statusActivo' | 'statusNuevo' | 'statusEnRiesgo';
     return t(statusKey);
   }
+
+  const handleRowClick = (id: string) => {
+    router.push(`/customer-management/${id}`);
+  };
 
   return (
     <div className="space-y-6">
@@ -125,7 +133,7 @@ export default function CustomerManagementClient() {
                            <TableRow><TableCell colSpan={4} className="h-24 text-center">No hay clientes para mostrar.</TableCell></TableRow>
                         ) : (
                           customers.map(customer => (
-                             <TableRow key={customer.id} className="hover:bg-muted">
+                             <TableRow key={customer.id} className="hover:bg-muted cursor-pointer" onClick={() => handleRowClick(customer.id)}>
                                 <TableCell className="font-medium">{customer.legalName}</TableCell>
                                 <TableCell>
                                     <Badge variant={statusVariant[customer.status as keyof typeof statusVariant] || 'default'}>

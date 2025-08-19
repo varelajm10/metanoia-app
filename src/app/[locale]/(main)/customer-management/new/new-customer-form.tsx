@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
-import { addCustomer } from "../actions";
+import { addCustomer, updateCustomer } from "../actions";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -15,7 +15,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Save, UploadCloud, X, File as FileIcon } from "lucide-react";
+import { Loader2, Save, UploadCloud, X, File as FileIcon, Edit } from "lucide-react";
 
 const countries = ["Argentina", "Chile", "Uruguay", "Bolivia", "Peru", "Colombia", "Ecuador", "Costa Rica", "República Dominicana", "México", "Estados Unidos"];
 
@@ -76,16 +76,22 @@ const FormSchema = z.object({
 
 type FormValues = z.infer<typeof FormSchema>;
 
-export function NewCustomerForm() {
+interface NewCustomerFormProps {
+    customer?: FormValues & { id: string };
+}
+
+export function NewCustomerForm({ customer }: NewCustomerFormProps) {
   const t = useTranslations("NewCustomerForm");
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [taxIdLabel, setTaxIdLabel] = useState(t('taxIdNumber'));
   const [supportingDocs, setSupportingDocs] = useState<File[]>([]);
+  
+  const isEditMode = !!customer;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
+    defaultValues: customer || {
       accountExecutive: "",
       legalName: "",
       clientType: "",
@@ -106,6 +112,12 @@ export function NewCustomerForm() {
 
   const useLegalAsShipping = form.watch("useLegalAsShipping");
   const legalAddressCountry = form.watch("legalAddress.country");
+
+  useEffect(() => {
+    if (customer) {
+        form.reset(customer);
+    }
+  }, [customer, form]);
 
   useEffect(() => {
     switch (legalAddressCountry) {
@@ -143,13 +155,18 @@ export function NewCustomerForm() {
     const documentPromises = supportingDocs.map(fileToDataUri);
     const documents = await Promise.all(documentPromises);
 
-    const result = await addCustomer(data, documents);
+    const result = isEditMode
+        ? await updateCustomer(customer.id, data, documents)
+        : await addCustomer(data, documents);
+
     setIsSubmitting(false);
 
     if (result.success) {
-      toast({ title: t('clientSuccessToastTitle'), description: t('clientSuccessToastDescription') });
-      form.reset();
-      setSupportingDocs([]);
+      toast({ title: isEditMode ? "Cliente Actualizado" : t('clientSuccessToastTitle'), description: isEditMode ? "Los datos del cliente han sido actualizados." : t('clientSuccessToastDescription') });
+      if (!isEditMode) {
+          form.reset();
+          setSupportingDocs([]);
+      }
     } else {
       toast({ title: t('clientErrorToastTitle'), description: t('clientErrorToastDescription'), variant: "destructive" });
     }
@@ -382,10 +399,12 @@ export function NewCustomerForm() {
           <Button type="submit" size="lg" disabled={isSubmitting}>
             {isSubmitting ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : isEditMode ? (
+              <Edit className="mr-2 h-4 w-4" />
             ) : (
               <Save className="mr-2 h-4 w-4" />
             )}
-            {isSubmitting ? t('saving') : t('saveClient')}
+            {isSubmitting ? t('saving') : (isEditMode ? "Actualizar Cliente" : t('saveClient'))}
           </Button>
         </div>
       </form>
