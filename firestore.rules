@@ -1,61 +1,79 @@
+
 rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    
-    // Default Deny: Deny read/write access to all documents by default
+
+    // Regla general: Denegar por defecto para máxima seguridad.
+    // Las reglas específicas por colección abrirán el acceso necesario.
     match /{document=**} {
       allow read, write: if false;
     }
 
-    // Customers:
-    // - Allow read access to everyone to populate public-facing lists or dashboards.
-    // - Allow authenticated users to create new customers.
-    // - Allow authenticated users to update existing customers.
+    // --- COLECCIONES PRINCIPALES ---
+
+    // Clientes (CRM)
+    // Lectura pública para dashboards, escritura requiere autenticación.
     match /customers/{customerId} {
-      allow read: if true; 
-      allow create, update: if request.auth != null;
+      allow read: if true;
+      allow create, update, delete: if request.auth != null;
     }
 
-    // Employees:
-    // - Allow read access to everyone for dashboards.
-    // - Allow authenticated users to create and update employees.
+    // Empleados (RRHH)
+    // Lectura pública para dashboards, escritura requiere autenticación.
     match /employees/{employeeId} {
       allow read: if true;
-      allow create, update: if request.auth != null;
+      allow create, update, delete: if request.auth != null;
     }
 
-    // Collections (Financial Entries):
-    // - Allow read access to everyone for dashboards.
-    // - Allow authenticated users to create new collection entries.
+    // Cobranzas (Análisis Financiero)
+    // Lectura pública para dashboards, escritura requiere autenticación.
     match /collections/{collectionId} {
       allow read: if true;
       allow create: if request.auth != null;
     }
 
-    // Projections (Financial Entries):
-    // - Allow read access to everyone for dashboards.
-    // - Allow authenticated users to create new projection entries.
+    // Proyecciones (Análisis Financiero)
+    // Lectura pública para dashboards, escritura requiere autenticación.
     match /projections/{projectionId} {
       allow read: if true;
       allow create: if request.auth != null;
     }
 
-    // Quotations:
-    // - Allow read access to everyone.
-    // - Allow anyone to create a quotation (e.g., from a public form).
+    // Cotizaciones (Generador de Cotizaciones)
+    // En modo demo, se permite la creación pública.
     match /quotations/{quotationId} {
       allow read: if true;
-      allow create: if true;
+      allow create: if true; // Permitir creación pública para demo
     }
 
-    // Add rules for other collections as needed, for example:
-    // match /tickets/{ticketId} {
-    //   allow read, write: if request.auth != null;
-    // }
-    //
-    // match /documents/{documentId} {
-    //   allow read, write: if request.auth != null;
-    // }
+    // --- COLECCIONES PARA DASHBOARDS (MODO DEMO PÚBLICO) ---
+    // Para una demo funcional, permitimos lectura y escritura pública en estas colecciones.
+    // En un entorno de producción, se deberían restringir a `request.auth != null`.
+
+    // Solicitudes de Crédito (Gestión de Créditos)
+    match /credit-requests/{requestId} {
+      allow read, write: if true;
+    }
+
+    // Tickets de Soporte (Atención al Cliente)
+    match /tickets/{ticketId} {
+      allow read, write: if true;
+    }
+
+    // Ejecuciones de Automatización (Automatización de Procesos)
+    match /automation-executions/{executionId} {
+      allow read, write: if true;
+    }
+    
+    // Items de Inventario (Inventario Inteligente)
+    match /inventory-items/{itemId} {
+        allow read, write: if true;
+    }
+    
+    // Documentos (Gestión Documental)
+    match /documents/{documentId} {
+        allow read, write: if true;
+    }
   }
 }
