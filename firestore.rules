@@ -1,79 +1,61 @@
-
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Regla general: Denegar por defecto para máxima seguridad.
-    // Las reglas específicas por colección abrirán el acceso necesario.
-    match /{document=**} {
-      allow read, write: if false;
+    // Regla para la nueva colección de usuarios
+    match /users/{userId} {
+      // Un usuario puede leer su propio perfil.
+      // Un admin puede leer el perfil de cualquier usuario.
+      allow read: if request.auth.uid == userId || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      // Un usuario solo puede crear su propio documento.
+      allow create: if request.auth.uid == userId;
+      // Un usuario puede actualizar su propio perfil.
+      // Un admin puede actualizar cualquier perfil (para cambiar roles, etc.).
+      allow update: if request.auth.uid == userId || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      // Nadie puede borrar usuarios desde el cliente para mantener la integridad.
+      allow delete: if false;
     }
 
-    // --- COLECCIONES PRINCIPALES ---
-
-    // Clientes (CRM)
-    // Lectura pública para dashboards, escritura requiere autenticación.
-    match /customers/{customerId} {
-      allow read: if true;
-      allow create, update, delete: if request.auth != null;
-    }
-
-    // Empleados (RRHH)
-    // Lectura pública para dashboards, escritura requiere autenticación.
-    match /employees/{employeeId} {
-      allow read: if true;
-      allow create, update, delete: if request.auth != null;
-    }
-
-    // Cobranzas (Análisis Financiero)
-    // Lectura pública para dashboards, escritura requiere autenticación.
-    match /collections/{collectionId} {
-      allow read: if true;
-      allow create: if request.auth != null;
-    }
-
-    // Proyecciones (Análisis Financiero)
-    // Lectura pública para dashboards, escritura requiere autenticación.
-    match /projections/{projectionId} {
-      allow read: if true;
-      allow create: if request.auth != null;
-    }
-
-    // Cotizaciones (Generador de Cotizaciones)
-    // En modo demo, se permite la creación pública.
-    match /quotations/{quotationId} {
-      allow read: if true;
-      allow create: if true; // Permitir creación pública para demo
-    }
-
-    // --- COLECCIONES PARA DASHBOARDS (MODO DEMO PÚBLICO) ---
-    // Para una demo funcional, permitimos lectura y escritura pública en estas colecciones.
-    // En un entorno de producción, se deberían restringir a `request.auth != null`.
-
-    // Solicitudes de Crédito (Gestión de Créditos)
-    match /credit-requests/{requestId} {
+    // --- Reglas existentes (se irán reemplazando/eliminando) ---
+    match /collections/{docId} {
       allow read, write: if true;
     }
 
-    // Tickets de Soporte (Atención al Cliente)
-    match /tickets/{ticketId} {
+    match /projections/{docId} {
       allow read, write: if true;
     }
 
-    // Ejecuciones de Automatización (Automatización de Procesos)
-    match /automation-executions/{executionId} {
+    match /customers/{docId} {
       allow read, write: if true;
     }
     
-    // Items de Inventario (Inventario Inteligente)
-    match /inventory-items/{itemId} {
-        allow read, write: if true;
+    match /employees/{docId} {
+      allow read, write: if true;
     }
-    
-    // Documentos (Gestión Documental)
-    match /documents/{documentId} {
-        allow read, write: if true;
+
+    match /quotations/{docId} {
+      allow create: if true;
+      allow read, update, delete: if true;
+    }
+
+    match /credit-requests/{docId} {
+      allow read, write: if true;
+    }
+
+    match /tickets/{docId} {
+      allow read, write: if true;
+    }
+
+    match /automation-executions/{docId} {
+      allow read, write: if true;
+    }
+
+    match /documents/{docId} {
+      allow read, write: if true;
+    }
+
+    match /inventory-items/{docId} {
+      allow read, write: if true;
     }
   }
 }
