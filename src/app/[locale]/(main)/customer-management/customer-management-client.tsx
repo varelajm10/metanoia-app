@@ -29,13 +29,16 @@ export default function CustomerManagementClient() {
   useEffect(() => {
     const q = query(collection(db, "customers"), orderBy("legalName", "asc"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const customersData = querySnapshot.docs.map(doc => ({
-            id: doc.id,
-            legalName: doc.data().legalName,
-            status: doc.data().status || 'Activo',
-            lastContact: doc.data().createdAt?.toDate().toLocaleDateString() || 'N/A',
-            value: doc.data().value || 0,
-        }));
+        const customersData = querySnapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                legalName: data.legalName,
+                status: data.status || 'Activo',
+                lastContact: data.lastContact?.toDate().toLocaleDateString() || 'N/A',
+                value: data.value || 0,
+            }
+        });
         setCustomers(customersData);
         setLoading(false);
     }, (error) => {
@@ -142,5 +145,3 @@ export default function CustomerManagementClient() {
     </div>
   );
 }
-
-    

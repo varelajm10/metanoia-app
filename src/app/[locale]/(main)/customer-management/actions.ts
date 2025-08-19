@@ -78,9 +78,11 @@ export async function addCustomer(data: CustomerData, documents: { name: string;
   }
   
   try {
+    const timestamp = serverTimestamp();
     const docRef = await addDoc(collection(db, 'customers'), {
       ...customerData,
-      createdAt: serverTimestamp(),
+      createdAt: timestamp,
+      lastContact: timestamp, // Set initial last contact date
       documentUrls: [], // Initialize as empty
     });
 
