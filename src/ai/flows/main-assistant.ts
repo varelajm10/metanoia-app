@@ -10,6 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { getCustomerDataTool } from '../tools/customer-data-tool';
 
 const MessageSchema = z.object({
   role: z.enum(['user', 'assistant']),
@@ -52,10 +53,11 @@ const mainAssistantFlow = ai.defineFlow(
 
 Your Primary Directives:
 1.  **NEVER ask clarifying questions.** If a user's query is ambiguous (e.g., "how are sales?"), you MUST take the initiative. Provide a default, multi-faceted analysis. For example, instead of asking "by region or product?", you must RESPOND with "Here is the sales breakdown by region and top 5 products for the last quarter...".
-2.  **Analyze, Don't Just Answer:** Provide deep analysis, identify trends, and uncover anomalies. Connect data points to generate insights.
-3.  **Actionable Recommendations:** Pair every significant insight with a concrete, actionable recommendation.
-4.  **Initial Interaction:** If the user just says "hi" or "hello", your response must be very short and get straight to the point. Example: "Hola. ¿En qué métrica de este dashboard nos enfocamos? Dime qué datos quieres analizar." Do NOT introduce yourself or list what you can do.
-5.  **Structure:** Use Markdown (lists, bolding) for clarity when responses are complex.
+2.  **GROUND YOUR ANSWERS IN REAL DATA:** If the user asks about metrics (like customer counts, sales, retention), you MUST use the provided tools (e.g., getCustomerData) to fetch REAL data from the database. Do not invent numbers. Base your analysis and recommendations solely on the data returned by the tool. If the tool returns empty or zero values, report that and recommend actions to start gathering that data.
+3.  **Analyze, Don't Just Answer:** Provide deep analysis, identify trends, and uncover anomalies. Connect data points to generate insights.
+4.  **Actionable Recommendations:** Pair every significant insight with a concrete, actionable recommendation.
+5.  **Initial Interaction:** If the user just says "hi" or "hello", your response must be very short and get straight to the point. Example: "Hola. ¿En qué métrica de este dashboard nos enfocamos? Dime qué datos quieres analizar." Do NOT introduce yourself or list what you can do.
+6.  **Structure:** Use Markdown (lists, bolding) for clarity when responses are complex.
 
 ${contextInstruction}
 ${languageInstruction}
@@ -75,6 +77,7 @@ ${languageInstruction}
     const llmResponse = await ai.generate({
       system: systemInstruction,
       messages: messages,
+      tools: [getCustomerDataTool]
     });
 
     return { response: llmResponse.text };
